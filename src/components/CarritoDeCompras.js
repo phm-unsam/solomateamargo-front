@@ -8,11 +8,11 @@ import Paper from '@material-ui/core/Paper';
 import Compra from './Compra';
 import { useSelector, useDispatch } from 'react-redux';
 import { obtenerCarritoDeCompras } from '../actions/CarritoDeComprasAction';
-
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import TableCell from '@material-ui/core/TableCell';
 import Button from '@material-ui/core/Button';
 import './carritoDeCompras.css'
+
 const StyledTableCell = withStyles(theme => ({
   head: {
     backgroundColor: theme.palette.common.black,
@@ -23,12 +23,12 @@ const StyledTableCell = withStyles(theme => ({
   },
 }))(TableCell);
 
-
 const useStyles = makeStyles({
   table: {
     minWidth: 700,
   },
 });
+
 export default function CarritoDeCompras() {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -64,10 +64,7 @@ export default function CarritoDeCompras() {
       </TableContainer>
       <div className="botones">
         <Button variant="contained" color="primary">Limpar carro</Button>
-
       </div>
     </Fragment>
   )
-
-
 }

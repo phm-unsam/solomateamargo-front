@@ -3,17 +3,17 @@ import {
     CARRITO_DE_COMPRAS_EXITO,
     OBTENER_COMPRA_ELIMINAR,
     OBTENER_COMPRA_ELIMINAR_EXITO
-} from '../types'
-import compraAxios from '../config/axios'
-export function obtenerCarritoDeCompras(compra) {
-    return async (displatch) => {
-        displatch(getCompras())
+} from '../types';
+import compraAxios from '../config/axios';
 
+export function obtenerCarritoDeCompras(compra) {
+    return async (dispatch) => {
+        dispatch(getCompras());
         try {
-            const respuesta = await compraAxios.get('/carroDeCompras')
-            displatch(descargaCarroExitosoExitosa(respuesta.data))
+            const respuesta = await compraAxios.get('/carroDeCompras');
+            dispatch(descargaCarroExitosoExitosa(respuesta.data));
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
     }
 }
@@ -21,25 +21,22 @@ export function obtenerCarritoDeCompras(compra) {
 const getCompras = () => ({
     type: CARRITO_DE_COMPRAS,
     payload: true
-
-})
+});
 
 const descargaCarroExitosoExitosa = compras => ({
     type: CARRITO_DE_COMPRAS_EXITO,
     payload: compras
-})
+});
 
 //selecciona y elimina la compra
-
 export function borrarCompraAction(id){
-    return async (displatch) => {
-        displatch(obtenerCompraEliminar(id))
-        
+    return async (dispatch) => {
+        dispatch(obtenerCompraEliminar(id));
         try {
-            await compraAxios.delete(`carroDeCompras/${id}`)
-            displatch(eliminarCompraExito())
+            await compraAxios.delete(`carroDeCompras/${id}`);
+            dispatch(eliminarCompraExito());
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
     }
 }
