@@ -4,7 +4,7 @@ import TableRow from '@material-ui/core/TableRow';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import { useDispatch } from 'react-redux'
-import { borrarCompraAction } from '../actions/CarritoDeComprasAction'
+import { borrarCompraAction } from '../redux/actions/CarritoDeComprasAction'
 
 const StyledTableCell = withStyles(theme => ({
     head: {

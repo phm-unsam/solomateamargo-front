@@ -1,10 +1,8 @@
-import {
-    CARRITO_DE_COMPRAS,
-    CARRITO_DE_COMPRAS_EXITO,
-    OBTENER_COMPRA_ELIMINAR,
-    OBTENER_COMPRA_ELIMINAR_EXITO
-} from '../types'
 
+export const CARRITO_DE_COMPRAS = 'LISTADO_COMPRAS'
+export const CARRITO_DE_COMPRAS_EXITO = 'LISTADO_COMPRAS_EXITO'
+export const OBTENER_COMPRA_ELIMINAR = 'OBTENER_COMPRA_ELIMINAR'
+export const OBTENER_COMPRA_ELIMINAR_EXITO = 'OBTENER_COMPRA_ELIMINAR_EXITO'
 
 const initialState = {
     compras: [],
@@ -15,7 +13,6 @@ const initialState = {
 export default function(state= initialState, action){
     switch(action.type){
         case CARRITO_DE_COMPRAS:
-
         case CARRITO_DE_COMPRAS_EXITO:
             return{
                 ...state,

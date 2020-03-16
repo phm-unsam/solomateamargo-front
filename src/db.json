@@ -1,3 +1,31 @@
 {
-  "carroDeCompras": []
+  "carroDeCompras": [
+    {
+      "id": 1,
+      "origen": "buenos aires",
+      "destino": "salta",
+      "salida": "unsam",
+      "aerolinea":"argentina",
+      "asiento": "primera",
+      "precio": "31111"
+    },
+    {
+      "id": 2,
+      "origen": "buenos aires",
+      "destino": "salta",
+      "salida": "unsam",
+      "aerolinea":"argentina",
+      "asiento": "primera",
+      "precio": "31111"
+    },
+    {
+      "id": 3,
+      "origen": "buenos aires",
+      "destino": "salta",
+      "salida": "unsam",
+      "aerolinea":"argentina",
+      "asiento": "primera",
+      "precio": "31111"
+    }
+  ]
 }

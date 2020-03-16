@@ -1,10 +1,12 @@
-import {
-    CARRITO_DE_COMPRAS,
-    CARRITO_DE_COMPRAS_EXITO,
-    OBTENER_COMPRA_ELIMINAR,
-    OBTENER_COMPRA_ELIMINAR_EXITO
-} from '../types';
-import compraAxios from '../config/axios';
+
+import compraAxios from '../../config/axios';
+
+export const CARRITO_DE_COMPRAS = 'LISTADO_COMPRAS'
+export const CARRITO_DE_COMPRAS_EXITO = 'LISTADO_COMPRAS_EXITO'
+export const OBTENER_COMPRA_ELIMINAR = 'OBTENER_COMPRA_ELIMINAR'
+export const OBTENER_COMPRA_ELIMINAR_EXITO = 'OBTENER_COMPRA_ELIMINAR_EXITO'
+
+
 
 export function obtenerCarritoDeCompras(compra) {
     return async (dispatch) => {

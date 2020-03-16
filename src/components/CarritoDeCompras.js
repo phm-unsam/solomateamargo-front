@@ -7,7 +7,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Compra from './Compra';
 import { useSelector, useDispatch } from 'react-redux';
-import { obtenerCarritoDeCompras } from '../actions/CarritoDeComprasAction';
+import { obtenerCarritoDeCompras } from '../redux/actions/CarritoDeComprasAction';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import TableCell from '@material-ui/core/TableCell';
 import Button from '@material-ui/core/Button';
