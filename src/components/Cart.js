@@ -5,7 +5,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import Flight from './Flight';
+import Flight from './Flights';
 import { useSelector, useDispatch } from 'react-redux';
 import { getCart } from '../redux/actions/cartAction';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
