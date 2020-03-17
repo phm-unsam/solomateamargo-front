@@ -31,7 +31,9 @@ const useStyles = makeStyles({
 
 export default function Cart() {
   const classes = useStyles();
+
   const dispatch = useDispatch();  
+  
   const flights = useSelector(state => state.flights.flights);
   
   useEffect(() => {

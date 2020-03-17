@@ -2,7 +2,6 @@
 import cartAxios from '../../config/axios';
 
 export const CART_LOAD = 'CART_LOAD'
-export const CART_LOAD_FINISHED = 'CART_LOAD_FINISHED'
 export const DELETE_FLIGHT_RESERVATION = 'DELETE_FLIGHT_RESERVATION'
 export const DELETE_FLIGHT_RESERVATION_FINISHED = 'DELETE_FLIGHT_RESERVATION_FINISHED'
 
@@ -10,23 +9,17 @@ export const DELETE_FLIGHT_RESERVATION_FINISHED = 'DELETE_FLIGHT_RESERVATION_FIN
 
 export function getCart() {
     return async (dispatch) => {
-        dispatch(cartLoad());
         try {
             const respuesta = await cartAxios.get('/carroDeCompras');
-            dispatch(cartLoadFinished(respuesta.data));
+            dispatch(cardLoad(respuesta.data));
         } catch (error) {
             console.log(error);
         }
     }
 }
 
-const cartLoad = () => ({
+const cardLoad = flight => ({
     type: CART_LOAD,
-    payload: true
-});
-
-const cartLoadFinished = flight => ({
-    type: CART_LOAD_FINISHED,
     payload: flight
 });
 
