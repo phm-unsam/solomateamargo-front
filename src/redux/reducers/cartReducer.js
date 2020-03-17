@@ -5,7 +5,7 @@ export const DELETE_FLIGHT_RESERVATION = 'DELETE_FLIGHT_RESERVATION'
 export const DELETE_FLIGHT_RESERVATION_FINISHED = 'DELETE_FLIGHT_RESERVATION_FINISHED'
 
 const initialState = {
-    compras: [],
+    flights: [],
     loading: false,
     compraEliminar: null
 }
@@ -17,7 +17,7 @@ export default function(state= initialState, action){
             return{
                 ...state,
                 loading: false,
-                compras: action.payload
+                flights: action.payload
             }
 
         case DELETE_FLIGHT_RESERVATION:
@@ -29,7 +29,7 @@ export default function(state= initialState, action){
         case DELETE_FLIGHT_RESERVATION_FINISHED:
             return{
                 ...state,
-                compras: state.compras.filter(compra => compra.id !== state.compraEliminar)
+                flights: state.flights.filter(flight => flight.id !== state.compraEliminar)
             }
             
         default:

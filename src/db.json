@@ -1,15 +1,3 @@
 {
-  "carroDeCompras": [
-    {
-      "id": 2,
-      "origin": "Jugo de Zanahoria",
-      "destination": "asdsa",
-      "salida": "asdsad",
-      "exit": "asdad",
-      "airport": "buenos aires",
-      "seat": "asdasdd",
-      "flightClass": "asdad",
-      "price": "31111"
-    }
-  ]
+  "carroDeCompras": []
 }

@@ -25,9 +25,9 @@ const cartLoad = () => ({
     payload: true
 });
 
-const cartLoadFinished = compras => ({
+const cartLoadFinished = flight => ({
     type: CART_LOAD_FINISHED,
-    payload: compras
+    payload: flight
 });
 
 
