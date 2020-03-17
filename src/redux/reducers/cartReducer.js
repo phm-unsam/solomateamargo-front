@@ -1,8 +1,8 @@
 
-export const CARRITO_DE_COMPRAS = 'LISTADO_COMPRAS'
-export const CARRITO_DE_COMPRAS_EXITO = 'LISTADO_COMPRAS_EXITO'
-export const OBTENER_COMPRA_ELIMINAR = 'OBTENER_COMPRA_ELIMINAR'
-export const OBTENER_COMPRA_ELIMINAR_EXITO = 'OBTENER_COMPRA_ELIMINAR_EXITO'
+export const CART_LOAD = 'CART_LOAD'
+export const CART_LOAD_FINISHED = 'CART_LOAD_FINISHED'
+export const DELETE_FLIGHT_RESERVATION = 'DELETE_FLIGHT_RESERVATION'
+export const DELETE_FLIGHT_RESERVATION_FINISHED = 'DELETE_FLIGHT_RESERVATION_FINISHED'
 
 const initialState = {
     compras: [],
@@ -12,21 +12,21 @@ const initialState = {
 
 export default function(state= initialState, action){
     switch(action.type){
-        case CARRITO_DE_COMPRAS:
-        case CARRITO_DE_COMPRAS_EXITO:
+        case CART_LOAD:
+        case CART_LOAD_FINISHED:
             return{
                 ...state,
                 loading: false,
                 compras: action.payload
             }
 
-        case OBTENER_COMPRA_ELIMINAR:
+        case DELETE_FLIGHT_RESERVATION:
             return{
                 ...state,
                 compraEliminar: action.payload
             }
 
-        case OBTENER_COMPRA_ELIMINAR_EXITO:
+        case DELETE_FLIGHT_RESERVATION_FINISHED:
             return{
                 ...state,
                 compras: state.compras.filter(compra => compra.id !== state.compraEliminar)

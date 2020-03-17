@@ -1,7 +1,7 @@
 import Axios from "axios";
 
-const compraAxios = Axios.create({
+const cartAxios = Axios.create({
     baseURL: 'http://localhost:4000/'
 })
 
-export default compraAxios
+export default cartAxios

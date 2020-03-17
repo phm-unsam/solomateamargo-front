@@ -4,7 +4,7 @@ import TableRow from '@material-ui/core/TableRow';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import { useDispatch } from 'react-redux'
-import { borrarCompraAction } from '../redux/actions/CarritoDeComprasAction'
+import { deleteFlightAction } from '../redux/actions/cartAction'
 
 const StyledTableCell = withStyles(theme => ({
     head: {
@@ -24,33 +24,32 @@ const StyledTableRow = withStyles(theme => ({
     },
 }))(TableRow);
 
-const Compra = ({ listaCompra }) => {
+export default function Flight({ listaCompra }) {
 
-    const { id, origen, destino, salida, aerolinea, asiento, clase, precio } = listaCompra
+    const { id, origin, destination, exit, airport, seat, flightClass, price } = listaCompra
 
     const dispatch = useDispatch()
 
-    const confirmarEliminarCompra = id => {
-        dispatch(borrarCompraAction(id))
+    const deleteFlight = id => {
+        dispatch(deleteFlightAction(id))
     }
-    
+
     return (
         <Fragment>
 
             <StyledTableRow>
-                <StyledTableCell component="th" scope="row">{origen}</StyledTableCell>
-                <StyledTableCell align="right" >{destino}</StyledTableCell>
-                <StyledTableCell align="right">{salida}</StyledTableCell>
-                <StyledTableCell align="right">{aerolinea}</StyledTableCell>
-                <StyledTableCell align="right">{asiento}</StyledTableCell>
-                <StyledTableCell align="right">{clase}</StyledTableCell>
-                <StyledTableCell align="right">{precio}</StyledTableCell>
-                <StyledTableCell align="right">{precio}</StyledTableCell>
+                <StyledTableCell component="th" scope="row">{origin}</StyledTableCell>
+                <StyledTableCell align="right" >{destination}</StyledTableCell>
+                <StyledTableCell align="right">{exit}</StyledTableCell>
+                <StyledTableCell align="right">{airport}</StyledTableCell>
+                <StyledTableCell align="right">{seat}</StyledTableCell>
+                <StyledTableCell align="right">{flightClass}</StyledTableCell>
+                <StyledTableCell align="right">{price}</StyledTableCell>
                 <StyledTableCell align="right">
                     <Button
                         variant="contained"
                         color="secondary"
-                        onClick={() => confirmarEliminarCompra(id)}
+                        onClick={() => deleteFlight(id)}
                     >Eliminar</Button>
                 </StyledTableCell>
 
@@ -59,5 +58,3 @@ const Compra = ({ listaCompra }) => {
         </Fragment>
     );
 }
-
-export default Compra;

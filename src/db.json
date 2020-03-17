@@ -1,31 +1,15 @@
 {
   "carroDeCompras": [
     {
-      "id": 1,
-      "origen": "buenos aires",
-      "destino": "salta",
-      "salida": "unsam",
-      "aerolinea":"argentina",
-      "asiento": "primera",
-      "precio": "31111"
-    },
-    {
       "id": 2,
-      "origen": "buenos aires",
-      "destino": "salta",
-      "salida": "unsam",
-      "aerolinea":"argentina",
-      "asiento": "primera",
-      "precio": "31111"
-    },
-    {
-      "id": 3,
-      "origen": "buenos aires",
-      "destino": "salta",
-      "salida": "unsam",
-      "aerolinea":"argentina",
-      "asiento": "primera",
-      "precio": "31111"
+      "origin": "Jugo de Zanahoria",
+      "destination": "asdsa",
+      "salida": "asdsad",
+      "exit": "asdad",
+      "airport": "buenos aires",
+      "seat": "asdasdd",
+      "flightClass": "asdad",
+      "price": "31111"
     }
   ]
 }

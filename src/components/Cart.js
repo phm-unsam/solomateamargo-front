@@ -5,13 +5,13 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import Compra from './Compra';
+import Flight from './Flight';
 import { useSelector, useDispatch } from 'react-redux';
-import { obtenerCarritoDeCompras } from '../redux/actions/CarritoDeComprasAction';
+import { getCart } from '../redux/actions/cartAction';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import TableCell from '@material-ui/core/TableCell';
 import Button from '@material-ui/core/Button';
-import './carritoDeCompras.css'
+import './Cart.css'
 
 const StyledTableCell = withStyles(theme => ({
   head: {
@@ -29,15 +29,13 @@ const useStyles = makeStyles({
   },
 });
 
-export default function CarritoDeCompras() {
+export default function Cart() {
   const classes = useStyles();
-  const dispatch = useDispatch();
-  
-  const compras = useSelector(state => state.compras.compras);
+  const dispatch = useDispatch();  
+  const flights = useSelector(state => state.compras.compras);
   
   useEffect(() => {
-    const cargarListadoCompras = () => dispatch(obtenerCarritoDeCompras());
-    cargarListadoCompras();
+    dispatch(getCart());   
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -55,10 +53,11 @@ export default function CarritoDeCompras() {
               <StyledTableCell align="right">Asiento</StyledTableCell>
               <StyledTableCell align="right">Clase</StyledTableCell>
               <StyledTableCell align="right">Precio</StyledTableCell>
+              <StyledTableCell align="right">Accion</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {Object.keys(compras).map(articulo => (<Compra listaCompra={compras[articulo]} key={articulo} />))}
+            {Object.keys(flights).map(flight => (<Flight listaCompra={flights[flight]} key={flight} />))}
           </TableBody>
         </Table>
       </TableContainer>
