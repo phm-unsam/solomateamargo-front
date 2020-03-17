@@ -2,32 +2,37 @@
 export const CART_LOAD = 'CART_LOAD'
 export const DELETE_FLIGHT_RESERVATION = 'DELETE_FLIGHT_RESERVATION'
 export const DELETE_FLIGHT_RESERVATION_FINISHED = 'DELETE_FLIGHT_RESERVATION_FINISHED'
-
+export const DELETE_ALL_CART = "DELETE_ALL_CART"
 const initialState = {
     flights: [],
     selectedFlight: null
 }
 
-export default function(state= initialState, action){
-    switch(action.type){
+export default function (state = initialState, action) {
+    switch (action.type) {
         case CART_LOAD:
-            return{
+            return {
                 ...state,
                 flights: action.payload
             }
 
         case DELETE_FLIGHT_RESERVATION:
-            return{
+            return {
                 ...state,
                 selectedFlight: action.payload
             }
 
         case DELETE_FLIGHT_RESERVATION_FINISHED:
-            return{
+            return {
                 ...state,
                 flights: state.flights.filter(flight => flight.id !== state.selectedFlight)
             }
-            
+
+        case DELETE_ALL_CART:
+            return {
+                flights: []
+            }
+
         default:
             return state
     }

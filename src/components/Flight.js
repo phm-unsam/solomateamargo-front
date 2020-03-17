@@ -38,7 +38,7 @@ export default function Flight({ listaCompra }) {
         <Fragment>
 
             <StyledTableRow>
-                <StyledTableCell component="th" scope="row">{origin}</StyledTableCell>
+                <StyledTableCell align="right">{origin}</StyledTableCell>
                 <StyledTableCell align="right" >{destination}</StyledTableCell>
                 <StyledTableCell align="right">{exit}</StyledTableCell>
                 <StyledTableCell align="right">{airport}</StyledTableCell>
@@ -46,7 +46,7 @@ export default function Flight({ listaCompra }) {
                 <StyledTableCell align="right">{flightClass}</StyledTableCell>
                 <StyledTableCell align="right">{price}</StyledTableCell>
                 <StyledTableCell align="right">
-                    <Button
+                    <Button className="buton"
                         variant="contained"
                         color="secondary"
                         onClick={() => deleteFlight(id)}

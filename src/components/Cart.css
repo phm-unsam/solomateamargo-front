@@ -6,3 +6,27 @@
 .boton{
     margin: 10px;
 }
+
+h3{
+   margin-left: 5rem;
+   margin-top: -2rem; 
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+.botonesInferior{
+    text-align: left;
+    padding: 1rem;
+    margin-left: 4rem;
+    display: flex;
+}
+
+.botonVolver{
+    margin-right: 1rem;
+}
+

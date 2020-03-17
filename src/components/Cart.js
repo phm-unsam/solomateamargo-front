@@ -12,7 +12,7 @@ import { withStyles, makeStyles } from '@material-ui/core/styles';
 import TableCell from '@material-ui/core/TableCell';
 import Button from '@material-ui/core/Button';
 import './Cart.css'
-
+import {deleteAllAction} from '../redux/actions/cartAction'
 const StyledTableCell = withStyles(theme => ({
   head: {
     backgroundColor: theme.palette.common.black,
@@ -32,23 +32,37 @@ const useStyles = makeStyles({
 export default function Cart() {
   const classes = useStyles();
 
-  const dispatch = useDispatch();  
-  
+  const dispatch = useDispatch();
+
   const flights = useSelector(state => state.flights.flights);
-  
+
+
   useEffect(() => {
-    dispatch(getCart());   
+    dispatch(getCart());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const sumaTotal = () => {
+    let total = 0
+    flights.forEach(flight =>
+      total += flight.price)
+
+    return total
+  }
+
+  const deleteAll = () => {
+    dispatch(deleteAllAction())
+  }
   return (
     <Fragment>
-      <TableContainer component={Paper} className="container">
+      <div className="container">
+
+      <TableContainer component={Paper}>
         <h1>Carrito de Compras</h1>
         <Table className={classes.table} aria-label="customized table">
           <TableHead>
             <TableRow>
-              <StyledTableCell>Origen</StyledTableCell>
+              <StyledTableCell align="right">Origen</StyledTableCell>
               <StyledTableCell align="right">Destino</StyledTableCell>
               <StyledTableCell align="right">Salida</StyledTableCell>
               <StyledTableCell align="right">Aerolinea</StyledTableCell>
@@ -63,9 +77,21 @@ export default function Cart() {
           </TableBody>
         </Table>
       </TableContainer>
-      <div className="botones">
-        <Button variant="contained" color="primary">Limpar carro</Button>
       </div>
+      <div className="botones">
+        <Button variant="contained" color="primary" onClick={() => deleteAll()}>Limpar carro</Button>
+      </div>
+
+      <h3 align="left">Total en Carrito: $ {sumaTotal()}</h3>
+
+      <div className="botonesInferior">
+    <div className="botonVolver">
+        <Button variant="contained" color="secondary">Volver</Button>
+
+    </div>
+        <Button variant="contained" color="primary">Comprar</Button>
+      </div>
+
     </Fragment>
   )
 }
