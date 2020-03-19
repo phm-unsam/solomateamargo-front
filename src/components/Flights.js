@@ -11,13 +11,75 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import Typography from '@material-ui/core/Typography';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import { yellow } from '@material-ui/core/colors';
 import MomentUtils from '@date-io/moment';
 import {  MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 
-const theme = {
-  spacing: 2
-}
+const flightsTest = [
+  {
+      id: 'F1',
+      origin: 'Buenos Aires',
+      destination: 'Madrid',
+      airline: 'Histeria',
+      departure: 'new Date()',
+      stopoversAmount: 1,
+      flightDuration: 12,
+      price: 30000
+  },
+  {
+      id: 'F2',
+      origin: 'Rosario',
+      destination: 'Rawson',
+      airline: 'Lineaero',
+      departure: 'new Date()',
+      stopoversAmount: 3,
+      flightDuration: 10,
+      price: 10000
+  },
+  {
+      id: 'F3',
+      origin: 'Frankfrut',
+      destination: 'Rawson',
+      airline: 'Blitish',
+      departure: 'new Date()',
+      stopoversAmount: 1,
+      flightDuration: 3,
+      price: 25000
+  }
+];
+
+const seatsTest = [
+  {
+      id: 'S1',
+      typeName: 'Economy',
+      number: 'A77',
+      window: false,
+      price: 30000
+  },
+  {
+      id: 'S2',
+      typeName: 'First',
+      number: 'F54',
+      window: false,
+      price: 75000
+  },
+  {
+      id: 'S3',
+      typeName: 'Economy',
+      number: 'B34',
+      window: true,
+      price: 63500
+  },
+  {
+      id: 'S4',
+      typeName: 'Economy',
+      number: 'A12',
+      window: true,
+      price: 33000
+  }
+];
+
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -37,6 +99,9 @@ const useStyles = makeStyles(theme => ({
   buttonAgregarCarrito: {
     margin: 5,
     minWidth: 500
+  },
+  margin5: {
+    margin: 5,
   }
 }));
 
@@ -61,9 +126,15 @@ const StyledTableCell = withStyles(theme => ({
 }))(TableCell);
 
 export default function Flights() {
+  const [flights, setFlights] = useState(null);
+
+  const handleFlightChange = event => {
+    setFlights(event)
+  }
+
   return(
     <div>
-      <SearchComponent></SearchComponent>
+      <SearchComponent onFlightChange={handleFlightChange}></SearchComponent>
       <GridFlights></GridFlights>
       <GridSeats></GridSeats>
       <FooterFlights></FooterFlights>
@@ -71,35 +142,73 @@ export default function Flights() {
   )  
 }
 
-function SearchComponent(){
-  const [selectedDate, handleDateChange] = useState(new Date());
+function SearchComponent(props){
+  let [dateFrom, setDateFrom] = useState(new Date());
+  let [dateTo, setDateTo] = useState(new Date());
   const classes = useStyles();
+  const seatClasses = [
+    { typeName: 'Economy'}, { typeName: 'Business'}, { typeName: 'First'}
+  ]
+
+  let form = {};
+
+  const update = (event) => {
+    form[event.target.name] = event.target;
+  }
+
+  const changeDateFrom = (date) => {
+    debugger;
+    setDateFrom(date);
+  }
+
+  const changeDateTo = (date) => {
+    setDateTo(date);
+  }
+
+  const searchFlights = event => {
+    props.onFlightChange('sarasa');
+  }
+
+  const clearData = event => {
+    debugger;
+  }
 
   return(
-    <Fragment>
+    <Fragment className={classes.margin5}>
         <Grid container spacing={3}>
           <Grid item xs={3}>
             <TextField
-              variant="standard"
+              variant="outlined"
               margin="normal"
               name="origin"
               label="Origen"
               type="text"
               id="origin"
+              className={classes.margin5}
+              onChange={update}
             />
           </Grid>
           <Grid item xs={3}>
           <TextField
-              variant="standard"
+              variant="outlined"
               margin="normal"
-              name="origin"
+              name="destination"
               label="Destino"
               type="text"
-              id="origin"
+              id="destination"
+              className={classes.margin5}
+              onChange={update}
             />
           </Grid>
           <Grid item xs={3}>
-            <Paper className={classes.paper}>xs=3</Paper>
+          <Autocomplete
+            id="comboClass"
+            options={seatClasses}
+            getOptionLabel={option => option.typeName}
+            style={{width: 220}}
+            className={classes.margin5}
+            renderInput={params => <TextField {...params} label="Clase" variant="outlined" />}
+          />
           </Grid>
           <Grid item xs={3}>
           <Button
@@ -107,6 +216,7 @@ function SearchComponent(){
               variant="contained"
               color="primary"
               className={classes.margin}
+              onClick={searchFlights}
             >
               Buscar
             </Button>
@@ -115,14 +225,14 @@ function SearchComponent(){
         <Grid container spacing={3}>
           <MuiPickersUtilsProvider utils={MomentUtils}>
             <Grid item xs={3}>        
-              <KeyboardDatePicker format="DD/MM/YYYY" value={selectedDate} onChange={handleDateChange} label="Desde"></KeyboardDatePicker>
+              <KeyboardDatePicker format="DD/MM/YYYY" name="dateFrom" value={dateFrom} onChange={changeDateFrom} className={classes.margin5} label="Desde"></KeyboardDatePicker>
             </Grid>
             <Grid item xs={3}>
-              <KeyboardDatePicker format="DD/MM/YYYY" value={selectedDate} onChange={handleDateChange} label="Hasta"></KeyboardDatePicker>
+              <KeyboardDatePicker format="DD/MM/YYYY" name="dateTo" value={dateTo} onChange={changeDateTo} className={classes.margin5} label="Hasta"></KeyboardDatePicker>
             </Grid>
           </MuiPickersUtilsProvider>
           <Grid item xs={3}>
-          <Typography variant="body1" gutterBottom><input type="checkbox"  className={classes.margin}/>Ventanilla </Typography>
+          <Typography variant="body1" className={classes.margin5} gutterBottom><input type="checkbox" name="ventanilla" className={classes.margin} onChange={update}/>Ventanilla </Typography>
           </Grid>
           <Grid item xs={3}>
           <ColorButton
@@ -130,6 +240,7 @@ function SearchComponent(){
               variant="contained"
               color="primary"
               className={classes.margin}
+              onClick={clearData}
             >
               Limpiar Campos
             </ColorButton>
@@ -143,7 +254,7 @@ function GridFlights(){
   const classes = useStyles();
 
   return(
-    <Fragment>
+    <Fragment className={classes.margin5}>
     <TableContainer>
       <Table className={classes.table} spacing={3}>
         <TableHead>
@@ -158,7 +269,19 @@ function GridFlights(){
           </TableRow>
         </TableHead>
         <TableBody>
-          {/*Object.keys(compras).map(articulo => (<Compra listaCompra={compras[articulo]} key={articulo} />))*/}
+          {flightsTest.map(flight => (
+              <TableRow key={flight.id}>
+                <TableCell align="center" component="th" scope="row">
+                  {flight.origin}
+                </TableCell>
+                <TableCell align="center">{flight.destination}</TableCell>
+                <TableCell align="center">{flight.airline}</TableCell>
+                <TableCell align="center">{flight.departure}</TableCell>
+                <TableCell align="center">{flight.stopoversAmount}</TableCell>
+                <TableCell align="center">{flight.flightDuration}</TableCell>
+                <TableCell align="center">{"$" + flight.price}</TableCell>
+              </TableRow>
+            ))}
         </TableBody>
       </Table>
     </TableContainer>
@@ -170,9 +293,9 @@ function GridSeats(){
   const classes = useStyles();
 
   return(
-    <Fragment>
+    <Fragment className={classes.margin5}>
       <TableContainer>
-        <Typography align='left' variant="h4" gutterBottom>
+        <Typography align='left' variant="h4" className={classes.margin5} gutterBottom>
           Selección de Asiento
         </Typography>
         <Table className={classes.table} spacing={3}>
@@ -185,7 +308,16 @@ function GridSeats(){
             </TableRow>
           </TableHead>
           <TableBody>
-            {/*Object.keys(compras).map(articulo => (<Compra listaCompra={compras[articulo]} key={articulo} />))*/}
+          {seatsTest.map(seat => (
+              <TableRow key={seat.id}>
+                <TableCell align="center" component="th" scope="row">
+                  {seat.typeName}
+                </TableCell>
+                <TableCell align="center">{seat.number}</TableCell>
+                <TableCell align="center">{seat.window ? "Si" : "No"}</TableCell>
+                <TableCell align="center">{"$" + seat.price}</TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
         <Button
@@ -205,11 +337,11 @@ function FooterFlights(){
   const classes = useStyles();
   
   return(
-    <Fragment>
+    <Fragment className={classes.margin5}>
       <Grid container spacing={3}>
           <Grid item xs={6}>        
-          <Typography variant="body1" gutterBottom> Items en el carrito: 111 </Typography>
-          <Typography variant="body1" gutterBottom> Total en el carrito: $11.111 </Typography>
+          <Typography variant="body1" gutterBottom> Items en el carrito: 3 </Typography>
+          <Typography variant="body1" gutterBottom> Total en el carrito: $150.000 </Typography>
           </Grid>
         <Grid item xs={3}>
         <Button
