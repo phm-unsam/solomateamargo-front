@@ -174,8 +174,8 @@ function SearchComponent(props){
   }
 
   return(
-    <Fragment className={classes.margin5}>
-        <Grid container spacing={3}>
+    <Fragment>
+        <Grid container spacing={3} className={classes.margin5}>
           <Grid item xs={3}>
             <TextField
               variant="outlined"
@@ -254,8 +254,8 @@ function GridFlights(){
   const classes = useStyles();
 
   return(
-    <Fragment className={classes.margin5}>
-    <TableContainer>
+    <Fragment>
+    <TableContainer className={classes.margin5}>
       <Table className={classes.table} spacing={3}>
         <TableHead>
           <TableRow>
@@ -293,8 +293,8 @@ function GridSeats(){
   const classes = useStyles();
 
   return(
-    <Fragment className={classes.margin5}>
-      <TableContainer>
+    <Fragment>
+      <TableContainer className={classes.margin5}>
         <Typography align='left' variant="h4" className={classes.margin5} gutterBottom>
           Selección de Asiento
         </Typography>
@@ -337,8 +337,8 @@ function FooterFlights(){
   const classes = useStyles();
   
   return(
-    <Fragment className={classes.margin5}>
-      <Grid container spacing={3}>
+    <Fragment>
+      <Grid container spacing={3} className={classes.margin5}>
           <Grid item xs={6}>        
           <Typography variant="body1" gutterBottom> Items en el carrito: 3 </Typography>
           <Typography variant="body1" gutterBottom> Total en el carrito: $150.000 </Typography>
