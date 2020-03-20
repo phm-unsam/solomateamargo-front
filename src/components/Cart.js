@@ -5,7 +5,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import Flight from './Flights';
+import Passage from './Passage';
 import { useSelector, useDispatch } from 'react-redux';
 import { getCart } from '../redux/actions/cartAction';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
@@ -73,7 +73,7 @@ export default function Cart() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {Object.keys(flights).map(flight => (<Flight listaCompra={flights[flight]} key={flight} />))}
+            {Object.keys(flights).map(flight => (<Passage listaCompra={flights[flight]} key={flight} />))}
           </TableBody>
         </Table>
       </TableContainer>
