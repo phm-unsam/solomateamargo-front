@@ -5,7 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import { useDispatch } from 'react-redux'
 import { deleteFlightAction } from '../redux/actions/cartAction'
-
+import WithPassage from './WithPassage'
 const StyledTableCell = withStyles(theme => ({
     head: {
         backgroundColor: theme.palette.common.black,
@@ -24,9 +24,9 @@ const StyledTableRow = withStyles(theme => ({
     },
 }))(TableRow);
 
-export default function Flight({ listaCompra }) {
+function Passage({ listaCompra }) {
 
-    const { id, origin, destination, exit, airport, seat, flightClass, price } = listaCompra
+    const { id, seat, flightClass, price } = listaCompra
 
     const dispatch = useDispatch()
 
@@ -36,25 +36,25 @@ export default function Flight({ listaCompra }) {
 
     return (
         <Fragment>
+            <div>
 
-            <StyledTableRow>
-                <StyledTableCell align="right">{origin}</StyledTableCell>
-                <StyledTableCell align="right" >{destination}</StyledTableCell>
-                <StyledTableCell align="right">{exit}</StyledTableCell>
-                <StyledTableCell align="right">{airport}</StyledTableCell>
-                <StyledTableCell align="right">{seat}</StyledTableCell>
-                <StyledTableCell align="right">{flightClass}</StyledTableCell>
-                <StyledTableCell align="right">{price}</StyledTableCell>
-                <StyledTableCell align="right">
-                    <Button className="buton"
-                        variant="contained"
-                        color="secondary"
-                        onClick={() => deleteFlight(id)}
-                    >Eliminar</Button>
-                </StyledTableCell>
+                <StyledTableRow>
+                    <StyledTableCell align="right">{seat}</StyledTableCell>
+                    <StyledTableCell align="right">{flightClass}</StyledTableCell>
+                    <StyledTableCell align="right">{price}</StyledTableCell>
+                    <StyledTableCell align="right">
+                        <Button className="buton"
+                            variant="contained"
+                            color="secondary"
+                            onClick={() => deleteFlight(id)}
+                        >Eliminar</Button>
+                    </StyledTableCell>
 
-            </StyledTableRow>
+                </StyledTableRow>
+            </div>
 
         </Fragment>
     );
 }
+
+export default WithPassage(Passage)
