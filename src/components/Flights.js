@@ -134,6 +134,7 @@ export default function Flights() {
 
   return(
     <div>
+      {flights}
       <SearchComponent onFlightChange={handleFlightChange}></SearchComponent>
       <GridFlights></GridFlights>
       <GridSeats></GridSeats>
@@ -143,34 +144,67 @@ export default function Flights() {
 }
 
 function SearchComponent(props){
-  let [dateFrom, setDateFrom] = useState(new Date());
-  let [dateTo, setDateTo] = useState(new Date());
+  const [dateFrom, setDateFrom] = useState(new Date());
+  const [dateTo, setDateTo] = useState(new Date());
+  const [flightSearch, setFlightSearch] = useState({
+    origin: '',
+    destination: '',
+    class: null,
+    window: false,
+    dateFrom: null,
+    dateTo: null
+  });
   const classes = useStyles();
   const seatClasses = [
     { typeName: 'Economy'}, { typeName: 'Business'}, { typeName: 'First'}
   ]
 
-  let form = {};
-
-  const update = (event) => {
-    form[event.target.name] = event.target;
+  const update = e => {
+    setFlightSearch({
+      ...flightSearch,
+      [e.target.name]: e.target.value
+    });
   }
 
-  const changeDateFrom = (date) => {
-    debugger;
+  const updateInput = e => {
+    setFlightSearch({
+      ...flightSearch,
+      [e.target.name]: e.target.checked
+    });
+  }
+
+  const changeDateFrom = date => {
     setDateFrom(date);
+    setFlightSearch({
+      ...flightSearch,
+      dateFrom: date
+    });
   }
 
-  const changeDateTo = (date) => {
+  const changeDateTo = date => {
     setDateTo(date);
+    setFlightSearch({
+      ...flightSearch,
+      dateTo: date
+    });
   }
 
-  const searchFlights = event => {
-    props.onFlightChange('sarasa');
-  }
-
-  const clearData = event => {
+  const searchFlights = e => {
     debugger;
+    props.onFlightChange(flightSearch);
+  }
+
+  const clearData = e => {
+    setDateFrom(new Date());
+    setDateTo(new Date());
+    setFlightSearch({
+      origin: '',
+      destination: '',
+      class: null,
+      window: false,
+      dateFrom: new Date(),
+      dateTo: new Date()
+    })
   }
 
   return(
@@ -184,6 +218,7 @@ function SearchComponent(props){
               label="Origen"
               type="text"
               id="origin"
+              value={flightSearch.origin}
               className={classes.margin5}
               onChange={update}
             />
@@ -196,6 +231,7 @@ function SearchComponent(props){
               label="Destino"
               type="text"
               id="destination"
+              value={flightSearch.destination}
               className={classes.margin5}
               onChange={update}
             />
@@ -203,9 +239,11 @@ function SearchComponent(props){
           <Grid item xs={3}>
           <Autocomplete
             id="comboClass"
+            name="class"
             options={seatClasses}
             getOptionLabel={option => option.typeName}
             style={{width: 220}}
+            value={flightSearch.class}
             className={classes.margin5}
             renderInput={params => <TextField {...params} label="Clase" variant="outlined" />}
           />
@@ -232,7 +270,7 @@ function SearchComponent(props){
             </Grid>
           </MuiPickersUtilsProvider>
           <Grid item xs={3}>
-          <Typography variant="body1" className={classes.margin5} gutterBottom><input type="checkbox" name="ventanilla" className={classes.margin} onChange={update}/>Ventanilla </Typography>
+          <Typography variant="body1" className={classes.margin5} gutterBottom><input type="checkbox" name="window" value={searchFlights.window} className={classes.margin} onChange={updateInput}/>Ventanilla </Typography>
           </Grid>
           <Grid item xs={3}>
           <ColorButton
