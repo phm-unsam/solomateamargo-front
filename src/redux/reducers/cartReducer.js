@@ -1,8 +1,8 @@
+import { CART_LOAD,
+    DELETE_FLIGHT_RESERVATION ,
+    DELETE_FLIGHT_RESERVATION_FINISHED, 
+    DELETE_ALL_CART,} from '../../consts/'
 
-export const CART_LOAD = 'CART_LOAD'
-export const DELETE_FLIGHT_RESERVATION = 'DELETE_FLIGHT_RESERVATION'
-export const DELETE_FLIGHT_RESERVATION_FINISHED = 'DELETE_FLIGHT_RESERVATION_FINISHED'
-export const DELETE_ALL_CART = "DELETE_ALL_CART"
 const initialState = {
     flights: [],
     selectedFlight: null
