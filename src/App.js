@@ -1,9 +1,9 @@
 import React from 'react';
 import './App.css';
-import Login from './components/login/Login';
-import Cart from './components/Cart'
+import Login from './components/login';
+import Cart from './components/cart'
 import { Provider } from 'react-redux'
-import Flights from './components/Flights';
+import Flights from './components/flights';
 import PropTypes from 'prop-types';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 

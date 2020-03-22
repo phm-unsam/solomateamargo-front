@@ -1,9 +1,9 @@
 import React, { Fragment, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getCart } from '../redux/actions/cartAction';
+import { getCart } from '../../redux/actions/cartAction';
 import './Cart.css'
-import { deleteAllAction } from '../redux/actions/cartAction'
-import WithFlightsTable from './WithFlightsTable'
+import { deleteAllAction } from '../../redux/actions/cartAction'
+import WithFlightsTable from '../WithFlightsTable'
 import Button from '@material-ui/core/Button';
 
 
@@ -17,7 +17,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import Paper from '@material-ui/core/Paper';
 import TableBody from '@material-ui/core/TableBody';
 
-import Passage from './Passage'
+import Passage from '../passage/Passage'
 
 const StyledTableCell = withStyles(theme => ({
   head: {

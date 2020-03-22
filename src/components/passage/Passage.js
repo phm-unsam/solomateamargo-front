@@ -4,8 +4,8 @@ import TableRow from '@material-ui/core/TableRow';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import { useDispatch } from 'react-redux'
-import { deleteFlightAction } from '../redux/actions/cartAction'
-import WithPassage from './WithPassage'
+import { deleteFlightAction } from '../../redux/actions/cartAction'
+import WithPassage from '../WithPassage'
 const StyledTableCell = withStyles(theme => ({
     head: {
         backgroundColor: theme.palette.common.black,

@@ -6,7 +6,6 @@ const initialState = {
 
 export default function (state = initialState, action) {
     const response = action.results
-    console.log(response)
     switch (action.type) {
         case LOGIN_START:
             return { ...state, isLoading: true }
