@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import Login from './components/Login';
+import Login from './components/login/Login';
 import Cart from './components/Cart'
 import { Provider } from 'react-redux'
 import Flights from './components/Flights';

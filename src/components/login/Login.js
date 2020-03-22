@@ -1,39 +1,27 @@
-import React, {  } from 'react';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { useDispatch } from 'react-redux'
-
-import { loginUser } from '../redux/actions/LoginActions'
-const useStyles = makeStyles(theme => ({
-  paper: {
-    marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  form: {
-    width: '100%',
-    marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-}));
-
-
+import style from './style'
+import { loginUser } from '../../redux/actions/LoginActions'
 
 export default function Login() {
-  const classes = useStyles();
+  const classes = style();
   const dispatch = useDispatch();
+  const [loginCredentials, setloginCredentials] = useState({})
 
-  const dispachLogin = () => {
-    dispatch(loginUser({ sarasa: "asd" }))
+  const loginTry = (e) =>{
+    e.preventDefault()
+    dispatch(loginUser(loginCredentials))
   }
-  
+  const handeImputChange = (e) => {
+    const { value, name } = e.target
+    setloginCredentials({ ...loginCredentials, [name]: value })
+  }
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -49,8 +37,9 @@ export default function Login() {
             fullWidth
             id="user"
             label="Usuario"
-            name="emuserail"
+            name="username"
             autoComplete="user"
+            onChange={handeImputChange}
             autoFocus
           />
           <TextField
@@ -58,6 +47,7 @@ export default function Login() {
             margin="normal"
             required
             fullWidth
+            onChange={handeImputChange}
             name="password"
             label="Password"
             type="password"
@@ -69,7 +59,7 @@ export default function Login() {
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={dispachLogin}
+            onClick={loginTry}
           >
             Entrar
           </Button>

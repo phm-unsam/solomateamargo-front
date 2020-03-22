@@ -9,10 +9,10 @@ export default function (state = initialState, action) {
             alert("despachado bro")
             return { ...state, isLoading: true }
         case LOGIN_FAILED:
-            alert("despachado bro 2")
+            alert("Error")
             return { ...state, isLoading: false }
         case LOGIN_SUCCESS:
-            alert("despachado bro 2")
+            alert("Stamos ok")
             return { ...state, isLoading: false }
         default: return { ...state }
     }
