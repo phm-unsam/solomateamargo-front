@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux'
 import cartReducer from './cartReducer'
-import  loginReducer  from './LoginReducer'
+import  login  from './LoginReducer'
 
 const rootReducer = combineReducers({
     cartReducer,
-    loginReducer    
+    login 
 })
 
 export default rootReducer
