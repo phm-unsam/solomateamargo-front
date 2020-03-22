@@ -7,13 +7,13 @@ import Container from '@material-ui/core/Container';
 import { useDispatch } from 'react-redux'
 import style from './style'
 import { loginUser } from '../../redux/actions/LoginActions'
-
+import planeIcon from '../../plane.png'
 export default function Login() {
   const classes = style();
   const dispatch = useDispatch();
   const [loginCredentials, setloginCredentials] = useState({})
 
-  const loginTry = (e) =>{
+  const loginTry = (e) => {
     e.preventDefault()
     dispatch(loginUser(loginCredentials))
   }
@@ -24,11 +24,14 @@ export default function Login() {
 
   return (
     <Container component="main" maxWidth="xs">
+
       <CssBaseline />
       <div className={classes.paper}>
+      <img alt="plane logo" src={planeIcon} height="90 rem"></img>
         <Typography component="h1" variant="h2">
-          AterrizApp
+          AterrizApp 
         </Typography>
+        
         <form className={classes.form} noValidate>
           <TextField
             variant="outlined"
