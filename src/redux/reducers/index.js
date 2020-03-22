@@ -1,7 +1,10 @@
 import { combineReducers } from 'redux'
 import cartReducer from './cartReducer'
+import  loginReducer  from './LoginReducer'
 
-export default combineReducers({
-    flights: cartReducer,
-    vuelos : "euge gato",
+const rootReducer = combineReducers({
+    cartReducer,
+    loginReducer    
 })
+
+export default rootReducer

@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, {  } from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { useDispatch } from 'react-redux'
 
+import { loginUser } from '../redux/actions/LoginActions'
 const useStyles = makeStyles(theme => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -22,9 +24,16 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+
+
 export default function Login() {
   const classes = useStyles();
+  const dispatch = useDispatch();
 
+  const dispachLogin = () => {
+    dispatch(loginUser({ sarasa: "asd" }))
+  }
+  
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -56,26 +65,14 @@ export default function Login() {
             autoComplete="current-password"
           />
           <Button
-            type="submit"
             fullWidth
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={dispachLogin}
           >
             Entrar
           </Button>
-          {/*<Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link href="#" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid>*/}
         </form>
       </div>
     </Container>
