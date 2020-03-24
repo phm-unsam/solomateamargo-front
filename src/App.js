@@ -8,6 +8,8 @@ import PropTypes from 'prop-types';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 
+
+
 const App = ({ store }) => (
 	<Provider store={store}>
 		<Router>

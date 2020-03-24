@@ -1,7 +1,5 @@
-import Axios from "axios";
-
-const cartAxios = Axios.create({
-    baseURL: 'http://localhost:4000/'
-})
-
-export default cartAxios
+export default function apiCall(method, url){
+    return fetch(url, {
+        method
+    }).then(response => response.json())
+}
