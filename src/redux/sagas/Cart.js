@@ -1,4 +1,4 @@
-import { put, call, takeLatest, delay} from 'redux-saga/effects';
+import { put, call, takeLatest} from 'redux-saga/effects';
 import apiCall from '../../config/axios'
 import Swal from 'sweetalert2' 
 import {
@@ -51,17 +51,17 @@ export function* deleteAll({payload}){
 }
 
 export function* buyTicket(payload){
-    const respuesta =JSON.stringify({
-        id: payload.id,
-        origin: payload.payload.origin,
-        destination: payload.payload.exit,
-        airport: payload.payload.airport,
-        seat: payload.payload.seat,
-        flightClass: payload.payload.flightClass,
-        price: payload.payload.price
-    })
     try {
-        const results = yield call(apiCall, 'POST', 'http://localhost:5000/dasdad', respuesta );
+        const respuesta =JSON.stringify({
+            id: payload.id,
+            origin: payload.payload.origin,
+            destination: payload.payload.exit,
+            airport: payload.payload.airport,
+            seat: payload.payload.seat,
+            flightClass: payload.payload.flightClass,
+            price: payload.payload.price
+        })
+        const results = yield call(apiCall, 'POST', 'http://localhost:5000/flight', respuesta );
         Swal.fire(
             'Comprado!',
             'Your file has been deleted.',
