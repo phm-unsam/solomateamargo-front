@@ -8,6 +8,7 @@ export function* loginUser({ payload }) {
         const results = yield call (apiCall,`user/login`,payload ,null,'POST')
         yield put({ type: LOGIN_SUCCESS , results})
     } catch (e) {
+        console.log('asdsd')
         yield put({ type: LOGIN_FAILED, e})
     }
 

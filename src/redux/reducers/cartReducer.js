@@ -1,21 +1,30 @@
-import { 
-    CART_LOAD_FINISHED, 
-    CART_LOAD_ERROR, 
-    DELETE_FLIGHT_RESERVATION, 
-    DELETE_FLIGHT_RESERVATION_FINISHED, 
-    DELETE_ALL_CART, 
-    DELETE_ALL_CART_FINISHED
+import {
+    CART_LOAD,
+    CART_LOAD_FINISHED,
+    CART_LOAD_ERROR,
+    DELETE_FLIGHT_RESERVATION,
+    DELETE_FLIGHT_RESERVATION_FINISHED,
+    DELETE_ALL_CART,
+    DELETE_ALL_CART_FINISHED,
+    BUY_CART_FINISHED
 } from '../../consts'
 
 const initialState = {
     flights: [],
     selectedFlight: null,
     error: null,
-    loading: false
+    loading: false,
+    buyTicket: []
 }
 
 export default function (state = initialState, action) {
     switch (action.type) {
+
+        case CART_LOAD:
+            return {
+                ...state,
+                loading: action.payload
+            }
         case CART_LOAD_FINISHED:
             return {
                 ...state,
@@ -30,7 +39,7 @@ export default function (state = initialState, action) {
                 loading: false,
                 error: action.payload
             }
-            
+
         case DELETE_FLIGHT_RESERVATION:
             return {
                 ...state,
@@ -53,7 +62,12 @@ export default function (state = initialState, action) {
             return {
                 flights: action.results
             }
+        case BUY_CART_FINISHED:
+            return {
+                ...state,
+                buyTicket: [...state.flights]
 
+            }
         default:
             return state
     }

@@ -1,26 +1,6 @@
 {
   "carroDeCompras": [
     {
-      "id": 3,
-      "origin": "Buenos Aires",
-      "destination": "Salta",
-      "exit": "javi",
-      "airport": "Aerolineas",
-      "seat": "Economy",
-      "flightClass": "F2",
-      "price": 1231
-    },
-    {
-      "id": 2,
-      "origin": "Cordoba",
-      "destination": "Brasil",
-      "exit": "euge",
-      "airport": "Aerolineas",
-      "seat": "Economy",
-      "flightClass": "F3",
-      "price": 1231
-    },
-    {
       "id": 1,
       "origin": "asdd",
       "destination": "aggg",
