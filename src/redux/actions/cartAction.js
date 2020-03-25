@@ -4,8 +4,7 @@ import {
     CART_LOAD_ERROR, 
     DELETE_FLIGHT_RESERVATION, 
     DELETE_ALL_CART, 
-    DELETE_ALL_CART_FINISHED,
-    BUY_CART
+    BUY_CART,
 } from '../../consts'
 
 export const cartLoad = () => ({
@@ -29,17 +28,15 @@ export const deleteFlightReservation = id => ({
 })
 
 
-export const deleteAll = () => ({
+export const deleteAll = flights => ({
     type: DELETE_ALL_CART,
-    payload:true
+    payload: flights
 });
 
-export const deleteAllFinished = () => ({
-    type: DELETE_ALL_CART_FINISHED,
-    payload: null
-})
 
 export const buyTicket = ticket => ({
     type: BUY_CART,
     payload: ticket
 })
+
+

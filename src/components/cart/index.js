@@ -20,58 +20,59 @@ export default function Cart() {
   const flights = useSelector(state => state.cartReducer.flights);
   const error = useSelector(state => state.cartReducer.error)
   const loading = useSelector(state => state.cartReducer.loading)
-
+  
   const buyTickets = (ticket) => dispatch(buyTicket(ticket))
-
+  
   useEffect(() => {
     dispatch(cartLoad())
-    if (flights === []) {
+    
+    if (flights !==  0) {
       dispatch(cartLoadError())
     }
-    console.log(flights)
-
-
+    
+    
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
+  
   const sumaTotal = () => {
     let total = 0
-
+    
     Array.from(flights).forEach(flight =>
       total += flight.price)
-
-    return total
-  }
-
-  const deleteFlight = id => {
-
-    Swal.fire({
-      title: 'Estas Seguro?',
-      text: "un pasaje que se elimina no se puede recuperar",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'si, eliminar!',
-      cancelButtonText: 'Cancelar'
-    }).then((result) => {
-      if (result.value) {
-        dispatch(deleteFlightReservation(id))
-      }
-    })
-
-  }
-
-  const deleteAllflights = () => {
-    dispatch(deleteAll())
-  }
-
-  const buyTicketsFlights = e => {
-    e.preventDefault()
-
-    Swal.fire({
-      title: 'Estas Seguro?',
-      text: "no se puede cancelar la compra",
+      
+      return total
+    }
+    
+    const deleteFlight = id => {
+      
+      Swal.fire({
+        title: 'Estas Seguro?',
+        text: "un pasaje que se elimina no se puede recuperar",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'si, eliminar!',
+        cancelButtonText: 'Cancelar'
+      }).then((result) => {
+        if (result.value) {
+          dispatch(deleteFlightReservation(id))
+        }
+      })
+      
+    }
+    
+    const deleteAllflights = () => {
+      dispatch(deleteAll(flights))
+    }
+    
+    const buyTicketsFlights = e => {
+      e.preventDefault()
+      
+      
+      Swal.fire({
+        title: 'Estas Seguro?',
+        text: "no se puede cancelar la compra",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -83,15 +84,14 @@ export default function Cart() {
         flights.forEach(flight =>
           buyTickets(
             flight
-          )
-        )
+            )
+            )
+          }
+        })
+        
       }
-    })
-
-  }
-  return (
-    <Fragment>
-
+      return (
+        <Fragment>
       {error ? <p>hubo un error</p> : null}
 
       {loading ? <p>hubo un error</p> : null}
@@ -111,7 +111,7 @@ export default function Cart() {
           </TableHead>
           <TableBody>
 
-              {Array.from(flights).length === 0 ?'no hay pasajes':(Array.from(flights).map(flight =>
+              {Array.from(flights).length === 0 ? 'no hay pasajes' :(Array.from(flights).map(flight =>
               <TableRow key={flight.id}>
                 <StyledTableCell align="center">{flight.origin}</StyledTableCell>
                 <StyledTableCell align="center">{flight.destination}</StyledTableCell>

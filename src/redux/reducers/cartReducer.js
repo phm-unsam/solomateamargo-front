@@ -6,7 +6,8 @@ import {
     DELETE_FLIGHT_RESERVATION_FINISHED,
     DELETE_ALL_CART,
     DELETE_ALL_CART_FINISHED,
-    BUY_CART_FINISHED
+    BUY_CART_FINISHED,
+    BUY_CART_ERROR
 } from '../../consts'
 
 const initialState = {
@@ -67,6 +68,14 @@ export default function (state = initialState, action) {
                 ...state,
                 buyTicket: [...state.flights]
 
+            }
+
+        case BUY_CART_ERROR:
+            console.log(action)
+            return{
+                ...state,
+                loading: false,
+                error: action.payload
             }
         default:
             return state

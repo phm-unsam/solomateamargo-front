@@ -6,5 +6,5 @@ export default function apiCall(method, url, data){
             'Content-Type': 'application/json'
         },
         body: data
-    }).then(response => response.json())
+    }).then(response => response.json()).catch(error => ({ error }))
 }

@@ -1,4 +1,4 @@
-import { put, call, takeLatest} from 'redux-saga/effects';
+import { put, call, takeLatest, delay} from 'redux-saga/effects';
 import apiCall from '../../config/axios'
 import Swal from 'sweetalert2' 
 import {
@@ -10,16 +10,18 @@ import {
     DELETE_ALL_CART, 
     DELETE_ALL_CART_FINISHED,
     BUY_CART,
-    BUY_CART_FINISHED
+    BUY_CART_FINISHED,
+    BUY_CART_ERROR
 } from '../../consts'
 
 
-export function*  cartLoad(){
-    const results = yield call(apiCall, 'get', 'http://localhost:4000/asdad');
+export function*  cartLoad(payload){
+    const results = yield call(apiCall, 'get', 'http://localhost:4000/carroDeCompras');
     try{
+        console.log(payload)
         yield put({type: CART_LOAD_FINISHED, results})
     }catch(error){
-        console.log('asdsd')
+        console.log('sdad')
         yield put({type: CART_LOAD_ERROR ,error})
     }
 }
@@ -38,9 +40,10 @@ export function* deleteFlight({payload}){
     }
 }
 
-export function* deleteAll(){
+export function* deleteAll({payload}){
     try {
-        const results = yield call(apiCall, 'post', 'http://localhost:4000/carroDeCompras');
+        console.log(payload)
+        const results = yield call(apiCall, 'PUT', 'http://localhost:4000/carroDeCompras', payload);
         yield put({type: DELETE_ALL_CART_FINISHED, results})
     } catch (error) {
         console.log(error)
@@ -48,27 +51,26 @@ export function* deleteAll(){
 }
 
 export function* buyTicket(payload){
+    const respuesta =JSON.stringify({
+        id: payload.id,
+        origin: payload.payload.origin,
+        destination: payload.payload.exit,
+        airport: payload.payload.airport,
+        seat: payload.payload.seat,
+        flightClass: payload.payload.flightClass,
+        price: payload.payload.price
+    })
     try {
-        const respuesta =JSON.stringify({
-            id: payload.id,
-            origin: payload.payload.origin,
-            destination: payload.payload.exit,
-            airport: payload.payload.airport,
-            seat: payload.payload.seat,
-            flightClass: payload.payload.flightClass,
-            price: payload.payload.price
-        })
-        console.log(payload)
-        const results = yield call(apiCall, 'POST', 'http://localhost:5000/flight', respuesta );
+        const results = yield call(apiCall, 'POST', 'http://localhost:5000/dasdad', respuesta );
         Swal.fire(
             'Comprado!',
             'Your file has been deleted.',
             'success'
           )
-        console.log(payload)
-        yield put({type: BUY_CART_FINISHED, results})
-    } catch (error) {
-        console.log(error)
+          yield put({type: BUY_CART_FINISHED, results})
+        } catch (error) {
+            console.log(payload)
+        yield put({type: BUY_CART_ERROR ,error})
     }
 }
 
