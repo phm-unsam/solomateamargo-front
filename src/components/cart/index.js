@@ -27,7 +27,7 @@ export default function Cart() {
   useEffect(() => {
     dispatch(cartLoad())
 
-    if (flights !== 0) {
+    if (flights.length !== 0) {
       dispatch(cartLoadError())
     }
 

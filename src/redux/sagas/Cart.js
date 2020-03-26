@@ -18,10 +18,8 @@ import {
 export function*  cartLoad(payload){
     const results = yield call(apiCall, 'get', 'http://localhost:4000/carroDeCompras');
     try{
-        console.log(payload)
         yield put({type: CART_LOAD_FINISHED, results})
     }catch(error){
-        console.log('sdad')
         yield put({type: CART_LOAD_ERROR ,error})
     }
 }
