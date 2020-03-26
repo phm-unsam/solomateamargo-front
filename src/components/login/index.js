@@ -4,36 +4,36 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector, connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import style from './style'
 import { loginUser } from '../../redux/actions/LoginActions'
-
 import planeIcon from '../../plane.png'
 
-export default function Login() {
+const Login = ({ loginUser }) => {
   const classes = style();
-  const dispatch = useDispatch();
   const [loginCredentials, setloginCredentials] = useState({
     username: "",
     password : ""
-  })
-  const login = useSelector(state => state.login)
+  });
+  const login = useSelector(state => state.login);
 
   const loginTry = (e) => {
-    e.preventDefault()
-    dispatch(loginUser(loginCredentials))
+    e.preventDefault();
+    loginUser(loginCredentials);
   }
-  const handeImputChange = (e) => {
-    const { value, name } = e.target
-    setloginCredentials({ ...loginCredentials, [name]: value })
+
+  const handleInputChange = (e) => {
+    const { value, name } = e.target;
+    setloginCredentials({ ...loginCredentials, [name]: value });
   }
   
   const loginButtonDisabled = () =>{
-    return isEmpty(loginCredentials.password) || isEmpty(loginCredentials.username) || login.isLoading 
+    return isEmpty(loginCredentials.password) || isEmpty(loginCredentials.username) || login.isLoading;
   }
 
-  const isEmpty=(aField)=>{
-    return aField === ""
+  const isEmpty = (aField) =>{
+    return aField === "";
   }
 
   return (
@@ -56,7 +56,7 @@ export default function Login() {
             label="Usuario"
             name="username"
             autoComplete="user"
-            onChange={handeImputChange}
+            onChange={handleInputChange}
             autoFocus
           />
           <TextField
@@ -64,7 +64,7 @@ export default function Login() {
             margin="normal"
             required
             fullWidth
-            onChange={handeImputChange}
+            onChange={handleInputChange}
             name="password"
             label="Password"
             type="password"
@@ -89,3 +89,13 @@ export default function Login() {
     </Container>
   );
 }
+
+/*const mapStateToProps = state => ({
+  user: state.user
+});*/
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({ loginUser }, dispatch)
+}
+
+export default connect(null, mapDispatchToProps)(Login)
