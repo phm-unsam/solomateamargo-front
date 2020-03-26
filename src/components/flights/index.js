@@ -13,7 +13,9 @@ import Typography from '@material-ui/core/Typography';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { yellow } from '@material-ui/core/colors';
 import MomentUtils from '@date-io/moment';
-import {  MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
+import { useHistory } from "react-router-dom";
+import { useSelector } from 'react-redux';
 
 const flightsTest = [
   {
@@ -124,7 +126,7 @@ const StyledTableCell = withStyles(theme => ({
   },
 }))(TableCell);
 
-export default function Flights() {
+export default Flights => {
   const [flights, setFlights] = useState(null);
 
   const handleFlightChange = event => {
@@ -133,7 +135,6 @@ export default function Flights() {
 
   return(
     <div>
-      {flights}
       <SearchComponent onFlightChange={handleFlightChange}></SearchComponent>
       <GridFlights></GridFlights>
       <GridSeats></GridSeats>
@@ -142,7 +143,7 @@ export default function Flights() {
   )  
 }
 
-function SearchComponent(props){
+const SearchComponent = (props) => {
   const [dateFrom, setDateFrom] = useState(new Date());
   const [dateTo, setDateTo] = useState(new Date());
   const [flightSearch, setFlightSearch] = useState({
@@ -287,7 +288,7 @@ function SearchComponent(props){
   )
 }
 
-function GridFlights(){
+const GridFlights = () => {
   const classes = useStyles();
 
   return(
@@ -326,7 +327,7 @@ function GridFlights(){
   )
 }
 
-function GridSeats(){
+const GridSeats = () => {
   const classes = useStyles();
 
   return(
@@ -370,9 +371,14 @@ function GridSeats(){
   )
 }
 
-function FooterFlights(){
+const FooterFlights = () => {
   const classes = useStyles();
+  let history = useHistory();
   
+  const onPerfilClick = e => {
+    history.push("/perfil/" + "");
+  }
+
   return(
     <Fragment>
       <Grid container spacing={3} className={classes.margin5}>
@@ -386,6 +392,7 @@ function FooterFlights(){
             variant="contained"
             color="primary"
             className={classes.margin}
+            onClick={onPerfilClick}
           >
             Perfil
           </Button>

@@ -1,4 +1,4 @@
-import React, { useState, Fragment }  from 'react';
+import React, { useState, Fragment, useEffect }  from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
@@ -10,20 +10,8 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import Typography from '@material-ui/core/Typography';
-import { yellow } from '@material-ui/core/colors';
-import TableCreator from '../tableCreator';
 import style from './style'
-
-
-const ColorButton = withStyles(theme => ({
-  root: {
-    color: yellow[50],
-    backgroundColor: yellow[700],
-    '&:hover': {
-      backgroundColor: yellow[800],
-    },
-  },
-}))(Button);
+import { useParams } from "react-router-dom";
 
 const StyledTableCell = withStyles(theme => ({
   head: {
@@ -90,13 +78,16 @@ const flightsTest = [
   ];
 
 export default function Profile() {
+  const { id } = useParams();
   const [user, setUser] = useState({
 
   });
 
-  const handleFlightChange = event => {
-    setUser(event)
-  }
+  useEffect(() => {
+    console.log(id);
+    
+    //do api call
+  })
 
   return(
     <div>

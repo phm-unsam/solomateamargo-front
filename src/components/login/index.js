@@ -4,7 +4,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
-import { useDispatch, useSelector, connect } from 'react-redux'
+import { useSelector, connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import style from './style'
 import { loginUser } from '../../redux/actions/LoginActions'
