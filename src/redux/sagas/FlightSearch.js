@@ -19,14 +19,14 @@ export function* searchForAllFlights({ payload }) {
 
 }
 
-// export function* flightSearchByDate() {
-//     const results = yield call(apiCall, `flights/getAll`, payload, null, 'GET')
-//     try {
-//         yield put({ type: SEARCH_BY_DATE_FINISHED, results })
-//     } catch (e) {
-//         yield put({ type: SEARCH_BY_DATE_ERROR, e })
-//     }
-// }
+export function* flightSearchByDate() {
+    // const results = yield call(apiCall, `flights/getAll`, payload, null, 'GET')
+    // try {
+    //     yield put({ type: SEARCH_BY_DATE_FINISHED, results })
+    // } catch (e) {
+    //     yield put({ type: SEARCH_BY_DATE_ERROR, e })
+    // }
+}
 
 
 export default function* FlightSearch() {

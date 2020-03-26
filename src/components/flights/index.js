@@ -19,6 +19,8 @@ import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/picker
 import { useSelector, useDispatch } from 'react-redux';
 import { flightSearchLoad } from '../../redux/actions/FlightSearch';
 
+//css
+import {useStyles,ColorButton, StyledTableCell} from './Style'
 const seatsTest = [
   {
     id: 'S1',
@@ -49,51 +51,6 @@ const seatsTest = [
     price: 33000
   }
 ];
-
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1,
-  },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-  },
-  margin: {
-    margin: theme.spacing(1),
-  },
-  table: {
-    minWidth: 700
-  },
-  buttonAgregarCarrito: {
-    margin: 5,
-    minWidth: 500
-  },
-  margin5: {
-    margin: 5,
-  }
-}));
-
-const ColorButton = withStyles(theme => ({
-  root: {
-    color: yellow[50],
-    backgroundColor: yellow[700],
-    '&:hover': {
-      backgroundColor: yellow[800],
-    },
-  },
-}))(Button);
-
-const StyledTableCell = withStyles(theme => ({
-  head: {
-    backgroundColor: theme.palette.action.hover,
-    color: theme.palette.common.black,
-  },
-  body: {
-    fontSize: 14,
-  },
-}))(TableCell);
 
 export default function Flights() {
   const [flights, setFlights] = useState(null);
