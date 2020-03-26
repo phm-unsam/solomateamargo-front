@@ -5,7 +5,6 @@ import { useSelector } from 'react-redux'
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
     const logged = useSelector(state => state.login.isLogged)
-    debugger
     return (
         <Route exact {...rest} render={(props) => (
          logged ? <Component {...props} /> : <Redirect to='/login' />

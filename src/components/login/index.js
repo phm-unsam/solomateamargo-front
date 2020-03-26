@@ -9,13 +9,22 @@ import { bindActionCreators } from 'redux'
 import style from './style'
 import { loginUser } from '../../redux/actions/LoginActions'
 import planeIcon from '../../plane.png'
+import { useHistory } from "react-router-dom";
 
 const Login = ({ loginUser }) => {
   const classes = style();
+  let history = useHistory();
+
+  const callbackLogin = () => {
+    history.push("/");
+  }
+
   const [loginCredentials, setloginCredentials] = useState({
     username: "",
-    password : ""
+    password: "",
+    callbackFn: callbackLogin
   });
+
   const login = useSelector(state => state.login);
 
   const loginTry = (e) => {
