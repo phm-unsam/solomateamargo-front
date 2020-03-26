@@ -3,18 +3,12 @@ import { LOGIN_FAILED, LOGIN_SUCCESS, LOGIN_START } from '../../consts'
 import { apiCall } from '../api'
 
 export function* loginUser({ payload }) {
-    debugger;
-    let user ={
-        username: payload.username,
-        password: payload.password
-    }
-
-    let callbackFn = payload.callbackFn;
+    const callbackFn = payload.callbackFn;
     
     try {
-        const results = yield call (apiCall, `user/login`, user, null, 'POST')
+        const results = yield call (apiCall, `user/login`, payload, null, 'POST')
         yield put({ type: LOGIN_SUCCESS , results})
-        callbackFn();
+        yield call (callbackFn)
     } catch (e) {
         console.log('asdsd')
         yield put({ type: LOGIN_FAILED, e})
