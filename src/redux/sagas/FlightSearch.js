@@ -6,7 +6,10 @@ import {
     FLIGHT_SEARCH_LOAD_ERROR,
     SEARCH_BY_DATE,
     SEARCH_BY_DATE_FINISHED,
-    SEARCH_BY_DATE_ERROR
+    SEARCH_BY_DATE_ERROR,
+    LOAD_SEAT,
+    LOAD_SEAT_FINISHED,
+    LOAD_SEAT_ERROR
 } from '../../consts'
 
 export function* searchForAllFlights({ payload }) {
@@ -19,6 +22,16 @@ export function* searchForAllFlights({ payload }) {
 
 }
 
+
+export function* loadSeats({payload}){
+    const results = yield call(apiCall, `flight/${payload}/seats`, payload, null, 'GET')
+    try {
+        yield put({ type: LOAD_SEAT_FINISHED, results })
+    } catch (e) {
+        yield put({ type: LOAD_SEAT_ERROR, e })
+    }
+}
+
 export function* flightSearchByDate() {
     // const results = yield call(apiCall, `flights/getAll`, payload, null, 'GET')
     // try {
@@ -29,7 +42,8 @@ export function* flightSearchByDate() {
 }
 
 
+
 export default function* FlightSearch() {
     yield takeLatest(FLIGHT_SEARCH_LOAD, searchForAllFlights);
-    yield takeLatest(SEARCH_BY_DATE, flightSearchByDate);
+    yield takeLatest(LOAD_SEAT, loadSeats);
 }

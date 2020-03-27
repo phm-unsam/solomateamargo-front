@@ -1,13 +1,17 @@
 import {
     FLIGHT_SEARCH_LOAD,
     FLIGHT_SEARCH_LOAD_ERROR,
-    FLIGHT_SEARCH_LOAD_FINISHED
+    FLIGHT_SEARCH_LOAD_FINISHED,
+    LOAD_SEAT_FINISHED,
+    LOAD_SEAT
 } from '../../consts'
 
 const initialState = {
     flights: [],
+    seat: [],
     error: null,
     loading: false,
+    
 }
 
 export default function (state = initialState, action) {
@@ -31,6 +35,18 @@ export default function (state = initialState, action) {
                 ...state,
                 loading: false,
                 error: action.payload
+            }
+            case LOAD_SEAT:
+                return {
+                    ...state,
+                    selectedFlight: action.payload
+                }
+
+
+        case LOAD_SEAT_FINISHED:
+            return{
+                ...state,
+                seat: action.results.data
             }
         default:
             return state

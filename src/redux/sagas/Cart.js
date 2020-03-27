@@ -15,7 +15,7 @@ import {
 } from '../../consts'
 
 
-export function*  cartLoad(payload){
+export function*  cartLoad(){
     const results = yield call(apiCall, 'get', 'http://localhost:4000/carroDeCompras');
     try{
         yield put({type: CART_LOAD_FINISHED, results})

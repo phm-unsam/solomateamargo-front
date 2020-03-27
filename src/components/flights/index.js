@@ -18,9 +18,9 @@ import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/picker
 //redux
 import { useSelector, useDispatch } from 'react-redux';
 import { flightSearchLoad } from '../../redux/actions/FlightSearch';
-
+import { loadSeat } from '../../redux/actions/FlightSearch'
 //css
-import {useStyles,ColorButton, StyledTableCell} from './Style'
+import { useStyles, ColorButton, StyledTableCell } from './Style'
 const seatsTest = [
   {
     id: 'S1',
@@ -221,12 +221,16 @@ function GridFlights() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const flights = useSelector(state => state.FlightSearchReducer.flights)
+  const seats = useSelector(state => state.FlightSearchReducer.seat)
+  
   useEffect(() => {
     dispatch(flightSearchLoad())
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-
+  const handleClick = flightId => {
+    dispatch(loadSeat(flightId))
+  }
 
   return (
     <Fragment>
@@ -245,8 +249,11 @@ function GridFlights() {
             </TableRow>
           </TableHead>
           <TableBody>
-             {Array.from(flights).map(flight => (
-              <TableRow key={flight.id}>
+            {Array.from(flights).map(flight => (
+              <TableRow key={flight.id}
+              hover
+              onClick={() => handleClick(flight.id)}
+              >
                 <TableCell align="center" component="th" scope="row">
                   {flight.from}
                 </TableCell>
@@ -257,7 +264,7 @@ function GridFlights() {
                 <TableCell align="center">{flight.flightDuration}</TableCell>
                 <TableCell align="center">{"$" + flight.baseCost}</TableCell>
               </TableRow>
-            ))}  
+            ))}
           </TableBody>
         </Table>
       </TableContainer>
@@ -267,7 +274,8 @@ function GridFlights() {
 
 function GridSeats() {
   const classes = useStyles();
-
+  const seats = useSelector(state => state.FlightSearchReducer.seat)
+  
   return (
     <Fragment>
       <TableContainer className={classes.margin5}>
@@ -284,14 +292,16 @@ function GridSeats() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {seatsTest.map(seat => (
-              <TableRow key={seat.id}>
+            {seats.map(seat => (
+              <TableRow
+                key={seat.number}
+              >
                 <TableCell align="center" component="th" scope="row">
-                  {seat.typeName}
+                  {seat.class}
                 </TableCell>
                 <TableCell align="center">{seat.number}</TableCell>
                 <TableCell align="center">{seat.window ? "Si" : "No"}</TableCell>
-                <TableCell align="center">{"$" + seat.price}</TableCell>
+                <TableCell align="center">{"$" + seat.cost}</TableCell>
               </TableRow>
             ))}
           </TableBody>

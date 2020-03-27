@@ -7,6 +7,10 @@ import {
     BUY_CART,
 } from '../../consts'
 
+export const loadSeat = () => ({
+
+})
+
 export const cartLoad = () => ({
     type: CART_LOAD,
     payload: true
