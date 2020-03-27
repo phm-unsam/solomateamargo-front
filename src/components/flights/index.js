@@ -1,5 +1,4 @@
 import React, { useState, Fragment, useEffect } from 'react';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -11,66 +10,40 @@ import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import Typography from '@material-ui/core/Typography';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { yellow } from '@material-ui/core/colors';
 import MomentUtils from '@date-io/moment';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 
+
+import { useHistory } from "react-router-dom";
+import { useSelector } from 'react-redux';
+
+
 //redux
-import { useSelector, useDispatch } from 'react-redux';
+import {useDispatch } from 'react-redux';
 import { flightSearchLoad } from '../../redux/actions/FlightSearch';
 import { loadSeat } from '../../redux/actions/FlightSearch'
 //css
 import { useStyles, ColorButton, StyledTableCell } from './Style'
-const seatsTest = [
-  {
-    id: 'S1',
-    typeName: 'Economy',
-    number: 'A77',
-    window: false,
-    price: 30000
-  },
-  {
-    id: 'S2',
-    typeName: 'First',
-    number: 'F54',
-    window: false,
-    price: 75000
-  },
-  {
-    id: 'S3',
-    typeName: 'Economy',
-    number: 'B34',
-    window: true,
-    price: 63500
-  },
-  {
-    id: 'S4',
-    typeName: 'Economy',
-    number: 'A12',
-    window: true,
-    price: 33000
-  }
-];
 
-export default function Flights() {
+
+export default Flights => {
   const [flights, setFlights] = useState(null);
 
   const handleFlightChange = event => {
     setFlights(event)
   }
 
-  return (
+  return(
     <div>
-      {flights}
       <SearchComponent onFlightChange={handleFlightChange}></SearchComponent>
       <GridFlights></GridFlights>
       <GridSeats></GridSeats>
       <FooterFlights></FooterFlights>
     </div>
-  )
+  )  
 }
 
-function SearchComponent(props) {
+const SearchComponent = (props) => {
   const [dateFrom, setDateFrom] = useState(new Date());
   const [dateTo, setDateTo] = useState(new Date());
   const [flightSearch, setFlightSearch] = useState({
@@ -217,11 +190,10 @@ function SearchComponent(props) {
   )
 }
 
-function GridFlights() {
+const GridFlights = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const flights = useSelector(state => state.FlightSearchReducer.flights)
-  const seats = useSelector(state => state.FlightSearchReducer.seat)
   
   useEffect(() => {
     dispatch(flightSearchLoad())
@@ -272,7 +244,7 @@ function GridFlights() {
   )
 }
 
-function GridSeats() {
+const GridSeats = () => {
   const classes = useStyles();
   const seats = useSelector(state => state.FlightSearchReducer.seat)
   
@@ -319,10 +291,15 @@ function GridSeats() {
   )
 }
 
-function FooterFlights() {
+const FooterFlights = () => {
   const classes = useStyles();
+  let history = useHistory();
+  
+  const onPerfilClick = e => {
+    history.push("/perfil/" + "");
+  }
 
-  return (
+  return(
     <Fragment>
       <Grid container spacing={3} className={classes.margin5}>
         <Grid item xs={6}>
@@ -335,6 +312,7 @@ function FooterFlights() {
             variant="contained"
             color="primary"
             className={classes.margin}
+            onClick={onPerfilClick}
           >
             Perfil
           </Button>

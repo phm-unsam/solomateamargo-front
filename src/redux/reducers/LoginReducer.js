@@ -13,7 +13,7 @@ export default function (state = initialState, action) {
             console.log(action.e.response.data)
             return { ...state, isLoading: false }
         case LOGIN_SUCCESS:
-            return { ...state, isLoading: false , isLogged:true, ...response.data}
+            return { ...state, isLoading: false , isLogged: true, ...response.data}
         default: return { ...state }
     }
 }
