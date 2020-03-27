@@ -10,6 +10,7 @@ import style from './style'
 import { loginUser } from '../../redux/actions/LoginActions'
 import planeIcon from '../../plane.png'
 import { useHistory } from "react-router-dom";
+import  SnackbarOpen  from '../../components/snackbar'
 
 const Login = ({ loginUser }) => {
   const classes = style();
@@ -95,6 +96,7 @@ const Login = ({ loginUser }) => {
       <div>
         
       </div>
+      <SnackbarOpen open={login.error} message={login.msg} />
     </Container>
   );
 }
