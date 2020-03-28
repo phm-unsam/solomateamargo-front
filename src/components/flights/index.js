@@ -15,11 +15,11 @@ import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/picker
 
 
 import { useHistory } from "react-router-dom";
-import { useSelector } from 'react-redux';
+import { useSelector, useStore } from 'react-redux';
 
 
 //redux
-import {useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { flightSearchLoad } from '../../redux/actions/FlightSearch';
 import { loadSeat } from '../../redux/actions/FlightSearch'
 //css
@@ -296,7 +296,7 @@ const FooterFlights = () => {
   let history = useHistory();
   
   const onPerfilClick = e => {
-    history.push("/perfil/" + "");
+    history.push("/perfil");
   }
 
   return(

@@ -20,6 +20,9 @@ export default makeStyles(theme => ({
     },
     margin5: {
         margin: 5,
+    },
+    img: {
+      maxWidth: 350
     }
 }));
 
