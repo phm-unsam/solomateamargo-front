@@ -20,7 +20,7 @@ import { useSelector, useStore } from 'react-redux';
 
 //redux
 import { useDispatch } from 'react-redux';
-import { flightSearchLoad } from '../../redux/actions/FlightSearch';
+import { flightSearchLoad, filteredWindowSeats } from '../../redux/actions/FlightSearch';
 import { loadSeat } from '../../redux/actions/FlightSearch'
 //css
 import { useStyles, ColorButton, StyledTableCell } from './Style'
@@ -33,17 +33,20 @@ export default Flights => {
     setFlights(event)
   }
 
-  return(
+  return (
     <div>
       <SearchComponent onFlightChange={handleFlightChange}></SearchComponent>
       <GridFlights></GridFlights>
       <GridSeats></GridSeats>
       <FooterFlights></FooterFlights>
     </div>
-  )  
+  )
 }
 
 const SearchComponent = (props) => {
+  const dispatch = useDispatch();
+  const seats = useSelector(state => state.FlightSearchReducer.seat)
+  const flightId = useSelector(state => state.FlightSearchReducer.selectedFlight)
   const [dateFrom, setDateFrom] = useState(new Date());
   const [dateTo, setDateTo] = useState(new Date());
   const [flightSearch, setFlightSearch] = useState({
@@ -62,6 +65,7 @@ const SearchComponent = (props) => {
   ]
 
   const update = e => {
+
     setFlightSearch({
       ...flightSearch,
       [e.target.name]: e.target.value
@@ -69,10 +73,14 @@ const SearchComponent = (props) => {
   }
 
   const updateInput = e => {
-    setFlightSearch({
-      ...flightSearch,
-      [e.target.name]: e.target.checked
-    });
+    if (e.target.checked) {
+      dispatch(filteredWindowSeats(seats))
+    }
+    else {
+       dispatch(loadSeat(flightId))
+
+    }
+    
   }
 
   const changeDateFrom = date => {
@@ -194,7 +202,7 @@ const GridFlights = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const flights = useSelector(state => state.FlightSearchReducer.flights)
-  
+
   useEffect(() => {
     dispatch(flightSearchLoad())
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -223,8 +231,8 @@ const GridFlights = () => {
           <TableBody>
             {Array.from(flights).map(flight => (
               <TableRow key={flight.id}
-              hover
-              onClick={() => handleClick(flight.id)}
+                hover
+                onClick={() => handleClick(flight.id)}
               >
                 <TableCell align="center" component="th" scope="row">
                   {flight.from}
@@ -247,7 +255,7 @@ const GridFlights = () => {
 const GridSeats = () => {
   const classes = useStyles();
   const seats = useSelector(state => state.FlightSearchReducer.seat)
-  
+
   return (
     <Fragment>
       <TableContainer className={classes.margin5}>
@@ -272,7 +280,7 @@ const GridSeats = () => {
                   {seat.class}
                 </TableCell>
                 <TableCell align="center">{seat.number}</TableCell>
-                <TableCell align="center">{seat.window ? "Si" : "No"}</TableCell>
+                <TableCell align="center">{seat.isNextToWindow ? "Si" : "No"}</TableCell>
                 <TableCell align="center">{"$" + seat.cost}</TableCell>
               </TableRow>
             ))}
@@ -294,12 +302,12 @@ const GridSeats = () => {
 const FooterFlights = () => {
   const classes = useStyles();
   let history = useHistory();
-  
+
   const onPerfilClick = e => {
     history.push("/perfil");
   }
 
-  return(
+  return (
     <Fragment>
       <Grid container spacing={3} className={classes.margin5}>
         <Grid item xs={6}>

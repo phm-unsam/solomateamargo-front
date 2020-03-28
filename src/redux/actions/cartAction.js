@@ -43,4 +43,3 @@ export const buyTicket = ticket => ({
     payload: ticket
 })
 
-
