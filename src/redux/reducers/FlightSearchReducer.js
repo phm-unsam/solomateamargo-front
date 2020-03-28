@@ -1,7 +1,7 @@
 import {
-    FLIGHT_SEARCH_LOAD,
-    FLIGHT_SEARCH_LOAD_ERROR,
-    FLIGHT_SEARCH_LOAD_FINISHED,
+    FLIGHT_LOAD,
+    FLIGHT_LOAD_ERROR,
+    FLIGHT_LOAD_FINISHED,
     LOAD_SEAT_FINISHED,
     LOAD_SEAT,
     LOAD_FILTERED_WINDOW_SEATS_FINISHED,
@@ -18,24 +18,25 @@ const initialState = {
 export default function (state = initialState, action) {
     switch (action.type) {
 
-        case FLIGHT_SEARCH_LOAD:
+        case FLIGHT_LOAD_ERROR:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload
+            }
+
+        case FLIGHT_LOAD:
             return {
                 ...state,
                 loading: action.payload
             }
-        case FLIGHT_SEARCH_LOAD_FINISHED:
+
+        case FLIGHT_LOAD_FINISHED:
             return {
                 ...state,
                 error: false,
                 loading: null,
                 flights: action.results.data,
-            }
-
-        case FLIGHT_SEARCH_LOAD_ERROR:
-            return {
-                ...state,
-                loading: false,
-                error: action.payload
             }
         case LOAD_SEAT:
             return {
@@ -48,9 +49,9 @@ export default function (state = initialState, action) {
                 ...state,
                 seat: action.results.data
             }
-        
+
         case LOAD_FILTERED_WINDOW_SEATS_FINISHED:
-        return {
+            return {
                 ...state,
                 seat: action.results
             }

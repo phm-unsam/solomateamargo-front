@@ -20,7 +20,7 @@ import { useSelector } from 'react-redux';
 
 //redux
 import { useDispatch } from 'react-redux';
-import { flightSearchLoad, filteredWindowSeats } from '../../redux/actions/FlightSearch';
+import { flightLoad, filteredWindowSeats, searchByDate, flightError } from '../../redux/actions/FlightSearch';
 import { loadSeat } from '../../redux/actions/FlightSearch'
 //css
 import { useStyles, ColorButton, StyledTableCell } from './Style'
@@ -64,6 +64,10 @@ const SearchComponent = (props) => {
     { typeName: 'Economy' }, { typeName: 'Business' }, { typeName: 'First' }
   ]
 
+  useEffect(() => {
+    dispatch(searchByDate())
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const update = e => {
 
     setFlightSearch({
@@ -73,7 +77,7 @@ const SearchComponent = (props) => {
   }
 
   const updateInput = e => {
-    if (e.target.checked) {
+    if (e.target.checked ) {
       dispatch(filteredWindowSeats(seats))
     }
     else {
@@ -202,12 +206,19 @@ const GridFlights = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const flights = useSelector(state => state.FlightSearchReducer.flights)
-
+  const error = useSelector(state => state.FlightSearchReducer.error)
   useEffect(() => {
-    dispatch(flightSearchLoad())
+    dispatch(flightLoad())
+
+    if(flights.length === 0){
+      dispatch(flightError())
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const errors = () => {
+      dispatch(flightError())
+  }
   const handleClick = flightId => {
     dispatch(loadSeat(flightId))
   }
@@ -229,7 +240,8 @@ const GridFlights = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {Array.from(flights).map(flight => (
+          {error ? <p>hubo un error</p> : null}
+             {Array.from(flights).length === 0 ? 'no hay vuelos disponibles' : Array.from(flights).map(flight => (
               <TableRow key={flight.id}
                 hover
                 onClick={() => handleClick(flight.id)}
@@ -244,7 +256,7 @@ const GridFlights = () => {
                 <TableCell align="center">{flight.flightDuration}</TableCell>
                 <TableCell align="center">{"$" + flight.baseCost}</TableCell>
               </TableRow>
-            ))}
+            ))} 
           </TableBody>
         </Table>
       </TableContainer>
