@@ -2,8 +2,9 @@ import {
     FLIGHT_LOAD,
     FLIGHT_LOAD_ERROR,
     FLIGHT_LOAD_FINISHED,
-    LOAD_SEAT_FINISHED,
-    LOAD_SEAT,
+    SEAT_LOAD,
+    SEAT_LOAD_ERROR,
+    SEAT_LOAD_FINISHED,
     LOAD_FILTERED_WINDOW_SEATS_FINISHED,
 } from '../../consts'
 
@@ -17,7 +18,8 @@ const initialState = {
 
 export default function (state = initialState, action) {
     switch (action.type) {
-
+        
+        case SEAT_LOAD_ERROR:
         case FLIGHT_LOAD_ERROR:
             return {
                 ...state,
@@ -38,13 +40,13 @@ export default function (state = initialState, action) {
                 loading: null,
                 flights: action.results.data,
             }
-        case LOAD_SEAT:
+        case SEAT_LOAD:
             return {
                 ...state,
                 selectedFlight: action.payload
             }
 
-        case LOAD_SEAT_FINISHED:
+        case SEAT_LOAD_FINISHED:
             return {
                 ...state,
                 seat: action.results.data

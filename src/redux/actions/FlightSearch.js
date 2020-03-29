@@ -1,11 +1,9 @@
 import {
     FLIGHT_LOAD,
     FLIGHT_LOAD_ERROR,
-    LOAD_SEAT,
-    LOAD_SEAT_FINISHED,
-    LOAD_SEAT_ERROR,
+    SEAT_LOAD,
+    SEAT_LOAD_ERROR,
     LOAD_FILTERED_WINDOW_SEATS,
-    LOAD_FILTERED_WINDOW_SEATS_FINISHED,
     LOAD_FILTERED_WINDOW_SEATS_ERROR,
     SEARCH_BY_DATE
     
@@ -22,9 +20,14 @@ export const flightError = () => ({
     payload: true
 })
 
-export const loadSeat = flight => ({
-    type: LOAD_SEAT,
+export const seatLoad = flight => ({
+    type: SEAT_LOAD,
     payload: flight
+})
+
+export const seatLoadError = () => ({
+    type: SEAT_LOAD_ERROR,
+    payload: true
 })
 
 export const filteredWindowSeats = (seats) => ({

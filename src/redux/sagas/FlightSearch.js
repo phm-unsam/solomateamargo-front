@@ -1,12 +1,12 @@
-import { put, call, takeLatest, take } from 'redux-saga/effects';
+import { put, call, takeLatest } from 'redux-saga/effects';
 import { apiCall } from '../api'
 import {
     FLIGHT_LOAD,
     FLIGHT_LOAD_FINISHED,
     FLIGHT_LOAD_ERROR,
-    LOAD_SEAT,
-    LOAD_SEAT_FINISHED,
-    LOAD_SEAT_ERROR,
+    SEAT_LOAD,
+    SEAT_LOAD_FINISHED,
+    SEAT_LOAD_ERROR,
     LOAD_FILTERED_WINDOW_SEATS,
     LOAD_FILTERED_WINDOW_SEATS_FINISHED,
     LOAD_FILTERED_WINDOW_SEATS_ERROR,
@@ -16,7 +16,7 @@ import {
 } from '../../consts'
 
 export function* searchForAllFlights({ payload }) {
-    const results = yield call(apiCall, `flights/getAlls`, payload, null, 'GET')
+    const results = yield call(apiCall, `flights/getAll`, payload, null, 'GET')
     try {
         yield put({ type: FLIGHT_LOAD_FINISHED, results })
     } catch (e) {
@@ -31,9 +31,9 @@ export function* searchForAllFlights({ payload }) {
 export function* loadSeats({ payload }) {
     const results = yield call(apiCall, `flight/${payload}/seats`, payload, null, 'GET')
     try {
-        yield put({ type: LOAD_SEAT_FINISHED, results })
+        yield put({ type: SEAT_LOAD_FINISHED, results })
     } catch (e) {
-        yield put({ type: LOAD_SEAT_ERROR, e })
+        yield put({ type: SEAT_LOAD_ERROR, e })
     }
 }
 
@@ -70,7 +70,7 @@ export function* flightSearchByDate() {
 
 export default function* FlightSearch() {
     yield takeLatest(FLIGHT_LOAD, searchForAllFlights);
-    yield takeLatest(LOAD_SEAT, loadSeats);
+    yield takeLatest(SEAT_LOAD, loadSeats);
     yield takeLatest(LOAD_FILTERED_WINDOW_SEATS, windowSeats);
     yield takeLatest(SEARCH_BY_DATE, flightSearchByDate);
 }

@@ -20,8 +20,8 @@ import { useSelector } from 'react-redux';
 
 //redux
 import { useDispatch } from 'react-redux';
-import { flightLoad, filteredWindowSeats, searchByDate, flightError } from '../../redux/actions/FlightSearch';
-import { loadSeat } from '../../redux/actions/FlightSearch'
+import { flightLoad, filteredWindowSeats, searchByDate, flightError, seatLoadError } from '../../redux/actions/FlightSearch';
+import { seatLoad } from '../../redux/actions/FlightSearch'
 //css
 import { useStyles, ColorButton, StyledTableCell } from './Style'
 
@@ -81,7 +81,7 @@ const SearchComponent = (props) => {
       dispatch(filteredWindowSeats(seats))
     }
     else {
-       dispatch(loadSeat(flightId))
+       dispatch(seatLoad(flightId))
 
     }
     
@@ -215,12 +215,9 @@ const GridFlights = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const errors = () => {
-      dispatch(flightError())
-  }
+  
   const handleClick = flightId => {
-    dispatch(loadSeat(flightId))
+    dispatch(seatLoad(flightId))
   }
 
   return (
@@ -267,6 +264,10 @@ const GridFlights = () => {
 const GridSeats = () => {
   const classes = useStyles();
   const seats = useSelector(state => state.FlightSearchReducer.seat)
+  const error = useSelector(state => state.FlightSearchReducer.error)
+  const dispatch = useDispatch();
+
+  
 
   return (
     <Fragment>
@@ -284,7 +285,8 @@ const GridSeats = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {seats.map(seat => (
+          {error ? <p>hubo un error</p> : null}
+            {Array.from(seats).length === 0 ? 'no hay vuelos disponibles' : seats.map(seat => (
               <TableRow
                 key={seat.number}
               >
