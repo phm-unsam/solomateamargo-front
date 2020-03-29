@@ -38,7 +38,6 @@ export default Flights => {
       <SearchComponent onFlightChange={handleFlightChange}></SearchComponent>
       <GridFlights></GridFlights>
       <GridSeats></GridSeats>
-      <FooterFlights></FooterFlights>
     </div>
   )
 }
@@ -266,7 +265,11 @@ const GridSeats = () => {
   const seats = useSelector(state => state.FlightSearchReducer.seat)
   const error = useSelector(state => state.FlightSearchReducer.error)
   const dispatch = useDispatch();
+  let history = useHistory();
 
+  const onPerfilClick = e => {
+    history.push("/perfil");
+  }
   
 
   return (
@@ -309,20 +312,6 @@ const GridSeats = () => {
           Agregar al carrito
           </Button>
       </TableContainer>
-    </Fragment>
-  )
-}
-
-const FooterFlights = () => {
-  const classes = useStyles();
-  let history = useHistory();
-
-  const onPerfilClick = e => {
-    history.push("/perfil");
-  }
-
-  return (
-    <Fragment>
       <Grid container spacing={3} className={classes.margin5}>
         <Grid item xs={6}>
           <Typography variant="body1" gutterBottom> Items en el carrito: 3 </Typography>
