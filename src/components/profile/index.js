@@ -12,6 +12,8 @@ import TableCell from '@material-ui/core/TableCell';
 import Typography from '@material-ui/core/Typography';
 import style from './style'
 import { useParams } from "react-router-dom";
+import { useSelector } from 'react-redux'
+import ProfileService from '../../services/profileService'
 
 const StyledTableCell = withStyles(theme => ({
   head: {
@@ -22,24 +24,6 @@ const StyledTableCell = withStyles(theme => ({
     fontSize: 14,
   },
 }))(TableCell);
-
-const friendsData = [
-    {
-        "id": "U1",
-        "Nombre": "Pedro",
-        "Edad": 25
-    },
-    {
-        "id": "U2",
-        "Nombre": "Agustin",
-        "Edad": 37
-    },
-    {
-        "id": "U3",
-        "Nombre": "Ricardo",
-        "Edad": 18
-    }
-]
 
 const flightsTest = [
     {
@@ -80,70 +64,97 @@ const flightsTest = [
 export default function Profile() {
   const { id } = useParams();
   const [user, setUser] = useState({
-
+    name: "",
+    lastName: "",
+    age: 0,
+    username: "",
+    password: "",
+    userId: "",
+    profilePhoto: "",
+    cash: 0,
+    id: ""
   });
+  let login = useSelector(store => store.login);
+  const profileService = new ProfileService();
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    console.log(id);
-    
-    //do api call
-  })
+    if(!isLoaded){
+      profileService.getProfile(login.id)
+      .then( profile => {
+        setUser(profile)
+        setIsLoaded(true);
+      })
+      .catch( err => alert(err))
+      }
+    }
+  );
 
   return(
     <div>
-      <UserDataComponent user={user}></UserDataComponent>
-      <TicketsFooter></TicketsFooter>
+      {
+       isLoaded ? 
+        <div>
+          <UserDataComponent user={user}></UserDataComponent>
+          <TicketsFooter user={user}></TicketsFooter>
+        </div>
+        :
+        <h1>LOADING . . .</h1>
+      }
     </div>
   )  
 }
 
 function UserDataComponent(props){
   const classes = style();
+  const user = props.user.data;
 
   return(
     <Fragment>
-        <Grid container spacing={3} className={classes.margin5}>
-          <Grid item xs={3}>
-            <p>foto del chabon</p>
-          </Grid>
-          <Grid item xs={9}>
-          <Typography component="h3" variant="h4">Nombre Usuario</Typography>
-          <TextField
-              variant="outlined"
-              margin="normal"
-              name="password"
-              label="Contraseña"
-              type="password"
-              id="password"
-            /> <br/>
+          <Grid container spacing={3} className={classes.margin5}>
+            <Grid item xs={3}>
+              <img src={user.profilePhoto} alt="Profile Photo" className={classes.img}></img>
+            </Grid>
+            <Grid item xs={9}>
+            <Typography component="h3" variant="h4">{`${user.name} ${user.lastName}`}</Typography>
             <TextField
-              variant="outlined"
-              margin="normal"
-              name="age"
-              label="Edad"
-              type="text"
-              id="age"
-            />
-            <Typography className={classes.margin5}>Saldo: $15.000      <Button color="primary" variant="contained">Agregar Saldo</Button></Typography>
-            <Typography>Tabla Amigos</Typography>
-            <FriendsTable></FriendsTable>
-            <Button color="primary" variant="contained">Agregar Amigo</Button>
-            <Button color="secondary" variant="contained">Quitar Amigo</Button>
+                variant="outlined"
+                margin="normal"
+                name="password"
+                label="Contraseña"
+                type="password"
+                id="password"
+                value={user.password}
+              /> <br/>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                name="age"
+                label="Edad"
+                type="text"
+                id="age"
+                value={user.age}
+              />
+              <Typography className={classes.margin5}>Saldo: ${user.cash}     <Button color="primary" variant="contained">Agregar Saldo</Button></Typography>
+              <Typography>Tabla Amigos</Typography>
+              <FriendsTable id={user.id}></FriendsTable>
+              <Button color="primary" variant="contained">Agregar Amigo</Button>
+              <Button color="secondary" variant="contained">Quitar Amigo</Button>
+            </Grid>
           </Grid>
-          
-        </Grid>
       </Fragment>
   )
 }
 
-function TicketsFooter(){
+function TicketsFooter(props){
   const classes = style();
+  const user = props.user.data;
 
   return(
     <Fragment>
         <Grid item xs={12}>
             <p>Pasajes comprados</p><br/>
-            <TicketsPurchasedTable></TicketsPurchasedTable>
+            <TicketsPurchasedTable id={user.id}></TicketsPurchasedTable>
             <Button color="primary" variant="contained">Aceptar</Button>
             <Button color="secondary" variant="contained">Cancelar</Button>
           </Grid>
@@ -151,33 +162,73 @@ function TicketsFooter(){
   )
 }
 
-function FriendsTable(){
+function FriendsTable(props){
     const classes = style();
+    const id = props.id
+    const [friends, setFriends] = useState([]);
+    const [isLoaded, setIsLoaded] = useState(false);
+    const profileService = new ProfileService();
+
+    useEffect(() => {
+      if(!isLoaded){
+        profileService.getFriends(id)
+        .then( friends => {
+          setFriends(friends.data);
+          setIsLoaded(true);
+        })  
+        .catch( err => alert(err))
+      }
+    });
     
     return(
-        <TableContainer className={classes.margin5}>
-            <Table className={classes.table} spacing={3}>
-                <TableHead>
-                <TableRow>
-                    <StyledTableCell align="center">Nombre</StyledTableCell>
-                    <StyledTableCell align="center">Apellido</StyledTableCell>
-                </TableRow>
-                </TableHead>
-                <TableBody>
-                {friendsData.map(friend => (
-                    <TableRow key={friend.id}>
-                        <TableCell align="center" component="th" scope="row">{friend.Nombre} </TableCell>
-                        <TableCell align="center">{friend.Edad}</TableCell>
-                    </TableRow>
-                ))}
-                </TableBody>
-            </Table>
+      <div>
+      {
+        isLoaded ?
+        
+          <TableContainer className={classes.margin5}>
+          <Table className={classes.table} spacing={3}>
+              <TableHead>
+              <TableRow>
+                  <StyledTableCell align="center">Nombre</StyledTableCell>
+                  <StyledTableCell align="center">Apellido</StyledTableCell>
+              </TableRow>
+              </TableHead>
+              <TableBody>
+              {friends.map(friend => (
+                  <TableRow key={friend.id}>
+                      <TableCell align="center" component="th" scope="row">{friend.name} </TableCell>
+                      <TableCell align="center">{friend.lastName}</TableCell>
+                  </TableRow>
+              ))}
+              </TableBody>
+          </Table>
         </TableContainer>
+
+        :
+
+        <h1>LOADING . . .</h1>
+      }
+      </div>
     )
 }
 
-function TicketsPurchasedTable(){
+function TicketsPurchasedTable(props){
     const classes = style();
+    const id = props.id
+    const [tickets, setTickets] = useState([]);
+    const [isLoaded, setIsLoaded] = useState(false);
+    const profileService = new ProfileService();
+
+    useEffect(() => {
+      if(!isLoaded){
+        profileService.getPurchases(id)
+        .then( tickets => {
+          setTickets(tickets.data);
+          setIsLoaded(true);
+        })  
+        .catch( err => alert(err))
+      }
+    });
     
     return(
         <TableContainer className={classes.margin5}>
@@ -193,15 +244,14 @@ function TicketsPurchasedTable(){
                 </TableRow>
                 </TableHead>
                 <TableBody>
-                {flightsTest.map(flight => (
-                    <TableRow key={flight.id}>
-                        <TableCell align="center" component="th" scope="row">{flight.origin} </TableCell>
-                        <TableCell align="center">{flight.destination}</TableCell>
-                        <TableCell align="center">{flight.departure}</TableCell>
-                        <TableCell align="center">{flight.dateOfPurchase}</TableCell>
-                        <TableCell align="center">{flight.airline}</TableCell>
-                        <TableCell align="center">{"$" + flight.price}</TableCell>
-
+                {tickets.map((ticket, index) => (
+                    <TableRow key={index}>
+                        <TableCell align="center" component="th" scope="row">{ticket.from} </TableCell>
+                        <TableCell align="center">{ticket.to}</TableCell>
+                        <TableCell align="center">{ticket.departure}</TableCell>
+                        <TableCell align="center">{ticket.purchaseDate}</TableCell>
+                        <TableCell align="center">{ticket.airline}</TableCell>
+                        <TableCell align="center">{"$" + ticket.cost}</TableCell>
                     </TableRow>
                 ))}
                 </TableBody>
