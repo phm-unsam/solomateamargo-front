@@ -5,8 +5,8 @@ import {
     SEAT_LOAD_ERROR,
     LOAD_FILTERED_WINDOW_SEATS,
     LOAD_FILTERED_WINDOW_SEATS_ERROR,
-    SEARCH_BY_DATE
-    
+    SEARCH_BY_DATE,
+    ADD_CART_LOAD
 } from '../../consts'
 
 export const flightLoad = () => ({
@@ -38,4 +38,9 @@ export const filteredWindowSeats = (seats) => ({
 export const searchByDate = () => ({
     type: SEARCH_BY_DATE,
     payload: true
+})
+
+export const addCartLoad = flight => ({
+    type: ADD_CART_LOAD,
+    payload: flight
 })
