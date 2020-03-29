@@ -11,8 +11,6 @@ export default class ProfileService {
         }
     }
 
-   
-
     getFriends(id){
         try{
             return apiCall(`user/${id}/friends`, null, null, 'GET')
@@ -24,6 +22,14 @@ export default class ProfileService {
     getPurchases(id){
         try{
             return apiCall(`user/${id}/purchases`, null, null, 'GET')
+        }catch(error){
+            return error
+        }
+    }
+
+    addCash(id, amount){
+        try{
+            return apiCall(`user/${id}/addcash`, amount, null, 'PUT')
         }catch(error){
             return error
         }

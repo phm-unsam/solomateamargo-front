@@ -25,42 +25,6 @@ const StyledTableCell = withStyles(theme => ({
   },
 }))(TableCell);
 
-const flightsTest = [
-    {
-        id: 'F1',
-        origin: 'Buenos Aires',
-        destination: 'Madrid',
-        airline: 'Histeria',
-        departure: 'new Date()',
-        dateOfPurchase: 'new Date()',
-        stopoversAmount: 1,
-        flightDuration: 12,
-        price: 30000
-    },
-    {
-        id: 'F2',
-        origin: 'Rosario',
-        destination: 'Rawson',
-        airline: 'Lineaero',
-        departure: 'new Date()',
-        dateOfPurchase: 'new Date()',
-        stopoversAmount: 3,
-        flightDuration: 10,
-        price: 10000
-    },
-    {
-        id: 'F3',
-        origin: 'Frankfrut',
-        destination: 'Rawson',
-        airline: 'Blitish',
-        departure: 'new Date()',
-        dateOfPurchase: 'new Date()',
-        stopoversAmount: 1,
-        flightDuration: 3,
-        price: 25000
-    }
-  ];
-
 export default function Profile() {
   const { id } = useParams();
   const [user, setUser] = useState({
@@ -105,9 +69,14 @@ export default function Profile() {
   )  
 }
 
-function UserDataComponent(props){
+const UserDataComponent = (props) => {
   const classes = style();
   const user = props.user.data;
+  const [showCash, setShowCash] = useState(false);
+
+  const showAddCash = () => {
+    setShowCash(true);
+  }
 
   return(
     <Fragment>
@@ -135,7 +104,8 @@ function UserDataComponent(props){
                 id="age"
                 value={user.age}
               />
-              <Typography className={classes.margin5}>Saldo: ${user.cash}     <Button color="primary" variant="contained">Agregar Saldo</Button></Typography>
+              <Typography className={classes.margin5}>Saldo: ${user.cash.toFixed(2)}     <Button color="primary" variant="contained" onClick={showAddCash}>Agregar Saldo</Button></Typography>
+              { showCash ? <AddCash id={user.id}/> : <div></div>}
               <Typography>Tabla Amigos</Typography>
               <FriendsTable id={user.id}></FriendsTable>
               <Button color="primary" variant="contained">Agregar Amigo</Button>
@@ -146,7 +116,7 @@ function UserDataComponent(props){
   )
 }
 
-function TicketsFooter(props){
+const TicketsFooter = (props) => {
   const classes = style();
   const user = props.user.data;
 
@@ -162,7 +132,7 @@ function TicketsFooter(props){
   )
 }
 
-function FriendsTable(props){
+const FriendsTable = (props) => {
     const classes = style();
     const id = props.id
     const [friends, setFriends] = useState([]);
@@ -212,9 +182,9 @@ function FriendsTable(props){
     )
 }
 
-function TicketsPurchasedTable(props){
+const TicketsPurchasedTable = (props) => {
     const classes = style();
-    const id = props.id
+    const id = props.id;
     const [tickets, setTickets] = useState([]);
     const [isLoaded, setIsLoaded] = useState(false);
     const profileService = new ProfileService();
@@ -258,4 +228,40 @@ function TicketsPurchasedTable(props){
             </Table>
         </TableContainer>
     )
+}
+
+const AddCash = (props) => {
+  const id = props.id;
+  console.log(props)
+  const profileService = new ProfileService();
+  const [quantity, setQuantity] = useState(0);
+
+  const addCash = () => {
+    if(quantity > 0){
+      profileService.addCash(id, quantity)
+      .then( resp => { alert(resp.status) })
+      .catch( err => { alert(err) })
+    }
+  }
+
+  const update = e => {
+    setQuantity(e.target.valueAsNumber);
+  }
+
+  return (
+    <div>
+      <TextField
+      variant="outlined"
+      margin="normal"
+      name="quantity"
+      label="Cuanto quieres agregar?"
+      type="number"
+      id="quantity"
+      value={quantity}
+      onChange={update}
+      >
+      </TextField>
+      <Button color="primary" variant="contained" onClick={addCash}>+</Button>
+    </div>
+  )
 }
