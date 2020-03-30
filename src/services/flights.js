@@ -12,7 +12,7 @@ export default class FlightsService {
         }
     }
 
-    getSeats(userId, nextoWindow) {
+    getSeats(userId, nextoWindow, typeName) {
         const url = `flight/${userId}/seats`
         try {
             if (nextoWindow === null) {
@@ -20,7 +20,7 @@ export default class FlightsService {
             }
 
             else{
-                return apiCall(url +`?nextoWindow=${nextoWindow}`, null, null, 'GET')
+                return apiCall(url +`?nextoWindow=${nextoWindow}&typeName=${typeName}`, null, null, 'GET')
             }
         } catch (e) {
             return e

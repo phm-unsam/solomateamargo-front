@@ -12,7 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import MomentUtils from '@date-io/moment';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
-
+import SnackbarOpen from '../../components/snackbar'
 
 import { useHistory } from "react-router-dom";
 import { useSelector, useStore } from 'react-redux';
@@ -43,33 +43,21 @@ export default Flights => {
 
   const selectFlight = flightId => {
     setFlightID(flightId)
-    flightsService.getSeats(flightId, null)
-      .then(seat => {
-        setSeats(seat)
-      }).catch(err => setError(err))
-    console.log(seats)
+    getSeats(flightId, null)
   }
 
 
   const filterWindow = checked => {
-    flightsService.getSeats(flightID, checked.target.checked)
-      .then(seat => {
-        setSeats(seat)
-      }).catch(err => setError(err))
-
-
-    
-    // const filterWindowss = (seats.data).filter(seat => seat.isNextToWindow)
-    // console.log(filterWindow)
-    // if (checked.target.checked) {
-    //   setSeats(
-    //     seats.data.filterWindowss,
-    //   )
-    // }
-    // else {
-
-    // }
+    getSeats(flightID, checked.target.checked)
   }
+
+  const getSeats = (flightID, checkedWindow) =>{
+    flightsService.getSeats(flightID, checkedWindow)
+    .then(seat => {
+      setSeats(seat)
+    }).catch(err => setError(err))
+  }
+
   return (
     <div>
       <SearchComponent filterWindow={filterWindow} setflights={setflights}></SearchComponent>
@@ -88,7 +76,6 @@ const SearchComponent = (props) => {
     origin: '',
     destination: '',
     class: null,
-    window: false,
     dateFrom: null,
     dateTo: null
   });
@@ -130,10 +117,10 @@ const SearchComponent = (props) => {
   }
 
   const disabledButton = () => {
-    return isEmpty(flightSearch.origin) && (dateTo._i === undefined) &&  isEmpty(flightSearch.destination)
+    return isEmpty(flightSearch.origin) && (dateTo._i === undefined) && isEmpty(flightSearch.destination)
   }
 
-  const isEmpty = (aField) =>{
+  const isEmpty = (aField) => {
     return aField === "";
   }
   const searchFlights = e => {
@@ -300,11 +287,12 @@ const GridFlights = (props) => {
 
 const GridSeats = (props) => {
   const [error, setError] = useState(null)
+  const [addCartMgj, setAddCartMgj] = useState(false)
   const classes = useStyles();
   const flightsService = new FlightsService();
   const login = useSelector(store => store.login);
   let history = useHistory();
-  let seatId
+  let seatId = null
   const onPerfilClick = e => {
     history.push("/perfil");
   }
@@ -319,17 +307,15 @@ const GridSeats = (props) => {
       if (flight.status !== 200) {
         setError(true)
       }
+      else {
+        setAddCartMgj(true)
+      }
     }
     )
   }
   const handleClick = (seatID) => {
     seatId = seatID
   }
-
-  const buttonCartDisabled = () =>{
-    return seatId !== ''
-  }
-
 
   return (
 
@@ -372,7 +358,7 @@ const GridSeats = (props) => {
           color="primary"
           className={classes.buttonAgregarCarrito}
           onClick={() => addCart()}
-          // disabled={buttonCartDisabled()}
+        //  disabled={seatId === null}
         >
           Agregar al carrito
           </Button>
@@ -406,6 +392,8 @@ const GridSeats = (props) => {
         </Grid>
       </Grid>
       {error ? <p>no se pudo realizar la compra</p> : null}
+      <SnackbarOpen open={addCartMgj} message={'el vuelo fue agregado con exito al carrito'} />
+
     </Fragment>
   )
 }
