@@ -12,8 +12,10 @@ export default class FlightsService {
         }
     }
 
-    loadSeats(userId) {
+    getSeats(userId) {
+        
         try {
+            
             return apiCall(`flight/${userId}/seats`, null, null, 'GET')
         } catch (e) {
             return e
@@ -21,7 +23,7 @@ export default class FlightsService {
     }
 
 
-    addCart(payload) {
+    postaddCart(payload) {
         const { flightId, seatNumber, id } = payload
         try {
             return apiCall(`user/${id}/cart/add?flightId=${flightId}&seatNumber=${seatNumber}`, null, null, 'POST')
@@ -31,7 +33,7 @@ export default class FlightsService {
         }
     }
 
-    flightSearchByDate(payload) {
+    getFlightSearchByDate(payload) {
         const { datefrom, dateTo, departure,arrival } = payload
         let results
         try {

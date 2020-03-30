@@ -43,7 +43,7 @@ export default Flights => {
 
   const selectFlight = flightId => {
     setFlightID(flightId)
-    flightsService.loadSeats(flightId)
+    flightsService.getSeats(flightId)
       .then(seat => {
         setSeats(seat)
       }).catch(err => setError(err))
@@ -135,7 +135,7 @@ const SearchComponent = (props) => {
       departure: flightSearch.origin,
       arrival: flightSearch.destination
     }
-    flightsService.flightSearchByDate(filterDate).then(flight => (
+    flightsService.getFlightSearchByDate(filterDate).then(flight => (
       props.setflights(flight)
     ))
 
@@ -295,7 +295,6 @@ const GridSeats = (props) => {
   const classes = useStyles();
   const flightsService = new FlightsService();
   const login = useSelector(store => store.login);
-  let banderita = false
   let history = useHistory();
   let seatId
   const onPerfilClick = e => {
@@ -308,7 +307,7 @@ const GridSeats = (props) => {
       flightId: props.flightID,
       seatNumber: seatId
     }
-    flightsService.addCart(flight).then(flight => {
+    flightsService.postaddCart(flight).then(flight => {
       if (flight.status !== 200) {
         setError(true)
       }
@@ -317,6 +316,10 @@ const GridSeats = (props) => {
   }
   const handleClick = (seatID) => {
     seatId = seatID
+  }
+
+  const buttonCartDisabled = () =>{
+    return seatId !== ''
   }
 
 
@@ -361,6 +364,7 @@ const GridSeats = (props) => {
           color="primary"
           className={classes.buttonAgregarCarrito}
           onClick={() => addCart()}
+          // disabled={buttonCartDisabled()}
         >
           Agregar al carrito
           </Button>
