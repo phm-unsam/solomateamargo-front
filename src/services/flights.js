@@ -12,11 +12,16 @@ export default class FlightsService {
         }
     }
 
-    getSeats(userId) {
-        
+    getSeats(userId, nextoWindow) {
+        const url = `flight/${userId}/seats`
         try {
-            
-            return apiCall(`flight/${userId}/seats`, null, null, 'GET')
+            if (nextoWindow === null) {
+                return apiCall(url, null, null, 'GET')
+            }
+
+            else{
+                return apiCall(url +`?nextoWindow=${nextoWindow}`, null, null, 'GET')
+            }
         } catch (e) {
             return e
         }
@@ -34,17 +39,16 @@ export default class FlightsService {
     }
 
     getFlightSearchByDate(payload) {
-        const { datefrom, dateTo, departure,arrival } = payload
-        let results
+        const { datefrom, dateTo, departure, arrival } = payload
+        
+
         try {
             if (datefrom._i !== undefined || dateTo._i !== undefined) {
-                results = apiCall(`flights?dateFrom=${datefrom._i}&dateTo=${dateTo._i}&arrival=${departure}`, null, null, 'GET')
+                return apiCall(`flights?dateFrom=${datefrom._i}&dateTo=${dateTo._i}`, null, null, 'GET')
             }
             else {
-                console.log(departure)
-                results = apiCall(`flights?departure=${departure}&arrival=${arrival}`, null, null, 'GET')
+                return apiCall(`flights?departure=${departure}&arrival=${arrival}`, null, null, 'GET')
             }
-            return results
         } catch (e) {
             return e
         }

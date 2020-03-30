@@ -43,7 +43,7 @@ export default Flights => {
 
   const selectFlight = flightId => {
     setFlightID(flightId)
-    flightsService.getSeats(flightId)
+    flightsService.getSeats(flightId, null)
       .then(seat => {
         setSeats(seat)
       }).catch(err => setError(err))
@@ -52,15 +52,23 @@ export default Flights => {
 
 
   const filterWindow = checked => {
-    const filterWindowss = (seats.data).filter(seat => seat.isNextToWindow)
-    if (checked.target.checked) {
-      setSeats(
-        seats.data.filterWindowss,
-      )
-    }
-    else {
+    flightsService.getSeats(flightID, checked.target.checked)
+      .then(seat => {
+        setSeats(seat)
+      }).catch(err => setError(err))
 
-    }
+
+    
+    // const filterWindowss = (seats.data).filter(seat => seat.isNextToWindow)
+    // console.log(filterWindow)
+    // if (checked.target.checked) {
+    //   setSeats(
+    //     seats.data.filterWindowss,
+    //   )
+    // }
+    // else {
+
+    // }
   }
   return (
     <div>
