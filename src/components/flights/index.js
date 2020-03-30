@@ -53,12 +53,9 @@ export default Flights => {
 
   const filterWindow = checked => {
     const filterWindowss = (seats.data).filter(seat => seat.isNextToWindow)
-    console.log(filterWindowss)
     if (checked.target.checked) {
       setSeats(
-
         seats.data.filterWindowss,
-        console.log(seats)
       )
     }
     else {
@@ -79,7 +76,6 @@ const SearchComponent = (props) => {
   const flightsService = new FlightsService();
   const [dateFrom, setDateFrom] = useState(new Date());
   const [dateTo, setDateTo] = useState(new Date());
-  let banderita = false
   const [flightSearch, setFlightSearch] = useState({
     origin: '',
     destination: '',
@@ -117,7 +113,6 @@ const SearchComponent = (props) => {
   }
 
   const changeDateTo = date => {
-    banderita = true
     setDateTo(date);
     setFlightSearch({
       ...flightSearch,
@@ -126,15 +121,24 @@ const SearchComponent = (props) => {
 
   }
 
+  const disabledButton = () => {
+    return isEmpty(flightSearch.origin) && (dateTo._i === undefined) &&  isEmpty(flightSearch.destination)
+  }
+
+  const isEmpty = (aField) =>{
+    return aField === "";
+  }
   const searchFlights = e => {
-    const filterDate ={
+    const filterDate = {
       datefrom: dateFrom,
       dateTo: dateTo,
+      departure: flightSearch.origin,
+      arrival: flightSearch.destination
     }
-    flightsService.flightSearchByDate(filterDate).then(flight =>(
-       props.setflights(flight)
-      ))
-   
+    flightsService.flightSearchByDate(filterDate).then(flight => (
+      props.setflights(flight)
+    ))
+
     // props.onFlightChange(flightSearch);
   }
 
@@ -151,12 +155,7 @@ const SearchComponent = (props) => {
     })
   }
 
-  const flightsDisabled = () => {
-    const d = (dateFrom === undefined)
-    console.log(d)
-    return d
 
-  }
 
   return (
     <Fragment>
@@ -196,10 +195,10 @@ const SearchComponent = (props) => {
             style={{ width: 220 }}
             value={flightSearch.class}
             className={classes.margin5}
-            renderInput={params => <TextField {...params} label="Clase" variant="outlined" 
+            renderInput={params => <TextField {...params} label="Clase" variant="outlined"
             />
-          
-          }
+
+            }
           />
         </Grid>
         <Grid item xs={3}>
@@ -209,7 +208,8 @@ const SearchComponent = (props) => {
             color="primary"
             className={classes.margin}
             onClick={searchFlights}
-            disabled={(dateFrom._i=== undefined && dateTo._i=== undefined) }
+            disabled={disabledButton()}
+
           >
             Buscar
             </Button>
@@ -221,7 +221,7 @@ const SearchComponent = (props) => {
             <KeyboardDatePicker format="DD/MM/YYYY" name="dateFrom" value={dateFrom} onChange={changeDateFrom} className={classes.margin5} label="Desde"></KeyboardDatePicker>
           </Grid>
           <Grid item xs={3}>
-            <KeyboardDatePicker format="DD/MM/YYYY" name="dateTo" value={dateTo} onChange={changeDateTo} className={classes.margin5} label="Hasta"></KeyboardDatePicker>
+            <KeyboardDatePicker format="DD/MM/YYYY" name="dateTo" value={dateTo} onChange={changeDateTo} className={classes.margin5} label="Hasta" disabled={(dateFrom._i === undefined)}></KeyboardDatePicker>
           </Grid>
         </MuiPickersUtilsProvider>
         <Grid item xs={3}>
@@ -266,7 +266,7 @@ const GridFlights = (props) => {
             </TableRow>
           </TableHead>
           <TableBody>
-             {props.error ? <p>hubo un error</p> : null}
+            {props.error ? <p>hubo un error</p> : null}
             {props.flights.length === 0 ? 'no hay vuelos disponibles' : props.flights.data.map(flight => (
               <TableRow key={flight.id}
                 hover
@@ -376,7 +376,7 @@ const GridSeats = (props) => {
             variant="contained"
             color="primary"
             className={classes.margin}
-          
+
             onClick={onPerfilClick}
           >
             Perfil
