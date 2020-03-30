@@ -30,7 +30,7 @@ export function* searchForAllFlights({ payload }) {
 }
 
 export function* loadSeats({ payload }) {
-    const results = yield call(apiCall, `flight/${payload}/seats`, payload, null, 'GET')
+    const results = yield call(apiCall, `flights/${payload}/seats`, payload, null, 'GET')
     try {
         yield put({ type: SEAT_LOAD_FINISHED, results })
     } catch (e) {

@@ -25,11 +25,21 @@ export default class FlightsService {
         const {flightId, seatNumber, id} = payload
         console.log(payload)
         try {
-            const result =apiCall(`user/${id}/cart/add?flightId=${flightId}&seatNumber=${seatNumber}`,null, null, 'POST')
-            console.log(result)
-            return result
+            return apiCall(`user/${id}/cart/add?flightId=${flightId}&seatNumber=${seatNumber}`,null, null, 'POST')
+         
         } catch (e) {
             return e
         }
     }
+
+    flightSearchByDate(payload) {
+        const {datefrom, dateTo} = payload 
+        console.log(payload.datefrom)
+        try {
+            const results = apiCall(`flights?dateFrom=${datefrom._i}&dateTo=${dateTo._i}`, null, null, 'GET')
+                return results
+            } catch (e) {
+                return e
+            }
+        }
 }
