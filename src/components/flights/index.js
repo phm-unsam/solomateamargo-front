@@ -1,4 +1,5 @@
-import React, { useState, Fragment, useEffect } from 'react';
+import React, { useState, Fragment, useEffect, useContext } from 'react';
+
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -19,57 +20,27 @@ import { useSelector, useStore } from 'react-redux';
 
 //css
 import { useStyles, ColorButton, StyledTableCell } from './Style'
-import FlightsService from '../../services/flights';
 
+//context
+import { FlightsProvider } from './flightsContext'
+import {FlightsContext} from './flightsContext';
 
 export default Flights => {
-  const flightsService = new FlightsService();
-  const [error, setError] = useState(null)
-  const [flightID, setFlightID] = useState(null);
-  const [seats, setSeats] = useState([])
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [flights, setflights] = useState([])
-  useEffect(() => {
-    if (!isLoaded) {
-      flightsService.getAllFlights()
-        .then(flight => {
-          setflights(flight)
-          setIsLoaded(true);
-        }).catch(err =>
-          setError(err))
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+   return (
+    <FlightsProvider>
 
-  const selectFlight = flightId => {
-    setFlightID(flightId)
-    getSeats(flightId, null)
-  }
-
-
-  const filterWindow = checked => {
-    getSeats(flightID, checked.target.checked)
-  }
-
-  const getSeats = (flightID, checkedWindow) =>{
-    flightsService.getSeats(flightID, checkedWindow)
-    .then(seat => {
-      setSeats(seat)
-    }).catch(err => setError(err))
-  }
-
-  return (
-    <div>
-      <SearchComponent filterWindow={filterWindow} setflights={setflights}></SearchComponent>
-      <GridFlights selectFlight={selectFlight} error={error} flights={flights}></GridFlights>
-      <GridSeats seats={seats} flightID={flightID} error={error}></GridSeats>
-    </div>
+      <div>
+        <SearchComponent ></SearchComponent>
+        <GridFlights ></GridFlights>
+        <GridSeats></GridSeats>
+      </div>
+    </FlightsProvider>
   )
 }
 
 const SearchComponent = (props) => {
   const classes = useStyles();
-  const flightsService = new FlightsService();
+  const {selectFlightContext} = useContext(FlightsContext)
   const [dateFrom, setDateFrom] = useState(new Date());
   const [dateTo, setDateTo] = useState(new Date());
   const [flightSearch, setFlightSearch] = useState({
@@ -130,9 +101,8 @@ const SearchComponent = (props) => {
       departure: flightSearch.origin,
       arrival: flightSearch.destination
     }
-    flightsService.getFlightSearchByDate(filterDate).then(flight => (
-      props.setflights(flight)
-    ))
+
+    selectFlightContext(filterDate)
 
     // props.onFlightChange(flightSearch);
   }
@@ -238,15 +208,16 @@ const SearchComponent = (props) => {
   )
 }
 
-const GridFlights = (props) => {
+const GridFlights = () => {
   const classes = useStyles();
+  const {flights, selectFlight, error} = useContext(FlightsContext)
 
   const handleClick = flightId => {
-    props.selectFlight(flightId)
+    selectFlight(flightId)
   }
+
   return (
     <Fragment>
-
       <TableContainer className={classes.margin5}>
         <Table className={classes.table} spacing={3}>
           <TableHead>
@@ -260,9 +231,10 @@ const GridFlights = (props) => {
               <StyledTableCell align="center">Desde</StyledTableCell>
             </TableRow>
           </TableHead>
-          <TableBody>
-            {props.error ? <p>hubo un error</p> : null}
-            {props.flights.length === 0 ? 'no hay vuelos disponibles' : props.flights.data.map(flight => (
+          {console.log(flights)}
+          { <TableBody>
+            {error ? <p>hubo un error</p> : null}
+            {flights.length === 0 ? 'no hay vuelos disponibles' : flights.data.map(flight => (
               <TableRow key={flight.id}
                 hover
                 onClick={() => handleClick(flight.id)}
@@ -278,18 +250,17 @@ const GridFlights = (props) => {
                 <TableCell align="center">{"$" + flight.baseCost}</TableCell>
               </TableRow>
             ))}
-          </TableBody>
+          </TableBody>}
         </Table>
       </TableContainer>
     </Fragment>
   )
 }
 
-const GridSeats = (props) => {
-  const [error, setError] = useState(null)
-  const [addCartMgj, setAddCartMgj] = useState(false)
+const GridSeats = () => {
+  const {seats, error, addCartContext, flightID, addCartMgj} = useContext(FlightsContext)
+
   const classes = useStyles();
-  const flightsService = new FlightsService();
   const login = useSelector(store => store.login);
   let history = useHistory();
   let seatId = null
@@ -300,18 +271,10 @@ const GridSeats = (props) => {
   const addCart = () => {
     const flight = {
       id: login.id,
-      flightId: props.flightID,
+      flightId: flightID,
       seatNumber: seatId
     }
-    flightsService.postaddCart(flight).then(flight => {
-      if (flight.status !== 200) {
-        setError(true)
-      }
-      else {
-        setAddCartMgj(true)
-      }
-    }
-    )
+    addCartContext(flight)
   }
   const handleClick = (seatID) => {
     seatId = seatID
@@ -334,8 +297,8 @@ const GridSeats = (props) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {(props.error) ? <p>hubo un error</p> : null}
-            {(props.seats).length === 0 ? 'no hay vuelos disponibles' : (props.seats.data).map(seat => (
+            {(error) ? <p>hubo un error</p> : null}
+            {(seats).length === 0 ? 'no hay vuelos disponibles' : (seats.data).map(seat => (
               <TableRow
                 key={seat.number}
                 hover

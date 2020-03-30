@@ -3,16 +3,7 @@ import { apiCall } from '../redux/api/';
 
 export default class FlightsService {
 
-    getAllFlights() {
-
-        try {
-            return apiCall(`flights`, null, null, 'GET')
-        } catch (error) {
-            return error
-        }
-    }
-
-    getSeats(userId, nextoWindow, typeName) {
+    getSeats(userId, nextoWindow) {
         const url = `flight/${userId}/seats`
         try {
             if (nextoWindow === null) {
@@ -20,7 +11,7 @@ export default class FlightsService {
             }
 
             else{
-                return apiCall(url +`?nextoWindow=${nextoWindow}&typeName=${typeName}`, null, null, 'GET')
+                return apiCall(url +`?nextoWindow=${nextoWindow}`, null, null, 'GET')
             }
         } catch (e) {
             return e
@@ -38,8 +29,9 @@ export default class FlightsService {
         }
     }
 
-    getFlightSearchByDate(payload) {
-        const { datefrom, dateTo, departure, arrival } = payload
+    getFlight(filterFlights) {
+
+        const { datefrom, dateTo, departure, arrival } = filterFlights
         
 
         try {
