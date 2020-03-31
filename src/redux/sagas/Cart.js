@@ -1,5 +1,5 @@
 import { put, call, takeLatest} from 'redux-saga/effects';
-import apiCall from '../../config/axios'
+import { apiCall } from '../api'
 import Swal from 'sweetalert2' 
 import {
     CART_LOAD, 
@@ -15,8 +15,8 @@ import {
 } from '../../consts'
 
 
-export function*  cartLoad(){
-    const results = yield call(apiCall, 'get', 'http://localhost:4000/carroDeCompras');
+export function*  cartLoad({payload}){
+    const results = yield call (apiCall, `user/${payload}/cart`, null, null, 'GET')
     try{
         yield put({type: CART_LOAD_FINISHED, results})
     }catch(error){

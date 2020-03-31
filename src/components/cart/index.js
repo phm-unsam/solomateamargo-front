@@ -14,23 +14,23 @@ import Paper from '@material-ui/core/Paper';
 import TableBody from '@material-ui/core/TableBody';
 import { useStyles, StyledTableCell } from './style'
 import Swal from 'sweetalert2'
-
+import { useHistory } from "react-router-dom";
 export default function Cart() {
   const dispatch = useDispatch();
   const classes = useStyles();
   const flights = useSelector(state => state.cartReducer.flights);
   const error = useSelector(state => state.cartReducer.error)
   const loading = useSelector(state => state.cartReducer.loading)
-
+  const login = useSelector(store => store.login);
+ 
   const buyTickets = (ticket) => dispatch(buyTicket(ticket))
 
   useEffect(() => {
-    dispatch(cartLoad())
-
+    dispatch(cartLoad(login.id))
+    console.log(flights)
     if (flights.length !== 0) {
       dispatch(cartLoadError())
     }
-
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -94,6 +94,7 @@ export default function Cart() {
 
   return (
     <Fragment>
+      {console.log(flights)}
       {error ? <p>hubo un error</p> : null}
 
       {loading ? <p>hubo un error</p> : null}
@@ -114,14 +115,14 @@ export default function Cart() {
           <TableBody>
 
             {Array.from(flights).length === 0 ? 'no hay pasajes' : (Array.from(flights).map(flight =>
-              <TableRow key={flight.id}>
-                <StyledTableCell align="center">{flight.origin}</StyledTableCell>
-                <StyledTableCell align="center">{flight.destination}</StyledTableCell>
-                <StyledTableCell align="center">{flight.exit}</StyledTableCell>
-                <StyledTableCell align="center">{flight.airport}</StyledTableCell>
-                <StyledTableCell align="center">{flight.seat}</StyledTableCell>
-                <StyledTableCell align="center">{flight.flightClass}</StyledTableCell>
-                <StyledTableCell align="center">{flight.price}</StyledTableCell>
+              <TableRow key={flight.seatNumber}>
+                <StyledTableCell align="center">{flight.from}</StyledTableCell>
+                <StyledTableCell align="center">{flight.to}</StyledTableCell>
+                <StyledTableCell align="center">{flight.departure}</StyledTableCell>
+                <StyledTableCell align="center">{flight.airline}</StyledTableCell>
+                <StyledTableCell align="center">{flight.seatNumber}</StyledTableCell>
+                <StyledTableCell align="center">{flight.seatType}</StyledTableCell>
+                <StyledTableCell align="center">{flight.cost}</StyledTableCell>
                 <StyledTableCell align="center">
                   <Button className="buton"
                     variant="contained"

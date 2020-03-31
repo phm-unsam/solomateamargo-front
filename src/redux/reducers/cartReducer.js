@@ -31,7 +31,7 @@ export default function (state = initialState, action) {
                 ...state,
                 error: false,
                 loading: null,
-                flights: action.results,
+                flights: action.results.data,
             }
 
         case CART_LOAD_ERROR:

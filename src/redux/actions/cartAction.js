@@ -11,9 +11,9 @@ export const loadSeat = () => ({
 
 })
 
-export const cartLoad = () => ({
+export const cartLoad = userId => ({
     type: CART_LOAD,
-    payload: true
+    payload: userId
 });
 
 export const cartLoadFinished = flights => ({

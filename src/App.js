@@ -19,8 +19,8 @@ const App = ({ store }) => (
 			<div className="App">
 				<PrivateRoute exact path="/perfil" component={Profile} />
 				<Route exact path="/login" component={Login} />
-				<PrivateRoute path="/" component={Flights}/>
-				<PrivateRoute exact path="/cart" component={Cart} />
+				<PrivateRoute exact path="/" component={Cart} />
+				{/* <PrivateRoute path="/" component={Flights}/> */}
 
 			</div>
 		</Router>
