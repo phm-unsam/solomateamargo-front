@@ -110,8 +110,6 @@ export default Flights => {
 
 const SearchComponent = (props) => {
   const classes = useStyles();
-  const [dateFrom, setDateFrom] = useState(new Date());
-  const [dateTo, setDateTo] = useState(new Date());
   let seatNextoWindow = null
   let seatClass = ''
 
@@ -119,7 +117,7 @@ const SearchComponent = (props) => {
     departure: '',
     arrival: '',
     dateFrom: new Date(),
-    dateTo: new Date()
+    dateTo: new Date(),
   });
 
   const seatClasses = [
@@ -159,7 +157,7 @@ const SearchComponent = (props) => {
     props.searchSeat(seatNextoWindow, seatClass)
   }
   const disabledButton = () => {
-    return isEmpty(flightSearch.departure) && (dateTo._i === undefined) && isEmpty(flightSearch.arrival)
+    return isEmpty(flightSearch.departure) && (flightSearch.dateTo._i === undefined) && isEmpty(flightSearch.arrival)
   }
 
   const isEmpty = (aField) => {
@@ -171,8 +169,6 @@ const SearchComponent = (props) => {
   }
 
   const clear = () => {
-    setDateFrom(new Date());
-    setDateTo(new Date());
     setFlightSearch({
       departure: '',
       arrival: '',
@@ -275,10 +271,6 @@ const GridFlights = (props) => {
   const classes = useStyles();
   const { flights } = props
 
-  const handleClick = flightId => {
-    props.getAllSeats(flightId)
-  }
-
   return (
     <Fragment>
 
@@ -297,7 +289,7 @@ const GridFlights = (props) => {
           </TableHead>
           <TableBody>
             {flights.lenghts === 0 ? 'no hay vuelos disponibles' : flights.map(flight => (
-              <TableRow key={flight.id} hover onClick={() => handleClick(flight.id)}>
+              <TableRow key={flight.id} hover onClick={() =>  props.getAllSeats(flight.id)}>
                 <TableCell align="center" component="th" scope="row">{flight.from}</TableCell>
                 <TableCell align="center">{flight.to}</TableCell>
                 <TableCell align="center">{flight.airlineName}</TableCell>
@@ -324,9 +316,6 @@ const GridSeats = (props) => {
     history.push("/perfil");
   }
 
-  const handleClick = (seatID) => {
-    seatId = seatID
-  }
 
   const addCart = () => {
     props.addCart(seatId)
@@ -353,8 +342,7 @@ const GridSeats = (props) => {
               <TableRow
                 key={seat.number}
                 hover
-                onClick={() => handleClick(seat.number)
-                }
+                onClick={() => seatId = (seat.number) }
               >
                 <TableCell align="center" component="th" scope="row">
                   {seat.class}
