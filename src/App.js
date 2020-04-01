@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Profile from './components/profile';
 import PrivateRoute from './privateRoute'
+import UrlNotFound from './components/UrlNotFound'
 
 
 
@@ -19,9 +20,9 @@ const App = ({ store }) => (
 			<div className="App">
 				<PrivateRoute exact path="/perfil" component={Profile} />
 				<Route exact path="/login" component={Login} />
-				<PrivateRoute exact path="/" component={Cart} />
-				{/* <PrivateRoute path="/" component={Flights}/> */}
-
+				<PrivateRoute exact path="/cart" component={Cart} />
+				<PrivateRoute exact path="/" component={Flights}/>
+				
 			</div>
 		</Router>
 	</Provider>

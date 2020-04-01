@@ -145,7 +145,7 @@ export default function Cart() {
         <h3 align="left">Total en Carrito: $ {sumaTotal()}</h3>
         <div className="botonesInferior">
           <div className="botonVolver">
-            <Button variant="contained" color="secondary" className="buttonVolver"><Link to={'/vuelos'}>Volver</Link></Button>
+            <Button variant="contained" color="secondary" className="buttonVolver"><Link to={'/'}>Volver</Link></Button>
           </div>
           <Button type="submit" variant="contained" color="primary" >Comprar</Button>
         </div>
