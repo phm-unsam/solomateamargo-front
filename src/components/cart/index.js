@@ -14,7 +14,6 @@ import Paper from '@material-ui/core/Paper';
 import TableBody from '@material-ui/core/TableBody';
 import { useStyles, StyledTableCell } from './style'
 import Swal from 'sweetalert2'
-import { getAllByPlaceholderText } from '@testing-library/react';
 export default function Cart() {
   const dispatch = useDispatch();
   const classes = useStyles();

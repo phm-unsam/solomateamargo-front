@@ -81,11 +81,11 @@ export default Flights => {
       if (flight.status !== 200) {
         setErrorMessage(true)
         setMessage('error no se pudo agregar al carrito el pasaje')
-     
       }
       else {
         setErrorMessage(true)
         setMessage('se agrego el pasaje con exito al carrito')
+        getAllSeats(flightID)
       }
     }
     )
