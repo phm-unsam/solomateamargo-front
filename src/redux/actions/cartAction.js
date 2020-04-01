@@ -39,8 +39,8 @@ export const deleteAll = userId => ({
 });
 
 
-export const buyTicket = ticket => ({
+export const buyTicket = userId => ({
     type: BUY_CART,
-    payload: ticket
+    payload: userId
 })
 

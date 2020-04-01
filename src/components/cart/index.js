@@ -22,11 +22,9 @@ export default function Cart() {
   const loading = useSelector(state => state.cartReducer.loading)
   const login = useSelector(store => store.login);
  
-  const buyTickets = (ticket) => dispatch(buyTicket(ticket))
 
   useEffect(() => {
     getAllCart()
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -72,8 +70,7 @@ export default function Cart() {
 
   const buyTicketsFlights = e => {
     e.preventDefault()
-
-
+    
     Swal.fire({
       title: 'Estas Seguro?',
       text: "no se puede cancelar la compra",
@@ -85,11 +82,8 @@ export default function Cart() {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.value) {
-        flights.forEach(flight =>
-          buyTickets(
-            flight
-          )
-        )
+        dispatch(buyTicket(login.id))
+      
       }
     })
 

@@ -11,8 +11,6 @@ import PrivateRoute from './privateRoute'
 import UrlNotFound from './components/UrlNotFound'
 
 
-
-
 const App = ({ store }) => (
 	<Provider store={store}>
 
@@ -20,7 +18,7 @@ const App = ({ store }) => (
 			<div className="App">
 				<PrivateRoute exact path="/perfil" component={Profile} />
 				<Route exact path="/login" component={Login} />
-				{/* <PrivateRoute exact path="/cart" component={Cart} /> */}
+				{ <PrivateRoute exact path="/cart" component={Cart} /> }
 				<PrivateRoute exact path="/" component={Flights}/>
 				
 			</div>

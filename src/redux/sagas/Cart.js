@@ -50,18 +50,9 @@ export function* deleteAll({payload}){
     }
 }
 
-export function* buyTicket(payload){
+export function* buyTicket({payload}){
     try {
-        const respuesta =JSON.stringify({
-            id: payload.id,
-            origin: payload.payload.origin,
-            destination: payload.payload.exit,
-            airport: payload.payload.airport,
-            seat: payload.payload.seat,
-            flightClass: payload.payload.flightClass,
-            price: payload.payload.price
-        })
-        const results = yield call(apiCall, 'POST', 'http://localhost:5000/flight', respuesta );
+        const results = yield call (apiCall, `user/${payload}/cart/purchase`, null, null, 'POST')
         Swal.fire(
             'Comprado!',
             'Your file has been deleted.',

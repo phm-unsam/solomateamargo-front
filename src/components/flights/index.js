@@ -24,7 +24,7 @@ import FlightsService from '../../services/flights';
 
 export default Flights => {
   const flightsService = new FlightsService();
-  const [flightID, setFlightID] = useState(null);
+  let flightID = null
   const [seats, setSeats] = useState([])
   const [flights, setflights] = useState([])
   const [errorMessage, setErrorMessage] = useState()
@@ -43,7 +43,6 @@ export default Flights => {
   }, []);
 
   const getFlight = (searchFlights) => {
-    console.log(searchFlights)
     flightsService.getFlight(searchFlights)
       .then(flight => {
         setflights(flight.data)
@@ -53,7 +52,7 @@ export default Flights => {
   }
 
   const getAllSeats = flightId => {
-    setFlightID(flightId)
+    flightID =flightId 
     flightsService.getAllSeats(flightId)
       .then(seat => {
         setSeats(seat.data)
@@ -118,6 +117,8 @@ const SearchComponent = (props) => {
     arrival: '',
     dateFrom: new Date(),
     dateTo: new Date(),
+    seatNextoWindow: null,
+    seatClass: ''
   });
 
   const seatClasses = [
@@ -133,6 +134,15 @@ const SearchComponent = (props) => {
   }
 
   const updateInput = (e) => {
+    debugger
+    setFlightSearch({
+      ...flightSearch,
+      seatNextoWindow:  e.target.checked,
+    })
+
+    console.log(flightSearch)
+
+
     seatNextoWindow = e.target.checked
     props.searchSeat(seatNextoWindow, seatClass)
   }

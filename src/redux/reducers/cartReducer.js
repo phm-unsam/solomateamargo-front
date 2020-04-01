@@ -15,7 +15,6 @@ const initialState = {
     selectedFlight: null,
     error: null,
     loading: false,
-    buyTicket: []
 }
 
 export default function (state = initialState, action) {
@@ -66,8 +65,7 @@ export default function (state = initialState, action) {
         case BUY_CART_FINISHED:
             return {
                 ...state,
-                buyTicket: [...state.flights]
-
+                loading: false,
             }
 
         case BUY_CART_ERROR:
