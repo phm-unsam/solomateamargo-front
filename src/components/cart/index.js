@@ -14,6 +14,7 @@ import Paper from '@material-ui/core/Paper';
 import TableBody from '@material-ui/core/TableBody';
 import { useStyles, StyledTableCell } from './style'
 import Swal from 'sweetalert2'
+import { getAllByPlaceholderText } from '@testing-library/react';
 export default function Cart() {
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -25,15 +26,18 @@ export default function Cart() {
   const buyTickets = (ticket) => dispatch(buyTicket(ticket))
 
   useEffect(() => {
+    getAllCart()
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const getAllCart = () =>{
     dispatch(cartLoad(login.id))
     console.log(flights)
     if (flights.length !== 0) {
       dispatch(cartLoadError())
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
+  }
   const sumaTotal = () => {
     let total = 0
 
@@ -57,13 +61,14 @@ export default function Cart() {
     }).then((result) => {
       if (result.value) {
         dispatch(deleteFlightReservation(flight, login.id))
+        getAllCart()
       }
     })
 
   }
 
   const deleteAllflights = () => {
-    dispatch(deleteAll(flights))
+    dispatch(deleteAll(login.id))
   }
 
   const buyTicketsFlights = e => {

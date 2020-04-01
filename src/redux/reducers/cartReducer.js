@@ -50,7 +50,7 @@ export default function (state = initialState, action) {
         case DELETE_FLIGHT_RESERVATION_FINISHED:
             return {
                 ...state,
-                flights: state.flights.filter(flight => flight.id !== state.selectedFlight)
+                loading: action.results
             }
 
         case DELETE_ALL_CART:

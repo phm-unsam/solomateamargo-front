@@ -42,8 +42,8 @@ export function* deleteFlight({payload, loginUser}){
 
 export function* deleteAll({payload}){
     try {
-        console.log(payload)
-        const results = yield call(apiCall, 'PUT', 'http://localhost:4000/carroDeCompras', payload);
+        const results = yield call (apiCall, `user/${payload}/cart/clear`, null, null, 'DELETE')
+        
         yield put({type: DELETE_ALL_CART_FINISHED, results})
     } catch (error) {
         console.log(error)

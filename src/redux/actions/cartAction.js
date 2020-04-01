@@ -33,9 +33,9 @@ export const deleteFlightReservation = (flight, loginUser) => ({
 })
 
 
-export const deleteAll = flights => ({
+export const deleteAll = userId => ({
     type: DELETE_ALL_CART,
-    payload: flights
+    payload: userId
 });
 
 
