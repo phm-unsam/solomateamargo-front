@@ -26,9 +26,10 @@ export const cartLoadError = () => ({
     payload: true
 })
 
-export const deleteFlightReservation = id => ({
+export const deleteFlightReservation = (flight, loginUser) => ({
     type: DELETE_FLIGHT_RESERVATION,
-    payload: id
+    payload: flight,
+    loginUser: loginUser
 })
 
 

@@ -24,9 +24,11 @@ export function*  cartLoad({payload}){
     }
 }
 
-export function* deleteFlight({payload}){
-    try {
-        const results = yield call(apiCall, 'delete', `http://localhost:4000/carroDeCompras/${payload}`);
+export function* deleteFlight({payload, loginUser}){
+    const {id, seatNumber} = payload
+    const results = yield call (apiCall, `user/${loginUser}/cart/remove?flightId=${id}&seatNumber=${seatNumber}`, null, null, 'POST')
+    console.log(results)
+        try{
         Swal.fire(
             'Eliminado!',
             'Your file has been deleted.',

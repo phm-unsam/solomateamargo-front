@@ -14,7 +14,6 @@ import Paper from '@material-ui/core/Paper';
 import TableBody from '@material-ui/core/TableBody';
 import { useStyles, StyledTableCell } from './style'
 import Swal from 'sweetalert2'
-import { useHistory } from "react-router-dom";
 export default function Cart() {
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -39,12 +38,12 @@ export default function Cart() {
     let total = 0
 
     Array.from(flights).forEach(flight =>
-      total += flight.price)
+      total += flight.cost)
 
     return total
   }
 
-  const deleteFlight = id => {
+  const deleteFlight = flight => {
 
     Swal.fire({
       title: 'Estas Seguro?',
@@ -57,7 +56,7 @@ export default function Cart() {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.value) {
-        dispatch(deleteFlightReservation(id))
+        dispatch(deleteFlightReservation(flight, login.id))
       }
     })
 
@@ -115,7 +114,8 @@ export default function Cart() {
           <TableBody>
 
             {Array.from(flights).length === 0 ? 'no hay pasajes' : (Array.from(flights).map(flight =>
-              <TableRow key={flight.seatNumber}>
+              <TableRow key={flight.id}>
+                
                 <StyledTableCell align="center">{flight.from}</StyledTableCell>
                 <StyledTableCell align="center">{flight.to}</StyledTableCell>
                 <StyledTableCell align="center">{flight.departure}</StyledTableCell>
@@ -127,7 +127,7 @@ export default function Cart() {
                   <Button className="buton"
                     variant="contained"
                     color="secondary"
-                    onClick={() => deleteFlight(flight.id)}
+                    onClick={() => deleteFlight(flight)}
                   >Eliminar</Button>
                 </StyledTableCell>
               </TableRow>
@@ -145,7 +145,7 @@ export default function Cart() {
         <h3 align="left">Total en Carrito: $ {sumaTotal()}</h3>
         <div className="botonesInferior">
           <div className="botonVolver">
-            <Button variant="contained" color="secondary" className="buttonVolver"><Link to={'/'}>Volver</Link></Button>
+            <Button variant="contained" color="secondary" className="buttonVolver"><Link to={'/vuelos'}>Volver</Link></Button>
           </div>
           <Button type="submit" variant="contained" color="primary" >Comprar</Button>
         </div>
