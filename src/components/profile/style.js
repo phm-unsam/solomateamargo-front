@@ -1,4 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles';
+import { blue } from '@material-ui/core/colors';
 
 
 export default makeStyles(theme => ({
@@ -23,6 +24,9 @@ export default makeStyles(theme => ({
     },
     img: {
       maxWidth: 350
+    },
+    clickedRow: {
+      backgroundColor: blue
     }
 }));
 

@@ -1,10 +1,8 @@
 import React, { Fragment, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { cartLoad } from '../../redux/actions/cartAction';
 import './Cart.css'
 import { deleteAll, cartLoadError, deleteFlightReservation, buyTicket } from '../../redux/actions/cartAction'
-
 import Button from '@material-ui/core/Button';
 import Table from '@material-ui/core/Table';
 import TableRow from '@material-ui/core/TableRow';
@@ -15,6 +13,7 @@ import TableBody from '@material-ui/core/TableBody';
 import { useStyles, StyledTableCell } from './style'
 import { useHistory } from "react-router-dom";
 import Swal from 'sweetalert2'
+
 export default function Cart() {
   const dispatch = useDispatch();
   const classes = useStyles();
