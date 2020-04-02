@@ -60,6 +60,12 @@ export function* buyTicket({payload}){
           )
           yield put({type: BUY_CART_FINISHED, results})
         } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'no posee sufuciente dinero, estas pobre!',
+                footer: '<a href>Why do I have this issue?</a>'
+              })
             console.log(payload)
         yield put({type: BUY_CART_ERROR ,error})
     }

@@ -13,15 +13,19 @@ import TableContainer from '@material-ui/core/TableContainer';
 import Paper from '@material-ui/core/Paper';
 import TableBody from '@material-ui/core/TableBody';
 import { useStyles, StyledTableCell } from './style'
+import { useHistory } from "react-router-dom";
 import Swal from 'sweetalert2'
 export default function Cart() {
   const dispatch = useDispatch();
   const classes = useStyles();
   const flights = useSelector(state => state.cartReducer.flights);
   const error = useSelector(state => state.cartReducer.error)
-  const loading = useSelector(state => state.cartReducer.loading)
   const login = useSelector(store => store.login);
- 
+  let history = useHistory();
+
+  const onFlightsClick = e => {
+    history.push("/");
+  }
   useEffect(() => {
     getAllCart()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -30,7 +34,7 @@ export default function Cart() {
   const getAllCart = () =>{
     dispatch(cartLoad(login.id))
     console.log(flights)
-    if (flights.length !== 0) {
+    if (flights.length === 0) {
       dispatch(cartLoadError())
     }
   }
@@ -58,6 +62,7 @@ export default function Cart() {
       if (result.value) {
         dispatch(deleteFlightReservation(flight, login.id))
         getAllCart()
+        
       }
     })
 
@@ -82,7 +87,7 @@ export default function Cart() {
     }).then((result) => {
       if (result.value) {
         dispatch(buyTicket(login.id))
-      
+        
       }
     })
 
@@ -139,7 +144,7 @@ export default function Cart() {
         <h3 align="left">Total en Carrito: $ {sumaTotal()}</h3>
         <div className="botonesInferior">
           <div className="botonVolver">
-            <Button variant="contained" color="secondary" className="buttonVolver"><Link to={'/vuelos'}>Volver</Link></Button>
+            <Button variant="contained" color="secondary" className="buttonVolver" onClick={onFlightsClick}>Volver</Button>
           </div>
           <Button type="submit" variant="contained" color="primary" >Comprar</Button>
         </div>

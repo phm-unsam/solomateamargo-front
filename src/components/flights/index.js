@@ -21,7 +21,8 @@ import { useSelector } from 'react-redux';
 import { useStyles, ColorButton, StyledTableCell } from './Style'
 import FlightsService from '../../services/flights';
 
-
+import { useDispatch } from 'react-redux';
+import { cartLoad } from '../../redux/actions/cartAction';
 export default Flights => {
   const flightsService = new FlightsService();
   const [flightID, setFlightID] = useState(null)
@@ -30,6 +31,7 @@ export default Flights => {
   const [errorMessage, setErrorMessage] = useState()
   const [message, setMessage] = useState()
   const login = useSelector(store => store.login);
+
   useEffect(() => {
     getAllFlight()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -59,7 +61,11 @@ export default Flights => {
     flightsService.getAllSeats(flightId)
       .then(seat => {
         setSeats(seat.data)
-      }).catch(err => console.log(err))
+      }).catch(err => {
+        setErrorMessage(err)
+        setMessage('no hay asientos disponibles para este vuelo')
+      }
+      )
   }
 
   const searchSeat = (seatWindow, seatClass) => {
@@ -216,7 +222,7 @@ const SearchComponent = (props) => {
             name="seatClass"
             options={seatClasses}
             getOptionLabel={option => option.seatClass}
-            onChange={(e,value) => seatsClass(e, value)}
+            onChange={(e, value) => seatsClass(e, value)}
             style={{ width: 220 }}
             className={classes.margin5}
             renderInput={params => <TextField {...params} label="Clase" variant="outlined"
@@ -245,7 +251,7 @@ const SearchComponent = (props) => {
             <KeyboardDatePicker format="DD/MM/YYYY" name="dateFrom" value={flightSearch.dateFrom} onChange={changeDateFrom} className={classes.margin5} label="Desde"></KeyboardDatePicker>
           </Grid>
           <Grid item xs={3}>
-            <KeyboardDatePicker format="DD/MM/YYYY" name="dateTo" value={flightSearch.dateTo} onChange={changeDateTo} className={classes.margin5} label="Hasta" disabled={flightSearch.dateFrom=== null}></KeyboardDatePicker>
+            <KeyboardDatePicker format="DD/MM/YYYY" name="dateTo" value={flightSearch.dateTo} onChange={changeDateTo} className={classes.margin5} label="Hasta" disabled={flightSearch.dateFrom === null}></KeyboardDatePicker>
           </Grid>
         </MuiPickersUtilsProvider>
         <Grid item xs={3}>
@@ -307,20 +313,40 @@ const GridFlights = (props) => {
 }
 
 const GridSeats = (props) => {
-
+  const login = useSelector(store => store.login);
   const classes = useStyles();
   let history = useHistory();
   let seatId = null
+  const cartFlights = useSelector(state => state.cartReducer.flights);
+  const dispatch = useDispatch();
 
+  useEffect(() => {
+    updateFlights()
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const updateFlights = () => {
+    dispatch(cartLoad(login.id))
+  }
   const onPerfilClick = e => {
     history.push("/perfil");
   }
-
+  const onCartClick = e => {
+    history.push("/cart");
+  }
 
   const addCart = () => {
     props.addCart(seatId)
+    updateFlights()
   }
 
+  const total = () => {
+    let sum = 0
+    cartFlights.forEach(cartFlight =>
+      sum = sum + cartFlight.cost)
+    return sum
+  }
   return (
 
     <Fragment>
@@ -360,16 +386,17 @@ const GridSeats = (props) => {
           color="primary"
           className={classes.buttonAgregarCarrito}
           onClick={() => addCart()}
-        //  disabled={seatId === null}
+          disabled={seatId !== null}
         >
           Agregar al carrito
           </Button>
       </TableContainer>
       <Grid container spacing={3} className={classes.margin5}>
         <Grid item xs={6}>
-          <Typography variant="body1" gutterBottom> Items en el carrito: 3 </Typography>
-          <Typography variant="body1" gutterBottom> Total en el carrito: $150.000 </Typography>
+          <Typography variant="body1" gutterBottom>cantidad de items: {cartFlights.length}</Typography>
+          <Typography variant="body1" gutterBottom>Total $ {total()}</Typography>
         </Grid>
+        {console.log(cartFlights)}
         <Grid item xs={3}>
           <Button
             type="submit"
@@ -388,6 +415,7 @@ const GridSeats = (props) => {
             variant="contained"
             color="primary"
             className={classes.margin}
+            onClick={onCartClick}
           >
             Finalizar Compra
           </Button>
