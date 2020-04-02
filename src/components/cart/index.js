@@ -22,7 +22,6 @@ export default function Cart() {
   const loading = useSelector(state => state.cartReducer.loading)
   const login = useSelector(store => store.login);
  
-
   useEffect(() => {
     getAllCart()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -91,10 +90,7 @@ export default function Cart() {
 
   return (
     <Fragment>
-      {console.log(flights)}
       {error ? <p>hubo un error</p> : null}
-
-      {loading ? <p>hubo un error</p> : null}
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="customized table">
           <TableHead>
@@ -113,7 +109,7 @@ export default function Cart() {
 
             {Array.from(flights).length === 0 ? 'no hay pasajes' : (Array.from(flights).map(flight =>
               <TableRow key={flight.id}>
-                
+        
                 <StyledTableCell align="center">{flight.from}</StyledTableCell>
                 <StyledTableCell align="center">{flight.to}</StyledTableCell>
                 <StyledTableCell align="center">{flight.departure}</StyledTableCell>

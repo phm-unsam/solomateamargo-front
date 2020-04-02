@@ -3,18 +3,19 @@ import { apiCall } from '../redux/api/';
 
 export default class FlightsService {
 
-    getSearchSeats(userId, nextoWindow, seatType) {
+    getSearchSeats(userId, seatNextoWindow, seatType) {
+        // const {seatNextoWindow} = flightSearch
+        console.log(seatType)
         const url = `flight/${userId}/seats`
-        console.log(nextoWindow)
         try {
-            if(nextoWindow === null){
+            if(seatNextoWindow === null){
                 return apiCall(url + `?seatType=${seatType}`, null, null, 'GET')
             }
             else if (seatType === ''){
-                return apiCall(url + `?nextoWindow=${nextoWindow}`, null, null, 'GET')
+                return apiCall(url + `?nextoWindow=${seatNextoWindow}`, null, null, 'GET')
             }
             else{
-                return apiCall(url + `?nextoWindow=${nextoWindow}?seatType=${seatType}?nextoWindow=${nextoWindow}`, null, null, 'GET')
+                return apiCall(url + `?nextoWindow=${seatNextoWindow}?seatType=${seatType}?nextoWindow=${seatNextoWindow}`, null, null, 'GET')
             }
 
         } catch (e) {
@@ -43,10 +44,9 @@ export default class FlightsService {
         }
     }
 
-    getFlight(filterFlights) {
+    getSearchFlight(filterFlights) {
 
         const { dateFrom, dateTo, departure, arrival } = filterFlights
-
 
         try {
             if (dateFrom._i !== undefined || dateTo._i !== undefined) {
@@ -55,6 +55,15 @@ export default class FlightsService {
             else {
                 return apiCall(`flights?departure=${departure}&arrival=${arrival}`, null, null, 'GET')
             }
+        } catch (e) {
+            return e
+        }
+    }
+
+    getAllFlight(){
+        try {
+            return apiCall(`flights`, null, null, 'GET')
+        
         } catch (e) {
             return e
         }

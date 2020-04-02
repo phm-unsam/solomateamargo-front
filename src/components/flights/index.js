@@ -24,35 +24,38 @@ import FlightsService from '../../services/flights';
 
 export default Flights => {
   const flightsService = new FlightsService();
-  let flightID = null
+  const [flightID, setFlightID] = useState(null)
   const [seats, setSeats] = useState([])
   const [flights, setflights] = useState([])
   const [errorMessage, setErrorMessage] = useState()
   const [message, setMessage] = useState()
   const login = useSelector(store => store.login);
   useEffect(() => {
-    const searchFlights = {
-      dateFrom: new Date(),
-      dateTo: new Date(),
-      departure: '',
-      arrival: ''
-    }
-
-    getFlight(searchFlights)
+    getAllFlight()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const getFlight = (searchFlights) => {
-    flightsService.getFlight(searchFlights)
+  const getAllFlight = () => {
+    flightsService.getAllFlight()
       .then(flight => {
         setflights(flight.data)
       }).catch(err =>
         console.log(err)
-        )
+      )
   }
 
+  const getSearchFlight = (searchFlights) => {
+    flightsService.getSearchFlight(searchFlights)
+      .then(flight => {
+        setflights(flight.data)
+      }).catch(err =>
+        console.log(err)
+      )
+  }
+
+
   const getAllSeats = flightId => {
-    flightID =flightId 
+    setFlightID(flightId)
     flightsService.getAllSeats(flightId)
       .then(seat => {
         setSeats(seat.data)
@@ -90,14 +93,13 @@ export default Flights => {
     )
   }
 
-  const clear = (searchFlights) =>{
-    
-    getFlight(searchFlights)
+  const clear = (searchFlights) => {
+    getAllFlight(searchFlights)
   }
 
   return (
     <div>
-      <SearchComponent searchSeat={searchSeat} getFlight={getFlight} clear={clear}></SearchComponent>
+      <SearchComponent searchSeat={searchSeat} getSearchFlight={getSearchFlight} clear={clear}></SearchComponent>
       <GridFlights getAllSeats={getAllSeats} flights={flights}></GridFlights>
       <GridSeats seats={seats} addCart={addCart}></GridSeats>
 
@@ -115,14 +117,12 @@ const SearchComponent = (props) => {
   const [flightSearch, setFlightSearch] = useState({
     departure: '',
     arrival: '',
-    dateFrom: new Date(),
-    dateTo: new Date(),
-    seatNextoWindow: null,
-    seatClass: ''
+    dateFrom: null,
+    dateTo: null,
   });
 
   const seatClasses = [
-    { id: 0, typeName: 'Economy' }, { id: 1, typeName: 'Business' }, { id: 2, typeName: 'First' }
+    { seatClass: 'Economy' }, { seatClass: 'Business' }, { seatClass: 'First' }
   ]
 
   const update = e => {
@@ -134,15 +134,6 @@ const SearchComponent = (props) => {
   }
 
   const updateInput = (e) => {
-    debugger
-    setFlightSearch({
-      ...flightSearch,
-      seatNextoWindow:  e.target.checked,
-    })
-
-    console.log(flightSearch)
-
-
     seatNextoWindow = e.target.checked
     props.searchSeat(seatNextoWindow, seatClass)
   }
@@ -163,27 +154,27 @@ const SearchComponent = (props) => {
 
   }
   const seatsClass = (e, value) => {
-    seatClass = value.typeName
+    seatClass = value.seatClass
     props.searchSeat(seatNextoWindow, seatClass)
   }
+
   const disabledButton = () => {
-    return isEmpty(flightSearch.departure) && (flightSearch.dateTo._i === undefined) && isEmpty(flightSearch.arrival)
+    return isEmpty(flightSearch.departure) && (flightSearch.dateTo === null) && isEmpty(flightSearch.arrival) && isEmpty(flightSearch.departure)
   }
 
   const isEmpty = (aField) => {
     return aField === "";
   }
   const searchFlights = () => {
-    console.log(flightSearch)
-    props.getFlight(flightSearch)
+    props.getSearchFlight(flightSearch)
   }
 
   const clear = () => {
     setFlightSearch({
       departure: '',
       arrival: '',
-      datefrom: new Date(),
-      dateTo: new Date()
+      dateFrom: null,
+      dateTo: null,
     })
     seatNextoWindow = null
     seatClass = null
@@ -210,11 +201,11 @@ const SearchComponent = (props) => {
           <TextField
             variant="outlined"
             margin="normal"
-            name="destination"
+            name="arrival"
             label="Destino"
             type="text"
             id="destination"
-            value={flightSearch.destination}
+            value={flightSearch.arrival}
             className={classes.margin5}
             onChange={update}
           />
@@ -222,11 +213,10 @@ const SearchComponent = (props) => {
         <Grid item xs={3}>
           <Autocomplete
             id="comboClass"
-            name="class"
+            name="seatClass"
             options={seatClasses}
-            getOptionLabel={option => option.typeName}
-            value={setFlightSearch.seatType}
-            onChange={seatsClass}
+            getOptionLabel={option => option.seatClass}
+            onChange={(e,value) => seatsClass(e, value)}
             style={{ width: 220 }}
             className={classes.margin5}
             renderInput={params => <TextField {...params} label="Clase" variant="outlined"
@@ -255,11 +245,11 @@ const SearchComponent = (props) => {
             <KeyboardDatePicker format="DD/MM/YYYY" name="dateFrom" value={flightSearch.dateFrom} onChange={changeDateFrom} className={classes.margin5} label="Desde"></KeyboardDatePicker>
           </Grid>
           <Grid item xs={3}>
-            <KeyboardDatePicker format="DD/MM/YYYY" name="dateTo" value={flightSearch.dateTo} onChange={changeDateTo} className={classes.margin5} label="Hasta" disabled={(flightSearch.dateFrom._i === undefined)}></KeyboardDatePicker>
+            <KeyboardDatePicker format="DD/MM/YYYY" name="dateTo" value={flightSearch.dateTo} onChange={changeDateTo} className={classes.margin5} label="Hasta" disabled={flightSearch.dateFrom=== null}></KeyboardDatePicker>
           </Grid>
         </MuiPickersUtilsProvider>
         <Grid item xs={3}>
-          <Typography variant="body1" className={classes.margin5} gutterBottom><input type="checkbox" name="window" value={setFlightSearch.window} className={classes.margin} onChange={updateInput} />Ventanilla </Typography>
+          <Typography variant="body1" className={classes.margin5} gutterBottom><input type="checkbox" name="seatNextoWindow" className={classes.margin} onChange={(e) => updateInput(e)} />Ventanilla </Typography>
         </Grid>
         <Grid item xs={3}>
           <ColorButton
@@ -299,7 +289,7 @@ const GridFlights = (props) => {
           </TableHead>
           <TableBody>
             {flights.lenghts === 0 ? 'no hay vuelos disponibles' : flights.map(flight => (
-              <TableRow key={flight.id} hover onClick={() =>  props.getAllSeats(flight.id)}>
+              <TableRow key={flight.id} hover onClick={() => props.getAllSeats(flight.id)}>
                 <TableCell align="center" component="th" scope="row">{flight.from}</TableCell>
                 <TableCell align="center">{flight.to}</TableCell>
                 <TableCell align="center">{flight.airlineName}</TableCell>
@@ -352,7 +342,7 @@ const GridSeats = (props) => {
               <TableRow
                 key={seat.number}
                 hover
-                onClick={() => seatId = (seat.number) }
+                onClick={() => seatId = (seat.number)}
               >
                 <TableCell align="center" component="th" scope="row">
                   {seat.class}
