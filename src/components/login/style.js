@@ -15,6 +15,17 @@ export default makeStyles(theme => ({
     submit: {
       margin: theme.spacing(3, 0, 2),
     },
+    buttonProgress: {
+      position: 'absolute',
+      top: '55.2%',
+      left: '50%',
+      marginTop: -12,
+      marginLeft: -12,
+    },
+    wrapper: {
+      margin: theme.spacing(1),
+      position: 'relative',
+    },
   }));
 
 

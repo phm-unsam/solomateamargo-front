@@ -4,45 +4,50 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
+import CircularProgress from '@material-ui/core/CircularProgress'
 import { useSelector, connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import style from './style'
 import { loginUser } from '../../redux/actions/LoginActions'
 import planeIcon from '../../plane.png'
 import { useHistory } from "react-router-dom";
-import  SnackbarOpen  from '../../components/snackbar'
+import SnackbarOpen from '../../components/snackbar'
+import {isLoginLoading,loginHasError,loginErrorMsg} from '../../redux/selectors/loginSelectors'
 
 const Login = ({ loginUser }) => {
   const classes = style();
   let history = useHistory();
+  const isLoading = useSelector(state => isLoginLoading(state))
+  const hasError = useSelector(state => loginHasError(state))
+  const errorMsg = useSelector(state => loginErrorMsg(state))
 
   const callbackLogin = () => {
+
     history.push("/");
   }
 
-  const [loginCredentials, setloginCredentials] = useState({
+  const [loginForm, setloginForm] = useState({
     username: "",
     password: "",
     callbackFn: callbackLogin
   });
 
-  const login = useSelector(state => state.login);
 
   const loginTry = (e) => {
     e.preventDefault();
-    loginUser(loginCredentials);
+    loginUser(loginForm);
   }
 
   const handleInputChange = (e) => {
     const { value, name } = e.target;
-    setloginCredentials({ ...loginCredentials, [name]: value });
-  }
-  
-  const loginButtonDisabled = () =>{
-    return isEmpty(loginCredentials.password) || isEmpty(loginCredentials.username) || login.isLoading;
+    setloginForm({ ...loginForm, [name]: value });
   }
 
-  const isEmpty = (aField) =>{
+  const loginButtonDisabled = () => {
+    return isEmpty(loginForm.password) || isEmpty(loginForm.username) || isLoading;
+  }
+
+  const isEmpty = (aField) => {
     return aField === "";
   }
 
@@ -51,11 +56,11 @@ const Login = ({ loginUser }) => {
 
       <CssBaseline />
       <div className={classes.paper}>
-      <img alt="plane logo" src={planeIcon} height="90 rem"></img>
+        <img alt="plane logo" src={planeIcon} height="90 rem"></img>
         <Typography component="h1" variant="h2">
-          AterrizApp 
+          AterrizApp
         </Typography>
-        
+
         <form className={classes.form} noValidate>
           <TextField
             variant="outlined"
@@ -81,29 +86,29 @@ const Login = ({ loginUser }) => {
             id="password"
             autoComplete="current-password"
           />
-          <Button
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            onClick={loginTry}
-            disabled={loginButtonDisabled()}
-          >
-            Login
+          <div className={classes.wrapper}>
+            <Button
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              onClick={loginTry}
+              disabled={loginButtonDisabled()}
+            >
+              Login
           </Button>
+            {isLoading && <CircularProgress size={24} className={classes.buttonProgress} />}
+
+          </div>
         </form>
       </div>
       <div>
-        
+
       </div>
-      <SnackbarOpen open={login.error} message={login.msg} />
+      <SnackbarOpen open={hasError} message={errorMsg} />
     </Container>
   );
 }
-
-/*const mapStateToProps = state => ({
-  user: state.user
-});*/
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators({ loginUser }, dispatch)
