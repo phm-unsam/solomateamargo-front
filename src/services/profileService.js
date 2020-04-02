@@ -57,9 +57,7 @@ export default class ProfileService {
         }catch(error){
             return error
         }
-    }
-
-   
+    }   
 
     possibleFriends(id){
         try{

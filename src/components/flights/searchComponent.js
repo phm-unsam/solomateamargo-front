@@ -8,7 +8,7 @@ import MomentUtils from '@date-io/moment';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 
 //css
-import { useStyles, ColorButton } from './Style'
+import { useStyles, ColorButton } from './style'
 
 export const SearchComponent = (props) => {
     const classes = useStyles();
