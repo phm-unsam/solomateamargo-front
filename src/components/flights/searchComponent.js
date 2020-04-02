@@ -1,4 +1,4 @@
-import React, { useState, Fragment, useEffect } from 'react';
+import React, { useState, Fragment } from 'react';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -8,7 +8,7 @@ import MomentUtils from '@date-io/moment';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 
 //css
-import { useStyles, ColorButton } from './style'
+import { useStyles, ColorButton } from './Style'
 
 export const SearchComponent = (props) => {
     const classes = useStyles();

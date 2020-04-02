@@ -7,7 +7,7 @@ import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 
 //css
-import { useStyles, StyledTableCell } from './style'
+import { useStyles, StyledTableCell } from './Style'
 
 
 export const GridFlights = (props) => {

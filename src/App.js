@@ -8,7 +8,6 @@ import PropTypes from 'prop-types';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Profile from './components/profile';
 import PrivateRoute from './privateRoute'
-import UrlNotFound from './components/UrlNotFound'
 
 
 const App = ({ store }) => (
