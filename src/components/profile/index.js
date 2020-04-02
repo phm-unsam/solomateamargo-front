@@ -13,6 +13,12 @@ import Typography from '@material-ui/core/Typography';
 import style from './style'
 import { useSelector } from 'react-redux'
 import ProfileService from '../../services/profileService'
+import Loader from '../loader';
+import { useHistory } from "react-router-dom";
+
+//Components
+import { GenericFriendsTable } from './genericFriendTable';
+import { AddFriendDialog } from './addFriendDialog';
 
 const StyledTableCell = withStyles(theme => ({
   head: {
@@ -25,18 +31,9 @@ const StyledTableCell = withStyles(theme => ({
 }))(TableCell);
 
 export default function Profile() {
-  const [user, setUser] = useState({
-    name: "",
-    lastName: "",
-    age: 0,
-    username: "",
-    password: "",
-    userId: "",
-    profilePhoto: "",
-    cash: 0,
-    id: ""
-  });
+  const [user, setUser] = useState({});
   let login = useSelector(store => store.login);
+  let history = useHistory();
   const profileService = new ProfileService();
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -60,6 +57,9 @@ export default function Profile() {
       .catch( err => alert(err));
   };
   
+  const cancelChanges = () => {
+    history.push("/");
+  }
 
   return(
     <div>
@@ -70,10 +70,10 @@ export default function Profile() {
           <p>Pasajes comprados</p><br/>
           <TicketsPurchasedTable id={user.id}></TicketsPurchasedTable>
           <Button color="primary" variant="contained" onClick={saveChanges}>Aceptar</Button>
-          <Button color="secondary" variant="contained">Cancelar</Button>
+          <Button color="secondary" variant="contained" onClick={cancelChanges}>Cancelar</Button>
         </div>
         :
-        <h1>LOADING . . .</h1>
+        <Loader/>
       }
     </div>
   )  
@@ -135,21 +135,28 @@ const UserDataComponent = (props) => {
 }
 
 const FriendsTable = (props) => {
-    const classes = style();
     const id = props.id
+
     const [friends, setFriends] = useState([]);
     const [isLoaded, setIsLoaded] = useState(false);
-    const [toDeleteFriend, setToDeleteFriend] = useState({ id: null, name: '', lastName: '' })
+    const [toDeleteFriend, setToDeleteFriend] = useState({ id: null, name: '', lastName: '' });
+    const [open, setOpen] = useState(false);
+
     const profileService = new ProfileService();
+
+    //Para abrir el dialog
+    const handleClickOpen = () => {
+      setOpen(true);
+    };
+  
+    //Para cerrar el dialog
+    const handleClose = (value) => {
+      setOpen(false);
+    };
 
     useEffect(() => {
       if(!isLoaded){
-        profileService.getFriends(id)
-        .then( friends => {
-          setFriends(friends.data);
-          setIsLoaded(true);
-        })  
-        .catch( err => alert(err))
+        getFriends(id);
       }
     });
 
@@ -159,10 +166,24 @@ const FriendsTable = (props) => {
         profileService.deleteFriend(id, idFriendToDelete)
         .then( status => {
           alert('Usuario eliminado correctamente.'); //Aca hay q meterle algo lindo.
-          setFriends(friends.filter(friend => friend !== toDeleteFriend))
+          setFriends(friends.filter(friend => friend !== toDeleteFriend));
+          setToDeleteFriend({id: null});
         })  
         .catch( err => alert(err))
       }
+    }
+
+    const addFriend = (newFriend) => {
+      getFriends(id);
+    }
+
+    const getFriends = (id) => {
+      profileService.getFriends(id)
+        .then( friends => {
+          setFriends(friends.data);
+          setIsLoaded(true);
+        })  
+        .catch( err => alert(err))
     }
 
     return(
@@ -170,31 +191,13 @@ const FriendsTable = (props) => {
       {
         isLoaded ?
         <div>
-          <TableContainer className={classes.margin5}>
-          <Table className={classes.table} spacing={3}>
-              <TableHead>
-              <TableRow>
-                  <StyledTableCell align="center">Nombre</StyledTableCell>
-                  <StyledTableCell align="center">Apellido</StyledTableCell>
-              </TableRow>
-              </TableHead>
-              <TableBody>
-              {friends.map(friend => (
-                  <TableRow key={friend.id} hover onClick={() => setToDeleteFriend(friend)}>
-                      <TableCell align="center" component="th" scope="row">{friend.name}</TableCell>
-                      <TableCell align="center">{friend.lastName}</TableCell>
-                  </TableRow>
-              ))}
-              </TableBody>
-          </Table>
-        </TableContainer>
-        <Button color="primary" variant="contained">Agregar Amigo</Button>
-        { toDeleteFriend.id === null ?  <Typography>Seleccione un amigo para eliminar...</Typography> :  <Button color="secondary" variant="contained" onClick={deleteFriend}>{ `Quitar a ${toDeleteFriend.name} ${toDeleteFriend.lastName}` }</Button> }
+          <GenericFriendsTable friends={friends} actionOnClick={setToDeleteFriend} />
+          <Button color="primary" variant="contained" onClick={handleClickOpen} >Agregar Amigo</Button>
+          <AddFriendDialog open={open} onClose={handleClose} id={id} addFriendsToOriginal={addFriend}/>
+          { toDeleteFriend.id === null ?  <Typography>Seleccione un amigo para eliminar...</Typography> :  <Button color="secondary" variant="contained" onClick={deleteFriend}>{ `Quitar a ${toDeleteFriend.name} ${toDeleteFriend.lastName}` }</Button> }
         </div>
-
         :
-
-        <h1>LOADING . . .</h1>
+        <Loader/>
       }
       </div>
     )
@@ -272,6 +275,10 @@ const AddCash = (props) => {
   }
 
   const update = e => {
+    if(isNaN(e.target.valueAsNumber)){
+      alert("Numbers only");
+      return;
+    } 
     setQuantity(e.target.valueAsNumber);
   }
 

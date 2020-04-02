@@ -13,7 +13,7 @@ import { useHistory } from "react-router-dom";
 import { useSelector } from 'react-redux';
 
 //css
-import { useStyles, StyledTableCell } from './Style'
+import { useStyles, StyledTableCell } from './style'
 
 import { useDispatch } from 'react-redux';
 import { cartLoad } from '../../redux/actions/cartAction';
