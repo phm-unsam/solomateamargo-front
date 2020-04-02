@@ -4,8 +4,6 @@ import moment from 'moment';
 export default class FlightsService {
 
     getSearchSeats(userId, seatNextoWindow, seatType) {
-        // const {seatNextoWindow} = flightSearch
-        console.log(seatType)
         const url = `flight/${userId}/seats`
         try {
             if(seatNextoWindow === null){
@@ -48,11 +46,11 @@ export default class FlightsService {
 
         const { dateFrom, dateTo, departure, arrival } = filterFlights
         try {
-            if (dateTo._isAMomentObject) {
+            if (dateTo !== null) {
                 return apiCall(`flights?dateFrom=${this.formatDate(dateFrom)}&dateTo=${this.formatDate(dateTo)}&departure=${departure}&arrival=${arrival}`, null, null, 'GET')
-
             }
             else {
+                console.log("qsdas")
                 return apiCall(`flights?departure=${departure}&arrival=${arrival}`, null, null, 'GET')
             }
         } catch (e) {

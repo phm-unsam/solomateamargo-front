@@ -103,7 +103,6 @@ export const GridSeats = (props) => {
             <Typography variant="body1" gutterBottom>Cantidad de items: {cartFlights.length}</Typography>
             <Typography variant="body1" gutterBottom>Total $ {total()}</Typography>
           </Grid>
-          {console.log(cartFlights)}
           <Grid item xs={3}>
             <Button
               type="submit"

@@ -2,9 +2,12 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 export const useStyles = makeStyles(theme => ({
-    root: {
-      flexGrow: 1,
+  root: {
+    display: 'flex',
+    '& > * + *': {
+      marginLeft: theme.spacing(2),
     },
+  },
     paper: {
       padding: theme.spacing(2),
       textAlign: 'center',
@@ -42,4 +45,6 @@ export const useStyles = makeStyles(theme => ({
         },
     },
 }))(TableRow);
+
+
 

@@ -1,4 +1,4 @@
-import { put, call, takeLatest} from 'redux-saga/effects';
+import { put, call, takeLatest, delay} from 'redux-saga/effects';
 import { apiCall } from '../api'
 import Swal from 'sweetalert2' 
 import {
@@ -17,6 +17,7 @@ import {
 
 export function*  cartLoad({payload}){
     const results = yield call (apiCall, `user/${payload}/cart`, null, null, 'GET')
+    delay(1000)
     try{
         yield put({type: CART_LOAD_FINISHED, results})
     }catch(error){

@@ -19,6 +19,7 @@ export default Flights => {
 
   useEffect(() => {
     getAllFlight()
+    
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

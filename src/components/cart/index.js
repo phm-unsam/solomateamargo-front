@@ -136,7 +136,6 @@ export default function Cart() {
 
       </TableContainer>
       <form onSubmit={buyTicketsFlights}>
-
         <div className="botones">
           <Button variant="contained" color="primary" onClick={() => deleteAllflights()}>Limpar carro</Button>
         </div>
