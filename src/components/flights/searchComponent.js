@@ -12,6 +12,8 @@ import { useStyles, ColorButton } from './Style'
 
 export const SearchComponent = (props) => {
     const classes = useStyles();
+    const [dateFrom, setDateFrom] = useState(new Date())
+    const [dateTo, setDateTo] = useState(new Date())
     let seatNextoWindow = null;
     let seatClass = '';
   
@@ -40,18 +42,21 @@ export const SearchComponent = (props) => {
   
   
     const changeDateFrom = date => {
+      setDateFrom(date)
       setFlightSearch({
         ...flightSearch,
         dateFrom: date
       });
+      console.log(flightSearch)
     }
   
     const changeDateTo = date => {
+      setDateTo(date)
       setFlightSearch({
         ...flightSearch,
         dateTo: date
       });
-  
+      console.log(flightSearch)
     }
   
     const seatsClass = (e, value) => {
@@ -68,6 +73,12 @@ export const SearchComponent = (props) => {
     }
   
     const searchFlights = () => {
+      console.log(flightSearch)
+      setFlightSearch({
+        ...flightSearch,
+        dateFrom: dateFrom,
+        dateTo: dateTo,
+      });
       props.getSearchFlight(flightSearch);
     }
   
@@ -78,6 +89,7 @@ export const SearchComponent = (props) => {
         dateFrom: null,
         dateTo: null,
       })
+      
       seatNextoWindow = null;
       seatClass = null;
       props.clear(flightSearch);
@@ -140,10 +152,10 @@ export const SearchComponent = (props) => {
         <Grid container spacing={3}>
           <MuiPickersUtilsProvider utils={MomentUtils}>
             <Grid item xs={3}>
-              <KeyboardDatePicker format="DD/MM/YYYY" name="dateFrom" value={flightSearch.dateFrom} onChange={changeDateFrom} className={classes.margin5} label="Desde"></KeyboardDatePicker>
+              <KeyboardDatePicker format="DD/MM/YYYY" name="dateFrom" value={dateFrom} onChange={changeDateFrom} className={classes.margin5} label="Desde"></KeyboardDatePicker>
             </Grid>
             <Grid item xs={3}>
-              <KeyboardDatePicker format="DD/MM/YYYY" name="dateTo" value={flightSearch.dateTo} onChange={changeDateTo} className={classes.margin5} label="Hasta" disabled={flightSearch.dateFrom === null}></KeyboardDatePicker>
+              <KeyboardDatePicker format="DD/MM/YYYY" name="dateTo" value={dateTo} onChange={changeDateTo} className={classes.margin5} label="Hasta" disabled={flightSearch.dateFrom === null}></KeyboardDatePicker>
             </Grid>
           </MuiPickersUtilsProvider>
           <Grid item xs={3}>

@@ -1,5 +1,5 @@
 import { apiCall } from '../redux/api/';
-
+import moment from 'moment';
 
 export default class FlightsService {
 
@@ -47,10 +47,12 @@ export default class FlightsService {
     getSearchFlight(filterFlights) {
 
         const { dateFrom, dateTo, departure, arrival } = filterFlights
-
+        console.log(dateFrom)
         try {
-            if (dateFrom._i !== undefined || dateTo._i !== undefined) {
-                return apiCall(`flights?dateFrom=${dateFrom._i}&dateTo=${dateTo._i}`, null, null, 'GET')
+            if (dateTo._isAMomentObject) {
+                console.log("ohllaaa")
+                return apiCall(`flights?dateFrom=${this.formatDate(dateFrom)}&dateTo=${this.formatDate(dateTo)}&departure=${departure}&arrival=${arrival}`, null, null, 'GET')
+
             }
             else {
                 return apiCall(`flights?departure=${departure}&arrival=${arrival}`, null, null, 'GET')
@@ -58,6 +60,10 @@ export default class FlightsService {
         } catch (e) {
             return e
         }
+    }
+
+    formatDate(date) {
+       return  moment(date).format("DD/MM/YYYY") 
     }
 
     getAllFlight(){
