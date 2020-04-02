@@ -24,6 +24,7 @@ export default Flights => {
   }, []);
 
   const getAllFlight = () => {
+    console.log("222")
     flightsService.getAllFlight()
       .then(flight => {
         setflights(flight.data)
@@ -86,9 +87,12 @@ export default Flights => {
     getAllFlight(searchFlights)
   }
 
+  const clearSeat = () => {
+    getAllSeats(flightID)
+  }
   return (
     <div>
-      <SearchComponent searchSeat={searchSeat} getSearchFlight={getSearchFlight} clear={clear}></SearchComponent>
+      <SearchComponent searchSeat={searchSeat} getSearchFlight={getSearchFlight} clear={clear} clearSeat={clearSeat}></SearchComponent>
       <GridFlights getAllSeats={getAllSeats} flights={flights}></GridFlights>
       <GridSeats seats={seats} addCart={addCart}></GridSeats>
 
