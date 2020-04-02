@@ -22,6 +22,7 @@ export const SearchComponent = (props) => {
       arrival: '',
       dateFrom: null,
       dateTo: null,
+      seatNextoWindow: null
     });
   
     const seatClasses = [
@@ -35,7 +36,11 @@ export const SearchComponent = (props) => {
       });
     }
   
+    
     const updateInput = (e) => {
+      setFlightSearch({...flightSearch, seatNextoWindow : !seatNextoWindow })
+      
+      console.log(flightSearch)
       seatNextoWindow = e.target.checked;
       props.searchSeat(seatNextoWindow, seatClass);
     }
@@ -60,8 +65,13 @@ export const SearchComponent = (props) => {
     }
   
     const seatsClass = (e, value) => {
-      seatClass = value.seatClass;
-      props.searchSeat(seatNextoWindow, seatClass);
+      if(value){
+        seatClass = value.seatClass;
+        props.searchSeat(seatNextoWindow, seatClass);
+      }
+      else {
+        clear()
+      }
     }
   
     const disabledButton = () => {
@@ -73,7 +83,6 @@ export const SearchComponent = (props) => {
     }
   
     const searchFlights = () => {
-      console.log(flightSearch)
       setFlightSearch({
         ...flightSearch,
         dateFrom: dateFrom,
@@ -92,6 +101,7 @@ export const SearchComponent = (props) => {
       
       seatNextoWindow = null;
       seatClass = null;
+      console.log(seatClass)
       props.clear(flightSearch);
     }
   

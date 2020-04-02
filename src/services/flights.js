@@ -47,10 +47,8 @@ export default class FlightsService {
     getSearchFlight(filterFlights) {
 
         const { dateFrom, dateTo, departure, arrival } = filterFlights
-        console.log(dateFrom)
         try {
             if (dateTo._isAMomentObject) {
-                console.log("ohllaaa")
                 return apiCall(`flights?dateFrom=${this.formatDate(dateFrom)}&dateTo=${this.formatDate(dateTo)}&departure=${departure}&arrival=${arrival}`, null, null, 'GET')
 
             }

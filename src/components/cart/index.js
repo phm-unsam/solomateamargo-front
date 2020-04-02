@@ -112,7 +112,7 @@ export default function Cart() {
           <TableBody>
 
             {Array.from(flights).length === 0 ? 'no hay pasajes' : (Array.from(flights).map(flight =>
-              <TableRow key={flight.id}>
+              <TableRow key={flight.flightId}>
         
                 <StyledTableCell align="center">{flight.from}</StyledTableCell>
                 <StyledTableCell align="center">{flight.to}</StyledTableCell>
