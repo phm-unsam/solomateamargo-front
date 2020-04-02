@@ -34,7 +34,6 @@ export const SearchComponent = (props) => {
         ...flightSearch,
         [e.target.name]: e.target.value
       });
-      console.log(flightSearch)
     }
   
     
@@ -60,7 +59,6 @@ export const SearchComponent = (props) => {
         ...flightSearch,
         dateTo: date
       });
-      console.log(flightSearch)
     }
   
     const seatsClass = (e, value) => {
@@ -87,7 +85,6 @@ export const SearchComponent = (props) => {
         dateFrom: dateFrom,
         dateTo: dateTo,
       });
-      console.log(flightSearch)
       props.getSearchFlight(flightSearch);
     }
   
@@ -98,11 +95,9 @@ export const SearchComponent = (props) => {
         dateFrom: null,
         dateTo: null,
       })
-      
       seatNextoWindow = null;
       seatClass = null;
-      console.log(seatClass)
-      props.clear(flightSearch);
+      props.clearSeat();
     }
   
     return (
