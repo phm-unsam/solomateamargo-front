@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import SnackbarOpen from '../../components/snackbar'
+import SnackbarOpen from '../snackbar/Snackbar'
 import { useSelector } from 'react-redux';
 import FlightsService from '../../services/flights';
 

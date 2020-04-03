@@ -12,7 +12,7 @@ import { useStyles } from './style'
 
 import { useDispatch } from 'react-redux';
 import { cartLoad } from '../../redux/actions/cartAction';
-import TableCreator from '../tableCreator'
+import TableCreator from '../tableCreator/TableCreator'
 export const GridSeats = (props) => {
   const login = useSelector(store => store.login);
   const classes = useStyles();

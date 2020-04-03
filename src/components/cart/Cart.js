@@ -6,7 +6,7 @@ import { deleteAll, cartLoadError, deleteFlightReservation, buyTicket } from '..
 import Button from '@material-ui/core/Button';
 import { useHistory } from "react-router-dom";
 import Swal from 'sweetalert2'
-import TableCreator from '../tableCreator'
+import TableCreator from '../tableCreator/TableCreator'
 
 export default function Cart() {
   const dispatch = useDispatch();

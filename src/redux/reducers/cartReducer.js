@@ -69,7 +69,6 @@ export default function (state = initialState, action) {
             }
 
         case BUY_CART_ERROR:
-            console.log(action)
             return{
                 ...state,
                 loading: false,

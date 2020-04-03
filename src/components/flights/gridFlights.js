@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 
-import TableCreator from '../tableCreator'
+import TableCreator from '../tableCreator/TableCreator'
 
 export const GridFlights = (props) => {
     const { flights } = props;
