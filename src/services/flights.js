@@ -3,7 +3,9 @@ import moment from 'moment';
 
 export default class FlightsService {
 
-    getSearchSeats(userId, seatNextoWindow, seatType) {
+    getSearchSeats(userId, flightSearch, seatType) {
+        const {seatNextoWindow} = flightSearch
+        
         const url = `flight/${userId}/seats`
         try {
             if(seatNextoWindow === null){

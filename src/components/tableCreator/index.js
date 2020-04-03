@@ -11,10 +11,10 @@ const StyledTableCell = withStyles(theme => ({
     head: {
         backgroundColor: theme.palette.action.hover,
         color: theme.palette.common.black,
-      },
-      body: {
+    },
+    body: {
         fontSize: 14,
-      },
+    },
 }))(TableCell);
 
 const StyledTableRow = withStyles(theme => ({
@@ -25,27 +25,25 @@ const StyledTableRow = withStyles(theme => ({
     },
 }))(TableRow);
 
-export default function TableCreator(props){
-    const firstRow = props.data[0]
-    const headers = Object.keys(firstRow);
+export default function TableCreator(props) {
     const styles = props.styles;
-    return(
+    return (
         <Fragment>
             <TableContainer >
                 <Table spacing={3} className={styles}>
                     <TableHead>
                         <TableRow>
-                            {headers.map(header => (<StyledTableCell align="center">{header}</StyledTableCell>))}
+                            {props.columnName.map(header => (<StyledTableCell align="center">{header.name}</StyledTableCell>))}
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                    {props.data.map(el => (
-                        <StyledTableRow >
-                            {Object.values(el).map(el => (
-                                <TableCell key={el.id} align="center" onClick={props.onClick}>{el}</TableCell>
-                            ))}
-                        </StyledTableRow>
-                    ))}
+                        {props.data.map(els => (
+                            <StyledTableRow key={els.id}>
+                                    {Object.values(els).map(el => (
+                                        <TableCell  align="center" onClick={() => props.bodyAction(els)}>{el}</TableCell>
+                                    ))}
+                            </StyledTableRow>
+                        ))}
                     </TableBody>
                 </Table>
             </TableContainer>

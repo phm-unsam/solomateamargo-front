@@ -1,27 +1,20 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { cartLoad } from '../../redux/actions/cartAction';
 import './Cart.css'
 import { deleteAll, cartLoadError, deleteFlightReservation, buyTicket } from '../../redux/actions/cartAction'
 import Button from '@material-ui/core/Button';
-import Table from '@material-ui/core/Table';
-import TableRow from '@material-ui/core/TableRow';
-import TableHead from '@material-ui/core/TableHead';
-import TableContainer from '@material-ui/core/TableContainer';
-import Paper from '@material-ui/core/Paper';
-import TableBody from '@material-ui/core/TableBody';
-import { useStyles, StyledTableCell } from './style'
 import { useHistory } from "react-router-dom";
 import Swal from 'sweetalert2'
+import TableCreator from '../tableCreator'
 
 export default function Cart() {
   const dispatch = useDispatch();
-  const classes = useStyles();
   const flights = useSelector(state => state.cartReducer.flights);
   const error = useSelector(state => state.cartReducer.error)
   const login = useSelector(store => store.login);
   let history = useHistory();
-
+  const [flight, setFlight] = useState()
   const onFlightsClick = e => {
     history.push("/");
   }
@@ -30,9 +23,8 @@ export default function Cart() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const getAllCart = () =>{
+  const getAllCart = () => {
     dispatch(cartLoad(login.id))
-    console.log(flights)
     if (flights.length === 0) {
       dispatch(cartLoadError())
     }
@@ -46,7 +38,7 @@ export default function Cart() {
     return total
   }
 
-  const deleteFlight = flight => {
+  const deleteFlight = () => {
 
     Swal.fire({
       title: 'Estas Seguro?',
@@ -61,7 +53,7 @@ export default function Cart() {
       if (result.value) {
         dispatch(deleteFlightReservation(flight, login.id))
         getAllCart()
-        
+
       }
     })
 
@@ -73,7 +65,7 @@ export default function Cart() {
 
   const buyTicketsFlights = e => {
     e.preventDefault()
-    
+
     Swal.fire({
       title: 'Estas Seguro?',
       text: "no se puede cancelar la compra",
@@ -86,55 +78,29 @@ export default function Cart() {
     }).then((result) => {
       if (result.value) {
         dispatch(buyTicket(login.id))
-        
+
       }
     })
 
   }
 
+  const columnName = [
+    { name: 'origen' }, { name: 'destino' }, { name: 'Salida' }, { name: 'Aerolinea' }, { name: 'Asiento' }, { name: 'Clase' }, { name: 'Desde' }
+  ]
+
+  const selectApurchase = (flight) => {
+    setFlight(flight)
+  }
   return (
     <Fragment>
       {error ? <p>hubo un error</p> : null}
-      <TableContainer component={Paper}>
-        <Table className={classes.table} aria-label="customized table">
-          <TableHead>
-            <TableRow>
-              <StyledTableCell align="center">Origen</StyledTableCell>
-              <StyledTableCell align="center">Destino</StyledTableCell>
-              <StyledTableCell align="center">Salida</StyledTableCell>
-              <StyledTableCell align="center">Aerolinea</StyledTableCell>
-              <StyledTableCell align="center">Asiento</StyledTableCell>
-              <StyledTableCell align="center">Clase</StyledTableCell>
-              <StyledTableCell align="center">Precio</StyledTableCell>
-              <StyledTableCell align="center">Accion</StyledTableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
+      <TableCreator data={flights} columnName={columnName} bodyAction={selectApurchase} />
+        <Button className="buton"
+          variant="contained"
+          color="secondary"
+          onClick={() => deleteFlight()}
+        >Eliminar</Button>  
 
-            {Array.from(flights).length === 0 ? 'no hay pasajes' : (Array.from(flights).map(flight =>
-              <TableRow key={flight.flightId}>
-        
-                <StyledTableCell align="center">{flight.from}</StyledTableCell>
-                <StyledTableCell align="center">{flight.to}</StyledTableCell>
-                <StyledTableCell align="center">{flight.departure}</StyledTableCell>
-                <StyledTableCell align="center">{flight.airline}</StyledTableCell>
-                <StyledTableCell align="center">{flight.seatNumber}</StyledTableCell>
-                <StyledTableCell align="center">{flight.seatType}</StyledTableCell>
-                <StyledTableCell align="center">{flight.cost}</StyledTableCell>
-                <StyledTableCell align="center">
-                  <Button className="buton"
-                    variant="contained"
-                    color="secondary"
-                    onClick={() => deleteFlight(flight)}
-                  >Eliminar</Button>
-                </StyledTableCell>
-              </TableRow>
-
-            ))}
-          </TableBody>
-        </Table>
-
-      </TableContainer>
       <form onSubmit={buyTicketsFlights}>
         <div className="botones">
           <Button variant="contained" color="primary" onClick={() => deleteAllflights()}>Limpar carro</Button>

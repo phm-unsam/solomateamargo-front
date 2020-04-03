@@ -16,6 +16,7 @@ export default Flights => {
   const [errorMessage, setErrorMessage] = useState()
   const [message, setMessage] = useState()
   const login = useSelector(store => store.login);
+  
 
   useEffect(() => {
     getAllFlight()
@@ -24,7 +25,6 @@ export default Flights => {
   }, []);
 
   const getAllFlight = () => {
-    console.log("222")
     flightsService.getAllFlight()
       .then(flight => {
         setflights(flight.data)

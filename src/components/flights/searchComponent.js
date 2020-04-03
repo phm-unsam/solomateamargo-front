@@ -14,7 +14,6 @@ export const SearchComponent = (props) => {
     const classes = useStyles();
     const [dateFrom, setDateFrom] = useState(new Date())
     const [dateTo, setDateTo] = useState(new Date())
-    let seatNextoWindow = null;
     let seatClass = '';
   
     const [flightSearch, setFlightSearch] = useState({
@@ -22,7 +21,8 @@ export const SearchComponent = (props) => {
       arrival: '',
       dateFrom: null,
       dateTo: null,
-      seatNextoWindow: null
+      seatNextoWindow: null,
+      loading: false
     });
   
     const seatClasses = [
@@ -38,9 +38,15 @@ export const SearchComponent = (props) => {
   
     
     const updateInput = (e) => {
-      
-      seatNextoWindow = e.target.checked;
-      props.searchSeat(seatNextoWindow, seatClass);
+        setFlightSearch({
+          ...flightSearch,
+          seatNextoWindow: e.target.checked,
+          loading: true
+        })
+      if( flightSearch.loading=== true){
+        props.searchSeat(flightSearch, seatClass);
+      }
+      // seatNextoWindow = e.target.checked;
     }
   
   
@@ -64,7 +70,7 @@ export const SearchComponent = (props) => {
     const seatsClass = (e, value) => {
       if(value){
         seatClass = value.seatClass;
-        props.searchSeat(seatNextoWindow, seatClass);
+        props.searchSeat(flightSearch, seatClass);
       }
       else {
         clear()
@@ -94,8 +100,9 @@ export const SearchComponent = (props) => {
         arrival: '',
         dateFrom: null,
         dateTo: null,
+        seatNextoWindow: null,
+        loading: false
       })
-      seatNextoWindow = null;
       seatClass = null;
       props.clearSeat();
     }
