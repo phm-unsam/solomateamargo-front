@@ -8,6 +8,8 @@ import Loader from '../loader';
 import { GenericFriendsTable } from './genericFriendTable';
 import Typography from '@material-ui/core/Typography';
 
+
+
 export const AddFriendDialog = (props) => {
 	let id = props.id;
 	let addFriendsToOriginal = props.addFriendsToOriginal;
@@ -32,10 +34,6 @@ export const AddFriendDialog = (props) => {
   const handleClose = () => {
     onClose(selectedValue);
   };
-
-  const handleListItemClick = (value) => {
-    onClose(value);
-	};
 	
 	const addFriend = () => {
 		let idFriendToAdd = toAddFriend.id;
