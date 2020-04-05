@@ -1,21 +1,25 @@
-import { apiCall } from '../redux/api/';
 import moment from 'moment';
+import axios from 'axios'
+export const REST_SERVER_URL = 'http://localhost:16000/'
 
 export default class FlightsService {
 
-    getSearchSeats(userId, flightSearch, seatType) {
+    async getSearchSeats(userId, flightSearch, seatType) {
         const {seatNextoWindow} = flightSearch
-        
-        const url = `flight/${userId}/seats`
+        const url = REST_SERVER_URL + `flight/${userId}/seats`
+        debugger
         try {
             if(seatNextoWindow === null){
-                return apiCall(url + `?seatType=${seatType}`, null, null, 'GET')
+                const result = await axios.get(url + `?seatType=${seatType}`)
+                return result.data
             }
             else if (seatType === ''){
-                return apiCall(url + `?nextoWindow=${seatNextoWindow}`, null, null, 'GET')
+                const result = await axios.get(url + `?nextoWindow=${seatNextoWindow}`)
+                return result.data
             }
             else{
-                return apiCall(url + `?nextoWindow=${seatNextoWindow}?seatType=${seatType}?nextoWindow=${seatNextoWindow}`, null, null, 'GET')
+                const result = await axios.get(url + `?seatType=${seatType}&nextoWindow=${seatNextoWindow}`)
+                return result.data
             }
 
         } catch (e) {
@@ -23,37 +27,31 @@ export default class FlightsService {
         }
     }
 
-
-    getAllSeats(userId) {
-        const url = `flight/${userId}/seats`
-        try {
-            const seats = apiCall(url, null, null, 'GET')
-            return seats
-
-        } catch (e) {
-            return e
-        }
+    async getAllSeats(userId) {
+            const result = await axios.get(REST_SERVER_URL +  `flight/${userId}/seats`)
+            return result.data
     }
-    postaddCart(payload) {
+    async postaddCart(payload) {
         const { flightId, seatNumber, id } = payload
         try {
-            return apiCall(`user/${id}/cart/add?flightId=${flightId}&seatNumber=${seatNumber}`, null, null, 'POST')
+            const result = await axios.post(REST_SERVER_URL +  `user/${id}/cart/add?flightId=${flightId}&seatNumber=${seatNumber}`)
+            return result
 
         } catch (e) {
             return e
         }
     }
 
-    getSearchFlight(filterFlights) {
-
+    async getSearchFlight(filterFlights) {
         const { dateFrom, dateTo, departure, arrival } = filterFlights
         try {
             if (dateTo !== null) {
-                return apiCall(`flights?dateFrom=${this.formatDate(dateFrom)}&dateTo=${this.formatDate(dateTo)}&departure=${departure}&arrival=${arrival}`, null, null, 'GET')
+                const result = await axios.get(REST_SERVER_URL + `flights?dateFrom=${this.formatDate(dateFrom)}&dateTo=${this.formatDate(dateTo)}&departure=${departure}&arrival=${arrival}`)
+                return result.data
             }
             else {
-                console.log("qsdas")
-                return apiCall(`flights?departure=${departure}&arrival=${arrival}`, null, null, 'GET')
+                const result = await axios.get(REST_SERVER_URL + `flights?departure=${departure}&arrival=${arrival}`)
+                return result.data
             }
         } catch (e) {
             return e
@@ -64,10 +62,10 @@ export default class FlightsService {
        return  moment(date).format("DD/MM/YYYY") 
     }
 
-    getAllFlight(){
+    async getAllFlight(){
         try {
-            return apiCall(`flights`, null, null, 'GET')
-        
+            const result = await axios.get(REST_SERVER_URL + `flights`)
+            return result.data
         } catch (e) {
             return e
         }

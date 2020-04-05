@@ -20,73 +20,54 @@ export default Flights => {
 
   useEffect(() => {
     getAllFlight()
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const getAllFlight = () => {
-    flightsService.getAllFlight()
-      .then(flight => {
-        setflights(flight.data)
-      }).catch(err =>
-        console.log(err)
-      )
+  const getAllFlight = async () => {
+    setflights(await flightsService.getAllFlight())
   }
 
-  const getSearchFlight = (searchFlights) => {
-    flightsService.getSearchFlight(searchFlights)
-      .then(flight => {
-        setflights(flight.data)
-      }).catch(err =>
-        console.log(err)
-      )
+  const getSearchFlight = async (searchFlights) => {
+    setflights(await flightsService.getSearchFlight(searchFlights))
   }
 
-
-  const getAllSeats = flightId => {
+  const getAllSeats = async (flightId) => {
     setFlightID(flightId)
-    flightsService.getAllSeats(flightId)
-    .then(seat => {
-      seat.data.forEach(seat => seat.isNextToWindow = seat.isNextToWindow ? "Si" : "No")
-        setSeats(seat.data)
-        
-      }).catch(err => {
-        setErrorMessage(err)
-        setMessage('No hay asientos disponibles para este vuelo.')
-      })
+    const seats = await flightsService.getAllSeats(flightId)
+    convertBooleanToString(seats)
+
   }
 
-  const searchSeat = (seatWindow, seatClass) => {
-    flightsService.getSearchSeats(flightID, seatWindow, seatClass)
-      .then(seat => {
-        setSeats(seat.data)
-      }).catch(err => {
-        setErrorMessage(err)
-        setMessage('Debe seleccionar un vuelo primero.')
-      })
+  const searchSeat = async (flightSearch, seatClass) => {
+    const searchSeat = await flightsService.getSearchSeats(flightID, flightSearch, seatClass)
+    convertBooleanToString(searchSeat)
+ 
+    //     setErrorMessage(err)
+    //     setMessage('Debe seleccionar un vuelo primero.')
+
   }
 
-  const addCart = (seatId) => {
+  const convertBooleanToString = (seats) => {
+    seats.forEach(seat => seat.isNextToWindow = seat.isNextToWindow ? "Si" : "No")
+    setSeats(seats)
+  }
+
+
+  const addCart = async (seatId) => {
     const flight = {
       id: login.id,
       flightId: flightID,
       seatNumber: seatId
     }
-    flightsService.postaddCart(flight).then(flight => {
-      if (flight.status !== 200) {
-        setErrorMessage(true)
-        setMessage('Error no se pudo agregar al carrito el pasaje.')
-      }
-      else {
-        setErrorMessage(true)
-        setMessage('Se agrego el pasaje con exito al carrito.')
-        getAllSeats(flightID)
-      }
-    })
+    
+    flightsService.postaddCart(flight)
+    getAllSeats(flightID)
+    getAllFlight()
   }
 
   const clear = (searchFlights) => {
     getAllFlight(searchFlights)
+    
   }
 
   const clearSeat = () => {
