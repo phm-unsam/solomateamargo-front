@@ -16,11 +16,11 @@ export default Flights => {
   const [errorMessage, setErrorMessage] = useState()
   const [message, setMessage] = useState()
   const login = useSelector(store => store.login);
-  
+
 
   useEffect(() => {
     getAllFlight()
-    
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -46,8 +46,10 @@ export default Flights => {
   const getAllSeats = flightId => {
     setFlightID(flightId)
     flightsService.getAllSeats(flightId)
-      .then(seat => {
+    .then(seat => {
+      seat.data.forEach(seat => seat.isNextToWindow = seat.isNextToWindow ? "Si" : "No")
         setSeats(seat.data)
+        
       }).catch(err => {
         setErrorMessage(err)
         setMessage('No hay asientos disponibles para este vuelo.')

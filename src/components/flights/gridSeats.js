@@ -64,15 +64,14 @@ export const GridSeats = (props) => {
   return (
 
     <Fragment>
-    {/* <TableCell align="center">{seat.isNextToWindow ? "Si" : "No"}</TableCell> */}
-    <TableCreator data={props.seats} columnName={columnName} bodyAction={saveSeatId} />
+      <TableCreator data={props.seats} columnName={columnName} bodyAction={saveSeatId} /> 
       <Button
-        type="submit"
-        variant="contained"
-        color="primary"
-        className={classes.buttonAgregarCarrito}
-        onClick={() => addCart()}
-        disabled={disabledAddCart()}
+      type="submit"
+      variant="contained"
+      color="primary"
+      className={classes.buttonAgregarCarrito}
+      onClick={() => addCart()}
+      disabled={disabledAddCart()}
       >
         Agregar al carrito
           </Button>

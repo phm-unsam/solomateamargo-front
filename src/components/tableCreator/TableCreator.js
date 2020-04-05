@@ -5,7 +5,7 @@ import TableBody from '@material-ui/core/TableBody';
 import Table from '@material-ui/core/Table';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 
 const StyledTableCell = withStyles(theme => ({
     head: {
@@ -39,9 +39,9 @@ export default function TableCreator(props) {
                     <TableBody>
                         {props.data.map(els => (
                             <StyledTableRow key={els.id}>
-                                    {Object.values(els).map(el => (
-                                        <TableCell  align="center" onClick={() => props.bodyAction(els)}>{el}</TableCell>
-                                    ))}
+                                {Object.values(els).map(el => (
+                                    els.id !== el ? <TableCell align="center" onClick={() => props.bodyAction(els)}>{el}</TableCell> : null
+                                ))}
                             </StyledTableRow>
                         ))}
                     </TableBody>

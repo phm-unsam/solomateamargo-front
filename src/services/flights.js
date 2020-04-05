@@ -27,8 +27,8 @@ export default class FlightsService {
     getAllSeats(userId) {
         const url = `flight/${userId}/seats`
         try {
-            return apiCall(url, null, null, 'GET')
-
+            const seats = apiCall(url, null, null, 'GET')
+            return seats
 
         } catch (e) {
             return e

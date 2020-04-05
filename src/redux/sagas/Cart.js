@@ -26,8 +26,8 @@ export function*  cartLoad({payload}){
 }
 
 export function* deleteFlight({payload, loginUser}){
-    const {flightId, seatNumber} = payload
-    const results = yield call (apiCall, `user/${loginUser}/cart/remove?flightId=${flightId}&seatNumber=${seatNumber}`, null, null, 'POST')
+    const {id, seatNumber} = payload
+    const results = yield call (apiCall, `user/${loginUser}/cart/remove?flightId=${id}&seatNumber=${seatNumber}`, null, null, 'POST')
     console.log(results)
         try{
         Swal.fire(
