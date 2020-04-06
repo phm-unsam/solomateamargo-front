@@ -105,7 +105,7 @@ const Login = ({ loginUser }) => {
       <div>
 
       </div>
-      <SnackbarOpen open={hasError} message={errorMsg} />
+      <SnackbarOpen open={hasError} message={errorMsg} severity="error"/>
     </Container>
   );
 }

@@ -4,21 +4,16 @@ export const REST_SERVER_URL = 'http://localhost:16000/'
 
 export default class FlightsService {
 
-    async getSearchSeats(userId, flightSearch, seatType) {
-        const {seatNextoWindow} = flightSearch
+    async getSearchSeats(userId, flightSearch) {
+        const {seatNextoWindow, seatClass} = flightSearch
         const url = REST_SERVER_URL + `flight/${userId}/seats`
-        debugger
         try {
             if(seatNextoWindow === null){
-                const result = await axios.get(url + `?seatType=${seatType}`)
-                return result.data
-            }
-            else if (seatType === ''){
-                const result = await axios.get(url + `?nextoWindow=${seatNextoWindow}`)
+                const result = await axios.get(url + `?seatType=${seatClass}`)
                 return result.data
             }
             else{
-                const result = await axios.get(url + `?seatType=${seatType}&nextoWindow=${seatNextoWindow}`)
+                const result = await axios.get(url + `?seatType=${seatClass}&nextoWindow=${seatNextoWindow}`)
                 return result.data
             }
 
@@ -33,13 +28,9 @@ export default class FlightsService {
     }
     async postaddCart(payload) {
         const { flightId, seatNumber, id } = payload
-        try {
             const result = await axios.post(REST_SERVER_URL +  `user/${id}/cart/add?flightId=${flightId}&seatNumber=${seatNumber}`)
             return result
 
-        } catch (e) {
-            return e
-        }
     }
 
     async getSearchFlight(filterFlights) {

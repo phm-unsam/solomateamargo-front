@@ -16,7 +16,7 @@ export default Flights => {
   const [errorMessage, setErrorMessage] = useState()
   const [message, setMessage] = useState()
   const login = useSelector(store => store.login);
-
+  let color = null
 
   useEffect(() => {
     getAllFlight()
@@ -29,6 +29,8 @@ export default Flights => {
 
   const getSearchFlight = async (searchFlights) => {
     setflights(await flightsService.getSearchFlight(searchFlights))
+    //corregir nose si esta bien
+    setSeats([])
   }
 
   const getAllSeats = async (flightId) => {
@@ -41,7 +43,7 @@ export default Flights => {
   const searchSeat = async (flightSearch, seatClass) => {
     const searchSeat = await flightsService.getSearchSeats(flightID, flightSearch, seatClass)
     convertBooleanToString(searchSeat)
- 
+
     //     setErrorMessage(err)
     //     setMessage('Debe seleccionar un vuelo primero.')
 
@@ -60,26 +62,31 @@ export default Flights => {
       seatNumber: seatId
     }
     
-    flightsService.postaddCart(flight)
-    getAllSeats(flightID)
-    getAllFlight()
+    try {
+       await flightsService.postaddCart(flight)
+      getAllSeats(flightID)
+      getAllFlight()
+      setMessage("se agregado con exito al carrito")
+      setErrorMessage(true)
+    } catch (error) {
+      setMessage(error.response.data.error)
+      setErrorMessage(true)
+    }
   }
 
   const clear = (searchFlights) => {
     getAllFlight(searchFlights)
-    
-  }
-
-  const clearSeat = () => {
     getAllSeats(flightID)
   }
+  
+
   return (
     <div>
-      <SearchComponent searchSeat={searchSeat} getSearchFlight={getSearchFlight} clear={clear} clearSeat={clearSeat}></SearchComponent>
+      <SearchComponent searchSeat={searchSeat} getSearchFlight={getSearchFlight} clear={clear}></SearchComponent>
       <GridFlights getAllSeats={getAllSeats} flights={flights}></GridFlights>
       <GridSeats seats={seats} addCart={addCart}></GridSeats>
 
-      <SnackbarOpen open={errorMessage} message={message} />
+      <SnackbarOpen open={errorMessage} message={message} severity="success"/>
 
     </div>
   )

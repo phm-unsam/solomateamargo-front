@@ -27,10 +27,11 @@ const SnackbarOpen=(props)=> {
 
   };
 
+ 
   return (
     <div className={classes.root}>
       <Snackbar open={props.open} autoHideDuration={6000} onClose={handleClose}>
-        <Alert severity="error">
+        <Alert severity={props.severity}>
           {props.message}
         </Alert>
       </Snackbar>
