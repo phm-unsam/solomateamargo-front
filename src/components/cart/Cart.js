@@ -76,7 +76,7 @@ export default function Cart() {
     }).then((result) => {
       if (result.value) {
         dispatch(buyTicket(login.id))
-
+        getAllCart()
       }
     })
 
@@ -113,7 +113,7 @@ export default function Cart() {
           <div className="botonVolver">
             <Button variant="contained" color="secondary" className="buttonVolver" onClick={onFlightsClick}>Volver</Button>
           </div>
-          <Button type="submit" variant="contained" color="primary" >Comprar</Button>
+          <Button type="submit" variant="contained" color="primary" disabled={flights.length === 0}>Comprar</Button>
         </div>
       </form>
 
