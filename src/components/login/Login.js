@@ -33,7 +33,7 @@ const Login = ({ loginUser }) => {
   });
 
 
-  const loginTry = (e) => {
+  const login = (e) => {
     e.preventDefault();
     loginUser(loginForm);
   }
@@ -92,7 +92,7 @@ const Login = ({ loginUser }) => {
               variant="contained"
               color="primary"
               className={classes.submit}
-              onClick={loginTry}
+              onClick={login}
               disabled={loginButtonDisabled()}
             >
               Login

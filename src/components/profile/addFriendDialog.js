@@ -12,8 +12,10 @@ import Typography from '@material-ui/core/Typography';
 
 export const AddFriendDialog = (props) => {
 	let id = props.id;
-	let addFriendsToOriginal = props.addFriendsToOriginal;
-	const { onClose, selectedValue, open } = props;
+  let addFriendsToOriginal = props.addFriendsToOriginal;
+  let setSnackbar = props.setSnackbar;
+  const { onClose, selectedValue, open } = props;
+  
 	const [friends, setFriends] = useState([]);
 	const [isLoaded, setisLoaded] = useState(false);
 	const [toAddFriend, setToAddFriend] = useState({ id: null, name: '', lastName: '' });
@@ -27,7 +29,13 @@ export const AddFriendDialog = (props) => {
         setFriends(friends.data);
         setisLoaded(true);
       })  
-      .catch( err => alert(err))
+      .catch( err => {
+        setSnackbar({
+          open: true,
+          message: err,
+          severity: 'error'
+        });
+      });
     }
   });
 
@@ -40,12 +48,22 @@ export const AddFriendDialog = (props) => {
 		if(idFriendToAdd !== null){
 			profileService.addFriend(id, idFriendToAdd)
 			.then( status => {
-				alert('Usuario agregado correctamente.'); //Aca hay q meterle algo lindo.
+        setSnackbar({
+          open: true,
+          message: `Has agregado a ${toAddFriend.name} ${toAddFriend.lastName} a tu lista de amigos.`,
+          severity: 'success'
+        });
 				addFriendsToOriginal(toAddFriend);
 				setFriends(friends.filter(friend => friend !== toAddFriend));
 				setToAddFriend({id: null});		
 			})  
-			.catch( err => alert(err))
+			.catch( err => {
+        setSnackbar({
+          open: true,
+          message: err,
+          severity: 'error'
+        });
+      });
 		}
 	}
 

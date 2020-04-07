@@ -19,6 +19,7 @@ import { useHistory } from "react-router-dom";
 //Components
 import { GenericFriendsTable } from './genericFriendTable';
 import { AddFriendDialog } from './addFriendDialog';
+import SnackbarOpen from '../snackbar/Snackbar'
 
 import Icon from '@material-ui/core/Icon'
 
@@ -35,9 +36,24 @@ const StyledTableCell = withStyles(theme => ({
 export default function Profile() {
   const [user, setUser] = useState({});
   let login = useSelector(store => store.login);
-  let history = useHistory();
   const profileService = new ProfileService();
   const [isLoaded, setIsLoaded] = useState(false);
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: '',
+    severity: 'success'
+  });
+
+  const closeSnackbar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbar({
+      ...snackbar,
+      open: false,
+    });
+      
+  }
 
   useEffect(() => {
     if (!isLoaded) {
@@ -46,33 +62,25 @@ export default function Profile() {
           setUser(profile.data)
           setIsLoaded(true);
         })
-        .catch(err => alert(err));
+        .catch(err => {
+          setSnackbar({
+            open: true,
+            message: err,
+            severity: 'error'
+          });
+        });
     }
-  }
-  );
-
-  const saveChanges = () => {
-    profileService.updateProfile(user)
-      .then(status => {
-        console.log("todo ok");
-      })
-      .catch(err => alert(err));
-  };
-
-  const cancelChanges = () => {
-    history.push("/");
-  }
+  });
 
   return (
     <div>
       {
         isLoaded ?
           <div>
-            <UserDataComponent user={user} setUser={setUser}></UserDataComponent>
-            <p>Pasajes comprados</p><br />
-            <TicketsPurchasedTable id={user.id}></TicketsPurchasedTable>
-            <Button color="primary" variant="contained" onClick={saveChanges}>Aceptar</Button>
-            <Button color="secondary" variant="contained" onClick={cancelChanges}>Cancelar</Button>
+            <UserDataComponent user={user} setUser={setUser} setSnackbar={setSnackbar} ></UserDataComponent>
+            <TicketsPurchasedTable id={user.id} setSnackbar={setSnackbar} ></TicketsPurchasedTable>
+            
+            <SnackbarOpen open={snackbar.open} message={snackbar.message} severity={snackbar.severity} closeSnac={closeSnackbar}/>
           </div>
           :
           <Loader />
@@ -83,10 +91,16 @@ export default function Profile() {
 
 const UserDataComponent = (props) => {
   const classes = style();
+  let history = useHistory();
+
   const user = props.user;
   const setUser = props.setUser;
+  const setSnackbar = props.setSnackbar;
+
   const [showCash, setShowCash] = useState(false);
   const [showPass, setShowPass] = useState(false);
+
+  const profileService = new ProfileService();
 
   const showAddCash = () => {
     setShowCash(true);
@@ -99,6 +113,28 @@ const UserDataComponent = (props) => {
       ...user,
       [e.target.name]: e.target.value
     });
+  }
+
+  const saveChanges = () => {
+    profileService.updateProfile(user)
+      .then(status => {
+        setSnackbar({
+          open: true,
+          message: 'Usuario guardado correctamente!',
+          severity: 'success'
+        });
+      })
+      .catch(err => {
+        setSnackbar({
+          open: true,
+          message: err,
+          severity: 'error'
+        });
+      });
+  };
+
+  const redirect = () => {
+    history.push("/");
   }
 
   return (
@@ -120,7 +156,7 @@ const UserDataComponent = (props) => {
             onChange={update}
           /> 
          
-           <Icon style = {{marginTop: "2rem",marginLeft:"1rem"}}
+           <Icon style = {{marginTop: "2rem", marginLeft:"1rem"}}
             onClick={toggleShowPass}>visibility</Icon>
           <br />
           <TextField
@@ -132,19 +168,25 @@ const UserDataComponent = (props) => {
             id="age"
             value={user.age}
             onChange={update}
-          />
-          <Typography className={classes.margin5}>Saldo: ${user.cash.toFixed(2)}     <Button color="primary" variant="contained" onClick={showAddCash}>Agregar Saldo</Button></Typography>
-          {showCash ? <AddCash user={user} setUser={setUser} setShowCash={setShowCash} /> : <div></div>}
-          <Typography>Tabla Amigos</Typography>
-          <FriendsTable id={user.id}></FriendsTable>
+          /><br/>
+          <Button color="primary" variant="contained" onClick={saveChanges} className={classes.margin5}>Aceptar</Button>
+          <Button color="secondary" variant="contained" onClick={redirect} className={classes.margin5}>Cancelar</Button>
+          <Typography className={classes.margin5}>Saldo: ${user.cash.toFixed(2)}     <Button color="primary" variant="contained" onClick={showAddCash} className={classes.margin5}>Agregar Saldo</Button></Typography>
+          {showCash ? <AddCash user={user} setUser={setUser} setShowCash={setShowCash} setSnackbar={setSnackbar} /> : <div></div>}
+          <Typography component="h5" variant="h6">Amigos</Typography>
+          <FriendsTable id={user.id} setSnackbar={setSnackbar}></FriendsTable>
         </Grid>
+        
       </Grid>
     </Fragment>
   )
 }
 
 const FriendsTable = (props) => {
+  const classes = style();
+
   const id = props.id
+  const setSnackbar = props.setSnackbar;
 
   const [friends, setFriends] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -174,11 +216,21 @@ const FriendsTable = (props) => {
     if (idFriendToDelete !== null) {
       profileService.deleteFriend(id, idFriendToDelete)
         .then(status => {
-          alert('Usuario eliminado correctamente.'); //Aca hay q meterle algo lindo.
+          setSnackbar({
+            open: true,
+            message: 'Usuario eliminado correctamente.',
+            severity: 'success'
+          });
           setFriends(friends.filter(friend => friend !== toDeleteFriend));
           setToDeleteFriend({ id: null });
         })
-        .catch(err => alert(err))
+        .catch(err =>  {
+          setSnackbar({
+            open: true,
+            message: err,
+            severity: 'error'
+          });
+        });
     }
   }
 
@@ -192,7 +244,13 @@ const FriendsTable = (props) => {
         setFriends(friends.data);
         setIsLoaded(true);
       })
-      .catch(err => alert(err))
+      .catch(err => {
+        setSnackbar({
+          open: true,
+          message: err,
+          severity: 'error'
+        });
+      });
   }
 
   return (
@@ -202,8 +260,8 @@ const FriendsTable = (props) => {
           <div>
             <GenericFriendsTable friends={friends} actionOnClick={setToDeleteFriend} />
             <Button color="primary" variant="contained" onClick={handleClickOpen} >Agregar Amigo</Button>
-            <AddFriendDialog open={open} onClose={handleClose} id={id} addFriendsToOriginal={addFriend} />
-            {toDeleteFriend.id === null ? <Typography>Seleccione un amigo para eliminar...</Typography> : <Button color="secondary" variant="contained" onClick={deleteFriend}>{`Quitar a ${toDeleteFriend.name} ${toDeleteFriend.lastName}`}</Button>}
+            <AddFriendDialog open={open} onClose={handleClose} id={id} addFriendsToOriginal={addFriend} setSnackbar={setSnackbar}/>
+            {toDeleteFriend.id === null ? <Typography className={classes.margin5}>Seleccione un amigo para eliminar...</Typography> : <Button color="secondary" variant="contained" onClick={deleteFriend} className={classes.margin5}>{`Quitar a ${toDeleteFriend.name} ${toDeleteFriend.lastName}`}</Button>}
           </div>
           :
           <Loader />
@@ -214,9 +272,13 @@ const FriendsTable = (props) => {
 
 const TicketsPurchasedTable = (props) => {
   const classes = style();
+
   const id = props.id;
+  const setSnackbar = props.setSnackbar;
+
   const [tickets, setTickets] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
+
   const profileService = new ProfileService();
 
   useEffect(() => {
@@ -226,12 +288,19 @@ const TicketsPurchasedTable = (props) => {
           setTickets(tickets.data);
           setIsLoaded(true);
         })
-        .catch(err => alert(err))
+        .catch(err => {
+          setSnackbar({
+            open: true,
+            message: err,
+            severity: 'error'
+          });
+        });
     }
   });
 
   return (
     <TableContainer className={classes.margin5}>
+      <Typography component="h3" variant="h4">Pasajes comprados</Typography> <br/>
       <Table className={classes.table} spacing={3}>
         <TableHead>
           <TableRow>
@@ -264,6 +333,8 @@ const AddCash = (props) => {
   const user = props.user;
   const setUser = props.setUser;
   const setShowCash = props.setShowCash;
+  const setSnackbar = props.setSnackbar;
+  
   const profileService = new ProfileService();
   const [quantity, setQuantity] = useState(0);
 
@@ -275,17 +346,27 @@ const AddCash = (props) => {
           setUser({
             ...user,
             cash: tmp + quantity
-          })
-          alert(resp.status);
+          });
+          setSnackbar({
+            open: true,
+            message: `Has agregado $${quantity} a tu cuenta.`,
+            severity: 'success'
+          });
           setShowCash(false);
         })
-        .catch(err => { alert(err) })
+        .catch(err => {
+          setSnackbar({
+            open: true,
+            message: err,
+            severity: 'error'
+          });
+        });
     }
   }
 
   const update = e => {
     if (isNaN(e.target.valueAsNumber)) {
-      alert("Numbers only");
+      setQuantity(0);
       return;
     }
     setQuantity(e.target.valueAsNumber);
