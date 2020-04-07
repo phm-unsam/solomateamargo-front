@@ -19,19 +19,13 @@ const useStyles = makeStyles(theme => ({
 const SnackbarOpen=(props)=> {
   const classes = useStyles();
 
-
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
   };
 
  
   return (
     <div className={classes.root}>
-      <Snackbar open={props.open} autoHideDuration={6000} onClose={handleClose}>
-        <Alert severity={props.severity}>
+      <Snackbar open={props.open} autoHideDuration={6000} onClose={props.closeSnac}>
+        <Alert severity={props.severity} onClose={props.closeSnac}>
           {props.message}
         </Alert>
       </Snackbar>

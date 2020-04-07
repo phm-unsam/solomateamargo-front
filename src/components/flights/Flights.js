@@ -13,10 +13,11 @@ export default Flights => {
   const [flightID, setFlightID] = useState(null)
   const [seats, setSeats] = useState([])
   const [flights, setflights] = useState([])
-  const [errorMessage, setErrorMessage] = useState()
-  const [message, setMessage] = useState()
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: '',
+  })
   const login = useSelector(store => store.login);
-  let color = null
 
   useEffect(() => {
     getAllFlight()
@@ -66,19 +67,32 @@ export default Flights => {
        await flightsService.postaddCart(flight)
       getAllSeats(flightID)
       getAllFlight()
-      setMessage("se agregado con exito al carrito")
-      setErrorMessage(true)
+      setSnackbar({
+        open: true,
+        message: "se agregado con exito al carrito",
+      })
     } catch (error) {
-      setMessage(error.response.data.error)
-      setErrorMessage(true)
+      setSnackbar({
+        open: true,
+        message: error.response.data.error,
+      })
     }
+    console.log(snackbar)
+    debugger
   }
 
   const clear = (searchFlights) => {
     getAllFlight(searchFlights)
     getAllSeats(flightID)
   }
-  
+  const closeSnackbar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbar({
+      ...snackbar,
+      open: false});
+  }
 
   return (
     <div>
@@ -86,7 +100,7 @@ export default Flights => {
       <GridFlights getAllSeats={getAllSeats} flights={flights}></GridFlights>
       <GridSeats seats={seats} addCart={addCart}></GridSeats>
 
-      <SnackbarOpen open={errorMessage} message={message} severity="success"/>
+      <SnackbarOpen open={snackbar.open} message={snackbar.message} severity="success" closeSnac={closeSnackbar}/>
 
     </div>
   )
