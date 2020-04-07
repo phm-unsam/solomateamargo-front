@@ -61,27 +61,27 @@ export default function Cart() {
     getAllCart()
   }
 
-  const buyTicketsFlights = e => {
+  const buyTicketsFlights = async (e) => {
     e.preventDefault()
 
-    Swal.fire({
-      title: 'Estas Seguro?',
-      text: "no se puede cancelar la compra",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, comprar!',
-      cancelButtonText: 'Cancelar'
-    }).then((result) => {
-      if (result.value) {
-        dispatch(buyTicket(login.id))
-        getAllCart()
-      }
-    })
-
+      const alert = await Swal.fire({
+        title: 'Estas Seguro?',
+        text: "no se puede cancelar la compra",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        
+        confirmButtonText: 'Yes, comprar!',
+        cancelButtonText: 'Cancelar'
+      })
+    if(alert.value){
+      dispatch(buyTicket(login.id))
+      getAllCart()
+      return alert
+    }
   }
-
+  
   const columnName = [
     { name: 'origen' }, { name: 'destino' }, { name: 'Salida' }, { name: 'Aerolinea' }, { name: 'Asiento' }, { name: 'Clase' }, { name: 'Desde' }
   ]

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import SnackbarOpen from '../snackbar/Snackbar'
 import { useSelector } from 'react-redux';
-import FlightsService from '../../services/flights';
+import FlightsService from '../../services/flightsService';
 
 //Components
 import { SearchComponent } from './searchComponent';
@@ -73,11 +73,13 @@ export default Flights => {
       setSnackbar({
         open: true,
         message: "se agregado con exito al carrito",
+        severity: "success"
       })
     } catch (error) {
       setSnackbar({
         open: true,
         message: error.response.data.error,
+        severity: 'error'
       })
     }
   }
@@ -102,7 +104,7 @@ export default Flights => {
       <GridFlights getAllSeats={getAllSeats} flights={flights}></GridFlights>
       <GridSeats seats={seats} addCart={addCart}></GridSeats>
 
-      <SnackbarOpen open={snackbar.open} message={snackbar.message} severity="success" closeSnac={closeSnackbar}/>
+      <SnackbarOpen open={snackbar.open} message={snackbar.message} severity={snackbar.severity} closeSnac={closeSnackbar}/>
 
     </div>
   )

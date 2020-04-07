@@ -1,5 +1,5 @@
-import { put, call, takeLatest, delay} from 'redux-saga/effects';
-import { apiCall } from '../api'
+import { put, call, takeLatest} from 'redux-saga/effects';
+import axios from 'axios'
 import Swal from 'sweetalert2' 
 import {
     CART_LOAD, 
@@ -13,9 +13,10 @@ import {
     BUY_CART_FINISHED,
     BUY_CART_ERROR
 } from '../../consts'
+export const REST_SERVER_URL = 'http://localhost:16000/'
 
 export function*  cartLoad({payload}){
-    const results = yield call (apiCall, `user/${payload}/cart`, null, null, 'GET')
+    const results = yield axios.get(REST_SERVER_URL +`user/${payload}/cart`)
     try{
         yield put({type: CART_LOAD_FINISHED, results})
     }catch(error){
@@ -25,8 +26,7 @@ export function*  cartLoad({payload}){
 
 export function* deleteFlight({payload, loginUser}){
     const {id, seatNumber} = payload
-    const results = yield call (apiCall, `user/${loginUser}/cart/remove?flightId=${id}&seatNumber=${seatNumber}`, null, null, 'POST')
-    console.log(results)
+    const results = yield axios.post(REST_SERVER_URL+`user/${loginUser}/cart/remove?flightId=${id}&seatNumber=${seatNumber}`)
         try{
         Swal.fire(
             'Eliminado!',
@@ -41,7 +41,7 @@ export function* deleteFlight({payload, loginUser}){
 
 export function* deleteAll({payload}){
     try {
-        const results = yield call (apiCall, `user/${payload}/cart/clear`, null, null, 'DELETE')
+        const results = yield axios.delete(REST_SERVER_URL+ `user/${payload}/cart/clear`)
         yield put({type: DELETE_ALL_CART_FINISHED, results})
     } catch (error) {
         console.log(error)
@@ -50,7 +50,7 @@ export function* deleteAll({payload}){
 
 export function* buyTicket({payload}){
     try {
-        const results = yield call (apiCall, `user/${payload}/cart/purchase`, null, null, 'POST')
+        const results = yield axios.post(REST_SERVER_URL +`user/${payload}/cart/purchase`)
         Swal.fire(
             'Comprado!',
             'Your file has been deleted.',
