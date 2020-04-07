@@ -7,7 +7,6 @@ export default class FlightsService {
     async getSearchSeats(userId, flightSearch) {
         const {seatNextoWindow, seatClass} = flightSearch
         const url = REST_SERVER_URL + `flight/${userId}/seats`
-        try {
             if(seatNextoWindow === null){
                 const result = await axios.get(url + `?seatType=${seatClass}`)
                 return result.data
@@ -16,10 +15,6 @@ export default class FlightsService {
                 const result = await axios.get(url + `?seatType=${seatClass}&nextoWindow=${seatNextoWindow}`)
                 return result.data
             }
-
-        } catch (e) {
-            return e
-        }
     }
 
     async getAllSeats(userId) {

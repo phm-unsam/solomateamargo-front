@@ -42,12 +42,15 @@ export default Flights => {
   }
 
   const searchSeat = async (flightSearch, seatClass) => {
-    const searchSeat = await flightsService.getSearchSeats(flightID, flightSearch, seatClass)
-    convertBooleanToString(searchSeat)
-
-    //     setErrorMessage(err)
-    //     setMessage('Debe seleccionar un vuelo primero.')
-
+    try {
+      const searchSeat = await flightsService.getSearchSeats(flightID, flightSearch, seatClass)
+      convertBooleanToString(searchSeat)
+    } catch (error) {
+      setSnackbar({
+        open: true,
+        message: error.response.data.error,
+      })
+    }
   }
 
   const convertBooleanToString = (seats) => {
