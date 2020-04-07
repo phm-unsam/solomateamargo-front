@@ -14,14 +14,12 @@ export default function Cart() {
   const error = useSelector(state => state.cartReducer.error)
   const login = useSelector(store => store.login);
   let history = useHistory();
-  const [flight, setFlight] = useState()
+  const [flightSelect, setFlightSelect] = useState({
+    id: ''
+  })
   const onFlightsClick = e => {
     history.push("/");
   }
-  useEffect(() => {
-    getAllCart()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const getAllCart = () => {
     dispatch(cartLoad(login.id))
@@ -51,7 +49,8 @@ export default function Cart() {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.value) {
-        dispatch(deleteFlightReservation(flight, login.id))
+        dispatch(deleteFlightReservation(flightSelect, login.id))
+        setFlightSelect({id: ''})
         getAllCart()
       }
     })
@@ -88,17 +87,22 @@ export default function Cart() {
   ]
 
   const selectApurchase = (flight) => {
-    setFlight(flight)
+    setFlightSelect(flight)
+  }
+
+  const disabledFligh = () => {
+    return flightSelect.id === ""
   }
   return (
     <Fragment>
       {error ? <p>hubo un error</p> : null}
       <TableCreator data={flights} columnName={columnName} bodyAction={selectApurchase} />
-        <Button className="buton"
-          variant="contained"
-          color="secondary"
-          onClick={() => deleteFlight()}
-        >Eliminar</Button>  
+      <Button className="buton"
+        variant="contained"
+        color="secondary"
+        onClick={() => deleteFlight()}
+        disabled={disabledFligh()}
+      >Eliminar</Button>
 
       <form onSubmit={buyTicketsFlights}>
         <div className="botones">

@@ -14,10 +14,8 @@ import {
     BUY_CART_ERROR
 } from '../../consts'
 
-
 export function*  cartLoad({payload}){
     const results = yield call (apiCall, `user/${payload}/cart`, null, null, 'GET')
-    delay(1000)
     try{
         yield put({type: CART_LOAD_FINISHED, results})
     }catch(error){
