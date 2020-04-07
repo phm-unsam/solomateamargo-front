@@ -92,6 +92,7 @@ export default Flights => {
     setSnackbar({
       ...snackbar,
       open: false});
+      
   }
 
   return (

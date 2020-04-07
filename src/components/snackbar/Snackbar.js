@@ -18,9 +18,6 @@ const useStyles = makeStyles(theme => ({
 
 const SnackbarOpen=(props)=> {
   const classes = useStyles();
-
-  };
-
  
   return (
     <div className={classes.root}>
