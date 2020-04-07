@@ -80,8 +80,6 @@ export default Flights => {
         message: error.response.data.error,
       })
     }
-    console.log(snackbar)
-    debugger
   }
 
   const clear = (searchFlights) => {

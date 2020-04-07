@@ -19,7 +19,7 @@ const initialState = {
 
 export default function (state = initialState, action) {
     switch (action.type) {
-
+        case DELETE_ALL_CART:
         case CART_LOAD:
             return {
                 ...state,
@@ -52,16 +52,12 @@ export default function (state = initialState, action) {
                 loading: action.results
             }
 
-        case DELETE_ALL_CART:
-            return {
-                ...state,
-                flights: action.payload
-            }
-
         case DELETE_ALL_CART_FINISHED:
             return {
-                flights: action.results
+                ...state,
+                loading: false
             }
+
         case BUY_CART_FINISHED:
             return {
                 ...state,
@@ -69,7 +65,7 @@ export default function (state = initialState, action) {
             }
 
         case BUY_CART_ERROR:
-            return{
+            return {
                 ...state,
                 loading: false,
                 error: action.payload

@@ -53,14 +53,13 @@ export default function Cart() {
       if (result.value) {
         dispatch(deleteFlightReservation(flight, login.id))
         getAllCart()
-
       }
     })
-
   }
 
   const deleteAllflights = () => {
     dispatch(deleteAll(login.id))
+    getAllCart()
   }
 
   const buyTicketsFlights = e => {
