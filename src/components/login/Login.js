@@ -38,6 +38,12 @@ const Login = ({ loginUser }) => {
     loginUser(loginForm);
   }
 
+  const enterKeyPress = (e) => {
+    if(e.which === 13){
+      login(e)
+    }
+  }
+
   const handleInputChange = (e) => {
     const { value, name } = e.target;
     setloginForm({ ...loginForm, [name]: value });
@@ -80,6 +86,7 @@ const Login = ({ loginUser }) => {
             required
             fullWidth
             onChange={handleInputChange}
+            onKeyPress={enterKeyPress}
             name="password"
             label="Password"
             type="password"

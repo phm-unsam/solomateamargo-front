@@ -7,72 +7,80 @@ import ProfileService from '../../services/profileService'
 import Loader from '../loader';
 import { GenericFriendsTable } from './genericFriendTable';
 import Typography from '@material-ui/core/Typography';
-
-
+import { DialogContent } from '@material-ui/core';
+import style from './style'
 
 export const AddFriendDialog = (props) => {
+  const classes = style();
+
 	let id = props.id;
   let addFriendsToOriginal = props.addFriendsToOriginal;
   let setSnackbar = props.setSnackbar;
+
   const { onClose, selectedValue, open } = props;
   
 	const [friends, setFriends] = useState([]);
 	const [isLoaded, setisLoaded] = useState(false);
-	const [toAddFriend, setToAddFriend] = useState({ id: null, name: '', lastName: '' });
-
+  const [toAddFriend, setToAddFriend] = useState({ id: null, name: '', lastName: '' });
+  
   const profileService = new ProfileService();
 
   useEffect(() => {
-    if(!isLoaded){
-      profileService.possibleFriends(id)
-      .then( friends => {
-        setFriends(friends.data);
-        setisLoaded(true);
-      })  
-      .catch( err => {
-        setSnackbar({
-          open: true,
-          message: err,
-          severity: 'error'
-        });
+    getPossibleFriends();
+  }, [id]);
+
+  const getPossibleFriends = async () => {
+    try {
+      let possibleFriends = await profileService.possibleFriends(id);
+      setFriends(possibleFriends);
+      setisLoaded(true);
+    } catch (err) {
+      let errorMsg = err.toString();
+      setSnackbar({
+        open: true,
+        message: errorMsg,
+        severity: 'error'
       });
     }
-  });
+  }
 
   const handleClose = () => {
     onClose(selectedValue);
   };
 	
-	const addFriend = () => {
-		let idFriendToAdd = toAddFriend.id;
-		if(idFriendToAdd !== null){
-			profileService.addFriend(id, idFriendToAdd)
-			.then( status => {
-        setSnackbar({
-          open: true,
-          message: `Has agregado a ${toAddFriend.name} ${toAddFriend.lastName} a tu lista de amigos.`,
-          severity: 'success'
-        });
-				addFriendsToOriginal(toAddFriend);
-				setFriends(friends.filter(friend => friend !== toAddFriend));
-				setToAddFriend({id: null});		
-			})  
-			.catch( err => {
-        setSnackbar({
-          open: true,
-          message: err,
-          severity: 'error'
-        });
+  const addFriend = async () => {
+    let idFriendToAdd = toAddFriend.id;
+
+    try {
+      let response = await profileService.addFriend(id, idFriendToAdd);
+      setSnackbar({
+        open: true,
+        message: `Has agregado a ${toAddFriend.name} ${toAddFriend.lastName} a tu lista de amigos.`,
+        severity: 'success'
       });
-		}
-	}
+      addFriendsToOriginal(toAddFriend);
+      setFriends(friends.filter(friend => friend !== toAddFriend));
+      setToAddFriend({id: null});	
+    } catch (err) {
+      let errorMsg = err.toString();
+      setSnackbar({
+        open: true,
+        message: errorMsg,
+        severity: 'error'
+      });
+    }
+  }
 
   return (
 		isLoaded ?
-    <Dialog onClose={handleClose} aria-labelledby="simple-dialog-title" open={open}>
-      <DialogTitle id="simple-dialog-title">Posibles amigos</DialogTitle>
-        <GenericFriendsTable friends={friends} actionOnClick={setToAddFriend} />
-        { toAddFriend.id === null ?  <Typography>Seleccione un amigo para agregar...</Typography> :  <Button color="primary" variant="contained" onClick={addFriend}>{ `Agregar a ${toAddFriend.name} ${toAddFriend.lastName}` }</Button> }
+    <Dialog onClose={handleClose} aria-labelledby="simple-dialog-title" open={open} fullWidth={true} maxWidth={"sm"} spacing={3}>
+        <DialogTitle id="simple-dialog-title"><Typography>Posibles amigos</Typography></DialogTitle>
+        <DialogContent>
+          <div className={classes.dialog}>
+            <GenericFriendsTable friends={friends} actionOnClick={setToAddFriend} />          
+          { toAddFriend.id === null ? <Typography spacing={2}>Seleccione un amigo para agregar...</Typography> :  <Button color="primary" variant="contained" onClick={addFriend} spacing={2}>{ `Agregar a ${toAddFriend.name} ${toAddFriend.lastName}` }</Button> }
+          </div>
+        </DialogContent>
     </Dialog>
 		:
 		<Loader />

@@ -1,69 +1,46 @@
-import { apiCall } from '../redux/api/';
-
+import axios from 'axios';
+import { URL } from './url';
+import { apiCall } from '../redux/api'
 
 export default class ProfileService {
 
-    getProfile(id){
-        try{
-            return apiCall(`user/${id}/profile`, null, null, 'GET')
-        }catch(error){
-            return error
-        }
+    async getProfile(id){
+        const result = await axios.get(`${URL}user/${id}/profile`);
+        return result.data
     }
 
-    getFriends(id){
-        try{
-            return apiCall(`user/${id}/friends`, null, null, 'GET')
-        }catch(error){
-            return error
-        }
+    async getFriends(id){
+        const result = await axios.get(`${URL}user/${id}/friends`);
+        return result.data
     }
 
-    getPurchases(id){
-        try{
-            return apiCall(`user/${id}/purchases`, null, null, 'GET')
-        }catch(error){
-            return error
-        }
+    async getPurchases(id){
+        const result = await axios.get(`${URL}user/${id}/purchases`);
+        return result.data
     }
 
-    addCash(id, amount){
-        try{
-            return apiCall(`user/${id}/addcash`, amount, null, 'PUT')
-        }catch(error){
-            return error
-        }
+    async addCash(id, amount){
+        const response = await axios.put(`${URL}user/${id}/addcash`, amount);
+        return response
     }
 
-    addFriend(id, friendId){
-        try{
-            return apiCall(`user/${id}/addfriend/${friendId}`, null, null, 'PUT')
-        }catch(error){
-            return error
-        }
+    async addFriend(id, friendId){
+        const response = await axios.put(`${URL}user/${id}/friend/${friendId}`);
+        return response
     }
 
-    deleteFriend(id, friendId){
-        try{
-            return apiCall(`user/${id}/deletefriend/${friendId}`, null, null, 'DELETE')
-        }catch(error){
-            return error
-        }
+    async deleteFriend(id, friendId){
+        const response = await axios.delete(`${URL}user/${id}/friend/${friendId}`);
+        return response
     }
 
-    updateProfile(user){
-        try{
-            return apiCall(`user/update`, user, null, 'POST')
-        }catch(error){
-            return error
-        }
+    async updateProfile(user){
+        const response = await axios.post(`${URL}user/profile`, user);
+        return response.data
     }   
 
-    possibleFriends(id){
-        try{
-            return apiCall(`user/${id}/possiblefriends`, null, null, 'GET')
-        }catch(error){
-            return error
-        }
+    async possibleFriends(id){
+        const result = await axios.get(`${URL}user/${id}/possiblefriends`);
+        return result.data
     }
 }

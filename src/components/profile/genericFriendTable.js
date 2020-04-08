@@ -26,7 +26,7 @@ export const GenericFriendsTable = (props) => {
   
   
     return (
-      <TableContainer className={classes.margin5}>
+      <TableContainer spacing={3}>
         <Table className={classes.table} spacing={3}>
             <TableHead>
             <TableRow>

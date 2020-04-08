@@ -27,6 +27,12 @@ export default makeStyles(theme => ({
     },
     clickedRow: {
       backgroundColor: blue
+    },
+    dialog: {
+      display: 'flex',
+      flexDirection: 'column',
+      margin: 'auto',
+      width: 'fit-content',
     }
 }));
 

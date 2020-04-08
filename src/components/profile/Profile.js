@@ -35,8 +35,11 @@ const StyledTableCell = withStyles(theme => ({
 
 export default function Profile() {
   const [user, setUser] = useState({});
+
   let login = useSelector(store => store.login);
+
   const profileService = new ProfileService();
+
   const [isLoaded, setIsLoaded] = useState(false);
   const [snackbar, setSnackbar] = useState({
     open: false,
@@ -52,25 +55,27 @@ export default function Profile() {
       ...snackbar,
       open: false,
     });
-      
   }
 
   useEffect(() => {
-    if (!isLoaded) {
-      profileService.getProfile(login.id)
-        .then(profile => {
-          setUser(profile.data)
-          setIsLoaded(true);
-        })
-        .catch(err => {
-          setSnackbar({
-            open: true,
-            message: err,
-            severity: 'error'
-          });
-        });
-    }
+      getProfile();
   });
+
+  const getProfile = async () => {
+    if (!isLoaded) {
+      try {
+        let profile = await profileService.getProfile(login.id);
+        setUser(profile);
+        setIsLoaded(true);
+      } catch (err) {
+        setSnackbar({
+          open: true,
+          message: err,
+          severity: 'error'
+        });
+      }
+    }
+  }
 
   return (
     <div>
@@ -115,22 +120,21 @@ const UserDataComponent = (props) => {
     });
   }
 
-  const saveChanges = () => {
-    profileService.updateProfile(user)
-      .then(status => {
-        setSnackbar({
-          open: true,
-          message: 'Usuario guardado correctamente!',
-          severity: 'success'
-        });
-      })
-      .catch(err => {
-        setSnackbar({
-          open: true,
-          message: err,
-          severity: 'error'
-        });
+  const saveChanges = async () => {
+    try {
+      let response = await profileService.updateProfile(user);
+      setSnackbar({
+        open: true,
+        message: 'Usuario guardado correctamente!',
+        severity: 'success'
       });
+    } catch (err) {
+      setSnackbar({
+        open: true,
+        message: err,
+        severity: 'error'
+      });
+    }
   };
 
   const redirect = () => {
@@ -206,31 +210,29 @@ const FriendsTable = (props) => {
   };
 
   useEffect(() => {
-    if (!isLoaded) {
-      getFriends(id);
-    }
+    getFriends(id);
   });
 
-  const deleteFriend = () => {
+  const deleteFriend = async () => {
     let idFriendToDelete = toDeleteFriend.id;
     if (idFriendToDelete !== null) {
-      profileService.deleteFriend(id, idFriendToDelete)
-        .then(status => {
-          setSnackbar({
-            open: true,
-            message: 'Usuario eliminado correctamente.',
-            severity: 'success'
-          });
-          setFriends(friends.filter(friend => friend !== toDeleteFriend));
-          setToDeleteFriend({ id: null });
-        })
-        .catch(err =>  {
-          setSnackbar({
-            open: true,
-            message: err,
-            severity: 'error'
-          });
+      try {
+        let response = await profileService.deleteFriend(id, idFriendToDelete);
+        setSnackbar({
+          open: true,
+          message: 'Usuario eliminado correctamente.',
+          severity: 'success'
         });
+        setFriends(friends.filter(friend => friend !== toDeleteFriend));
+        setToDeleteFriend({ id: null });
+      } catch (err) {
+        let errorMsg = err.toString();
+        setSnackbar({
+          open: true,
+          message: errorMsg,
+          severity: 'error'
+        });
+      }
     }
   }
 
@@ -238,19 +240,19 @@ const FriendsTable = (props) => {
     getFriends(id);
   }
 
-  const getFriends = (id) => {
-    profileService.getFriends(id)
-      .then(friends => {
-        setFriends(friends.data);
-        setIsLoaded(true);
-      })
-      .catch(err => {
-        setSnackbar({
-          open: true,
-          message: err,
-          severity: 'error'
-        });
+  const getFriends = async (id) => {
+    try {
+      let friends = await profileService.getFriends(id);
+      setFriends(friends);
+      setIsLoaded(true);
+    } catch (err) {
+      let errorMsg = err.toString();
+      setSnackbar({
+        open: true,
+        message: errorMsg,
+        severity: 'error'
       });
+    }
   }
 
   return (
@@ -282,21 +284,25 @@ const TicketsPurchasedTable = (props) => {
   const profileService = new ProfileService();
 
   useEffect(() => {
-    if (!isLoaded) {
-      profileService.getPurchases(id)
-        .then(tickets => {
-          setTickets(tickets.data);
-          setIsLoaded(true);
-        })
-        .catch(err => {
-          setSnackbar({
-            open: true,
-            message: err,
-            severity: 'error'
-          });
-        });
-    }
+    getPurchases();
   });
+
+  const getPurchases = async () => {
+    if (!isLoaded) {
+      try {
+        let tickets = await profileService.getPurchases(id);
+        setTickets(tickets);
+        setIsLoaded(true);
+      } catch (err) {
+        let errMsg = err.toString();
+        setSnackbar({
+          open: true,
+          message: errMsg,
+          severity: 'error'
+        });
+      }
+    }
+  }
 
   return (
     <TableContainer className={classes.margin5}>
@@ -338,11 +344,11 @@ const AddCash = (props) => {
   const profileService = new ProfileService();
   const [quantity, setQuantity] = useState(0);
 
-  const addCash = () => {
+  const addCash = async () => {
     if (quantity > 0) {
-      profileService.addCash(user.id, quantity)
-        .then(resp => {
-          let tmp = user.cash
+      try {
+        let response = await profileService.addCash(user.id, quantity)
+        let tmp = user.cash
           setUser({
             ...user,
             cash: tmp + quantity
@@ -353,14 +359,14 @@ const AddCash = (props) => {
             severity: 'success'
           });
           setShowCash(false);
-        })
-        .catch(err => {
-          setSnackbar({
-            open: true,
-            message: err,
-            severity: 'error'
-          });
+      } catch (err) {
+        let errMsg = err.toString();
+        setSnackbar({
+          open: true,
+          message: errMsg,
+          severity: 'error'
         });
+      }
     }
   }
 
