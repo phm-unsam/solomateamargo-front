@@ -1,15 +1,10 @@
 import {
     CART_LOAD, 
     CART_LOAD_FINISHED,
-    CART_LOAD_ERROR, 
     DELETE_FLIGHT_RESERVATION, 
     DELETE_ALL_CART, 
     BUY_CART,
 } from '../../consts'
-
-export const loadSeat = () => ({
-
-})
 
 export const cartLoad = userId => ({
     type: CART_LOAD,
@@ -21,17 +16,11 @@ export const cartLoadFinished = flights => ({
     payload: flights
 });
 
-export const cartLoadError = () => ({
-    type:   CART_LOAD_ERROR,
-    payload: true
-})
-
 export const deleteFlightReservation = (flight, loginUser) => ({
     type: DELETE_FLIGHT_RESERVATION,
     payload: flight,
     loginUser: loginUser
 })
-
 
 export const deleteAll = userId => ({
     type: DELETE_ALL_CART,

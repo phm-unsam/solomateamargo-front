@@ -3,6 +3,7 @@ import {
     CART_LOAD_FINISHED,
     CART_LOAD_ERROR,
     DELETE_FLIGHT_RESERVATION,
+    DELETE_FLIGHT_RESERVATION_ERROR,
     DELETE_FLIGHT_RESERVATION_FINISHED,
     DELETE_ALL_CART,
     DELETE_ALL_CART_FINISHED,
@@ -32,7 +33,7 @@ export default function (state = initialState, action) {
                 loading: null,
                 flights: action.results.data,
             }
-
+        case DELETE_FLIGHT_RESERVATION_ERROR:
         case CART_LOAD_ERROR:
             return {
                 ...state,
