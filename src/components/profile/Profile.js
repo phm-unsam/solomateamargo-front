@@ -1,37 +1,21 @@
 import React, { useState, Fragment, useEffect } from 'react';
-import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import TableBody from '@material-ui/core/TableBody';
-import Table from '@material-ui/core/Table';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import TableCell from '@material-ui/core/TableCell';
 import Typography from '@material-ui/core/Typography';
 import style from './style'
 import { useSelector } from 'react-redux'
 import ProfileService from '../../services/profileService'
 import Loader from '../loader';
 import { useHistory } from "react-router-dom";
+import Icon from '@material-ui/core/Icon'
 
 //Components
 import { GenericFriendsTable } from './genericFriendTable';
 import { AddFriendDialog } from './addFriendDialog';
 import SnackbarOpen from '../snackbar/Snackbar'
+import TableCreator from '../tableCreator/TableCreator';
 
-import Icon from '@material-ui/core/Icon'
-
-const StyledTableCell = withStyles(theme => ({
-  head: {
-    backgroundColor: theme.palette.action.hover,
-    color: theme.palette.common.black,
-  },
-  body: {
-    fontSize: 14,
-  },
-}))(TableCell);
 
 export default function Profile() {
   const [user, setUser] = useState({});
@@ -122,7 +106,7 @@ const UserDataComponent = (props) => {
 
   const saveChanges = async () => {
     try {
-      let response = await profileService.updateProfile(user);
+      await profileService.updateProfile(user);
       setSnackbar({
         open: true,
         message: 'Usuario guardado correctamente!',
@@ -217,7 +201,7 @@ const FriendsTable = (props) => {
     let idFriendToDelete = toDeleteFriend.id;
     if (idFriendToDelete !== null) {
       try {
-        let response = await profileService.deleteFriend(id, idFriendToDelete);
+        await profileService.deleteFriend(id, idFriendToDelete);
         setSnackbar({
           open: true,
           message: 'Usuario eliminado correctamente.',
@@ -241,17 +225,19 @@ const FriendsTable = (props) => {
   }
 
   const getFriends = async (id) => {
-    try {
-      let friends = await profileService.getFriends(id);
-      setFriends(friends);
-      setIsLoaded(true);
-    } catch (err) {
-      let errorMsg = err.toString();
-      setSnackbar({
-        open: true,
-        message: errorMsg,
-        severity: 'error'
-      });
+    if(!isLoaded){
+      try {
+        let friends = await profileService.getFriends(id);
+        setFriends(friends);
+        setIsLoaded(true);
+      } catch (err) {
+        let errorMsg = err.toString();
+        setSnackbar({
+          open: true,
+          message: errorMsg,
+          severity: 'error'
+        });
+      }
     }
   }
 
@@ -283,6 +269,10 @@ const TicketsPurchasedTable = (props) => {
 
   const profileService = new ProfileService();
 
+  const columnNames = [
+    { name: 'Origen'}, {  name: 'Destino'}, {  name: 'Salida'}, {  name: 'Comprado'}, {  name: 'Aerolinea'}, {  name: 'Precio'}
+  ]
+
   useEffect(() => {
     getPurchases();
   });
@@ -305,33 +295,11 @@ const TicketsPurchasedTable = (props) => {
   }
 
   return (
-    <TableContainer className={classes.margin5}>
+    <Fragment>
       <Typography component="h3" variant="h4">Pasajes comprados</Typography> <br/>
-      <Table className={classes.table} spacing={3}>
-        <TableHead>
-          <TableRow>
-            <StyledTableCell align="center">Origen</StyledTableCell>
-            <StyledTableCell align="center">Destino</StyledTableCell>
-            <StyledTableCell align="center">Salida</StyledTableCell>
-            <StyledTableCell align="center">Comprado</StyledTableCell>
-            <StyledTableCell align="center">Aerolinea</StyledTableCell>
-            <StyledTableCell align="center">Precio</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {tickets.map((ticket, index) => (
-            <TableRow key={index} hover>
-              <TableCell align="center" component="th" scope="row">{ticket.from} </TableCell>
-              <TableCell align="center">{ticket.to}</TableCell>
-              <TableCell align="center">{ticket.departure}</TableCell>
-              <TableCell align="center">{ticket.purchaseDate}</TableCell>
-              <TableCell align="center">{ticket.airline}</TableCell>
-              <TableCell align="center">{"$" + ticket.cost}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+      <TableCreator spacing={3} data={tickets} columnName={columnNames} bodyAction={null} styles={classes.table} noDataMsg={"No tiene pasajes comprados."}></TableCreator>
+    </Fragment>
+    
   )
 }
 
@@ -347,7 +315,7 @@ const AddCash = (props) => {
   const addCash = async () => {
     if (quantity > 0) {
       try {
-        let response = await profileService.addCash(user.id, quantity)
+        await profileService.addCash(user.id, quantity)
         let tmp = user.cash
           setUser({
             ...user,

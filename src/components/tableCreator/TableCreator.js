@@ -6,6 +6,7 @@ import Table from '@material-ui/core/Table';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import { withStyles } from '@material-ui/core/styles';
+import { NoDataCard } from './noDataCard';
 
 const StyledTableCell = withStyles(theme => ({
     head: {
@@ -29,24 +30,29 @@ export default function TableCreator(props) {
     const styles = props.styles;
     return (
         <Fragment>
-            <TableContainer >
-                <Table spacing={3} className={styles}>
-                    <TableHead>
-                        <TableRow>
-                            {props.columnName.map(header => (<StyledTableCell align="center">{header.name}</StyledTableCell>))}
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {props.data.map(els => (
-                            <StyledTableRow key={els.id}>
-                                {Object.values(els).map(el => (
-                                    els.id !== el ? <TableCell align="center" onClick={() => props.bodyAction(els)}>{el}</TableCell> : null
-                                ))}
-                            </StyledTableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+            {
+            props.data.length !== 0 ?  
+                <TableContainer>
+                    <Table spacing={3} className={styles}>
+                        <TableHead>
+                            <TableRow>
+                                {props.columnName.map(header => (<StyledTableCell align="center">{header.name}</StyledTableCell>))}
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {props.data.map(els => (
+                                <StyledTableRow key={els.id}>
+                                    {Object.values(els).map(el => (
+                                        els.id !== el ? <TableCell align="center" onClick={() => props.bodyAction(els)}>{el}</TableCell> : null
+                                    ))}
+                                </StyledTableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            :
+            <NoDataCard msg={props.noDataMsg}></NoDataCard>
+            }
         </Fragment>
     )
 }

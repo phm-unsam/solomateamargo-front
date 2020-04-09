@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { URL } from './url';
-import { apiCall } from '../redux/api'
 
 export default class ProfileService {
 
