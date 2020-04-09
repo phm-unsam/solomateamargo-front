@@ -1,8 +1,8 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { cartLoad } from '../../redux/actions/cartAction';
 import './Cart.css'
-import { deleteAll, deleteFlightReservation, buyTicket, deleteFlightError } from '../../redux/actions/cartAction'
+import { deleteAll, deleteFlightReservation, buyTicket} from '../../redux/actions/cartAction'
 import Button from '@material-ui/core/Button';
 import { useHistory } from "react-router-dom";
 import Swal from 'sweetalert2'
@@ -14,6 +14,10 @@ export default function Cart() {
   const error = useSelector(state => state.cartReducer.error)
   const login = useSelector(store => store.login);
   let history = useHistory();
+
+  useEffect(() => {
+    getAllCart()
+  }, [])
   const [flightSelect, setFlightSelect] = useState({
     id: ''
   })

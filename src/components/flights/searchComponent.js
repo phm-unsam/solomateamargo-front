@@ -13,7 +13,7 @@ export const SearchComponent = (props) => {
   const classes = useStyles();
   const [dateFrom, setDateFrom] = useState(new Date())
   const [dateTo, setDateTo] = useState(new Date())
-
+  const [seatClass, setSeatClass] = useState("")
   const [flightSearch, setFlightSearch] = useState({
     departure: '',
     arrival: '',
@@ -85,6 +85,7 @@ export const SearchComponent = (props) => {
         seatClass: value.seatClass ,
         loading: true
       })
+      debugger
       if (flightSearch.loading) {
         props.searchSeat(flightSearch);
         setFlightSearch({
@@ -163,6 +164,7 @@ export const SearchComponent = (props) => {
             name="seatClass"
             options={seatClasses}
             getOptionLabel={option => option.seatClass}
+            value={flightSearch.seatClass}
             onChange={seatsClass}
             style={{ width: 220 }}
             className={classes.margin5}

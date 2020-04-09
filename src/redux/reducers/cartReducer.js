@@ -26,7 +26,7 @@ export default function (state = initialState, action) {
                 ...state,
                 loading: action.payload
             }
-        case CART_LOAD_FINISHED:
+            case CART_LOAD_FINISHED:
             return {
                 ...state,
                 error: false,
@@ -46,8 +46,8 @@ export default function (state = initialState, action) {
                 ...state,
                 selectedFlight: action.payload
             }
-
-        case DELETE_FLIGHT_RESERVATION_FINISHED:
+            case DELETE_FLIGHT_RESERVATION_FINISHED:
+                console.log(action.results)
             return {
                 ...state,
                 loading: action.results

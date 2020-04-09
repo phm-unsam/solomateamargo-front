@@ -23,7 +23,7 @@ export default class FlightsService {
     }
     async postaddCart(payload) {
         const { flightId, seatNumber, id } = payload
-        const result = await axios.post(REST_SERVER_URL + `user/${id}/cart/add?flightId=${flightId}&seatNumber=${seatNumber}`)
+        const result = await axios.post(REST_SERVER_URL + `user/${id}/cart/item`, {flightId, seatNumber})
         return result
 
     }
@@ -40,14 +40,14 @@ export default class FlightsService {
         }
 
     }
-
-    formatDate(date) {
-        return moment(date).format("DD/MM/YYYY")
-    }
-
     async getAllFlight() {
         const result = await axios.get(REST_SERVER_URL + `flights`)
         return result.data
 
     }
+
+    formatDate(date) {
+        return moment(date).format("DD/MM/YYYY")
+    }
+
 }
