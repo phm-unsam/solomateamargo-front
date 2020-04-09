@@ -26,11 +26,13 @@ export const AddFriendDialog = (props) => {
   const profileService = new ProfileService();
 
   useEffect(() => {
-    getPossibleFriends();
+    if(!isLoaded){
+      getPossibleFriends();
+    }
   });
 
   const getPossibleFriends = async () => {
-    if(!isLoaded){
+    
       try {
         let possibleFriends = await profileService.possibleFriends(id);
         setFriends(possibleFriends);
@@ -43,7 +45,6 @@ export const AddFriendDialog = (props) => {
           severity: 'error'
         });
       }
-    }
   }
 
   const handleClose = () => {
@@ -61,8 +62,10 @@ export const AddFriendDialog = (props) => {
         severity: 'success'
       });
       addFriendsToOriginal(toAddFriend);
-      setFriends(friends.filter(friend => friend !== toAddFriend));
+      //setFriends(friends.filter(friend => friend !== toAddFriend));
+      getPossibleFriends();
       setToAddFriend({id: null});	
+      setisLoaded(false);
     } catch (err) {
       let errorMsg = err.toString();
       setSnackbar({

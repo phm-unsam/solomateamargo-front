@@ -7,6 +7,7 @@ export const GenericFriendsTable = (props) => {
 
     let friends = props.friends;
     let actionOnClick = props.actionOnClick;
+    let noDataMsg = props.noDataMsg;
   
     const columnNames = [
       { name: 'Nombre'}, {  name: 'Apellido'}
@@ -14,7 +15,7 @@ export const GenericFriendsTable = (props) => {
 
     return (
       <Fragment> 
-          <TableCreator spacing={3} data={friends} columnName={columnNames} bodyAction={actionOnClick} styles={classes.table} noDataMsg={"No tiene amigos ..."}> </TableCreator>
+          <TableCreator spacing={3} data={friends} columnName={columnNames} bodyAction={actionOnClick} styles={classes.table} noDataMsg={noDataMsg}> </TableCreator>
       </Fragment>
     )    
 }

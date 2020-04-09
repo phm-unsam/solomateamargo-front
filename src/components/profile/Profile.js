@@ -194,7 +194,9 @@ const FriendsTable = (props) => {
   };
 
   useEffect(() => {
-    getFriends(id);
+    if(!isLoaded){
+      getFriends(id);
+    }
   });
 
   const deleteFriend = async () => {
@@ -225,7 +227,7 @@ const FriendsTable = (props) => {
   }
 
   const getFriends = async (id) => {
-    if(!isLoaded){
+    
       try {
         let friends = await profileService.getFriends(id);
         setFriends(friends);
@@ -238,7 +240,6 @@ const FriendsTable = (props) => {
           severity: 'error'
         });
       }
-    }
   }
 
   return (
@@ -246,7 +247,7 @@ const FriendsTable = (props) => {
       {
         isLoaded ?
           <div>
-            <GenericFriendsTable friends={friends} actionOnClick={setToDeleteFriend} />
+            <GenericFriendsTable friends={friends} actionOnClick={setToDeleteFriend} noDataMsg={"No tiene amigos..."}/>
             <Button color="primary" variant="contained" onClick={handleClickOpen} >Agregar Amigo</Button>
             <AddFriendDialog open={open} onClose={handleClose} id={id} addFriendsToOriginal={addFriend} setSnackbar={setSnackbar}/>
             {toDeleteFriend.id === null ? <Typography className={classes.margin5}>Seleccione un amigo para eliminar...</Typography> : <Button color="secondary" variant="contained" onClick={deleteFriend} className={classes.margin5}>{`Quitar a ${toDeleteFriend.name} ${toDeleteFriend.lastName}`}</Button>}
