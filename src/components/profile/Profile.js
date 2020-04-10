@@ -13,8 +13,8 @@ import Icon from '@material-ui/core/Icon'
 //Components
 import { GenericFriendsTable } from './genericFriendTable';
 import { AddFriendDialog } from './addFriendDialog';
-import SnackbarOpen from '../snackbar/Snackbar'
-import TableCreator from '../tableCreator/TableCreator';
+import SnackbarOpen from '../snackbar/snackbar'
+import TableCreator from '../tableCreator/tableCreator';
 
 
 export default function Profile() {

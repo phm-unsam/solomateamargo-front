@@ -1,6 +1,6 @@
 import React, { Fragment }  from 'react';
 import style from './style'
-import TableCreator from '../tableCreator/TableCreator';
+import TableCreator from '../tableCreator/tableCreator';
 
 export const GenericFriendsTable = (props) => {
     const classes = style();

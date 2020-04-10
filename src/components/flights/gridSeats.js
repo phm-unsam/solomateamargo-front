@@ -12,7 +12,7 @@ import { useStyles } from './style'
 
 import { useDispatch } from 'react-redux';
 import { cartLoad } from '../../redux/actions/cartAction';
-import TableCreator from '../tableCreator/TableCreator'
+import TableCreator from '../tableCreator/tableCreator'
 export const GridSeats = (props) => {
   const login = useSelector(store => store.login);
   const classes = useStyles();
@@ -45,7 +45,7 @@ export const GridSeats = (props) => {
 
   const total = () => {
     let sum = 0;
-    cartFlights.forEach(cartFlight => sum = sum + cartFlight.cost);
+    cartFlights.forEach(cartFlight => sum += cartFlight.cost);
     return sum;
   }
 
@@ -64,7 +64,7 @@ export const GridSeats = (props) => {
   return (
 
     <Fragment>
-      <TableCreator data={props.seats} columnName={columnName} bodyAction={saveSeatId} /> 
+      <TableCreator data={props.seats} columnName={columnName} bodyAction={saveSeatId} noDataMsg={"Seleccione un vuelo para mostrar asientos."}/> 
       <Button
       type="submit"
       variant="contained"
@@ -79,7 +79,7 @@ export const GridSeats = (props) => {
       <Grid container spacing={3} className={classes.margin5}>
         <Grid item xs={6}>
           <Typography variant="body1" gutterBottom>Cantidad de items: {cartFlights.length}</Typography>
-          <Typography variant="body1" gutterBottom>Total $ {total()}</Typography>
+          <Typography variant="body1" gutterBottom>Total ${total()}</Typography>
         </Grid>
         <Grid item xs={3}>
           <Button
