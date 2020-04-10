@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 
-import TableCreator from '../tableCreator/TableCreator'
+import TableCreator from '../tableCreator/tableCreator'
 
 export const GridFlights = (props) => {
     const { flights } = props;
@@ -14,7 +14,7 @@ export const GridFlights = (props) => {
     }
     return (
       <Fragment>
-        <TableCreator data={flights} columnName={columnName} bodyAction={selectSeat}/>
+        <TableCreator data={flights} columnName={columnName} bodyAction={selectSeat} noDataMsg={"No hay vuelos disponibles"}/>
       </Fragment>
     )
   }

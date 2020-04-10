@@ -1,21 +1,28 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import  style from './style';
+import style from './style';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import { useHistory } from "react-router-dom";
-
+import { useHistory } from 'react-router-dom'
+import { bindActionCreators } from 'redux'
+import { logoutUser } from '../../redux/actions/LoginActions'
 
 const Appbar = (props) => {
   const classes = style();
-
+  const history = useHistory()
+  
+  const handleLogout = () => {
+   
+    props.logoutUser()
+    history.push("/login")
+  }
 
 
   if (!props.isLogged)
-    return(<div></div>)
+    return (<div></div>)
   else
     return (
       <div className={classes.root}>
@@ -28,6 +35,7 @@ const Appbar = (props) => {
               Aterrizapp
           </Typography>
             <Button color="inherit">{props.name} {props.lastName}</Button>
+            <Button color="inherit" onClick={handleLogout}>Log Out</Button>
           </Toolbar>
         </AppBar>
       </div>
@@ -38,4 +46,8 @@ function mapStateToProps(state) {
   return { ...state.login }
 }
 
-export default connect(mapStateToProps)(Appbar)
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({ logoutUser }, dispatch)
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(Appbar)

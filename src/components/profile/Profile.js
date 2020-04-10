@@ -13,8 +13,8 @@ import Icon from '@material-ui/core/Icon'
 //Components
 import { GenericFriendsTable } from './genericFriendTable';
 import { AddFriendDialog } from './addFriendDialog';
-import SnackbarOpen from '../snackbar/Snackbar'
-import TableCreator from '../tableCreator/TableCreator';
+import SnackbarOpen from '../snackbar/snackbar'
+import TableCreator from '../tableCreator/tableCreator';
 
 
 export default function Profile() {
@@ -177,6 +177,7 @@ const FriendsTable = (props) => {
   const setSnackbar = props.setSnackbar;
 
   const [friends, setFriends] = useState([]);
+  const [possibleFriends, setPossibleFriends] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [toDeleteFriend, setToDeleteFriend] = useState({ id: null, name: '', lastName: '' });
   const [open, setOpen] = useState(false);
@@ -185,6 +186,7 @@ const FriendsTable = (props) => {
 
   //Para abrir el dialog
   const handleClickOpen = () => {
+    getPossibleFriends();
     setOpen(true);
   };
 
@@ -195,7 +197,8 @@ const FriendsTable = (props) => {
 
   useEffect(() => {
     if(!isLoaded){
-      getFriends(id);
+      getFriends();
+      getPossibleFriends();
     }
   });
 
@@ -222,12 +225,7 @@ const FriendsTable = (props) => {
     }
   }
 
-  const addFriend = (newFriend) => {
-    getFriends(id);
-  }
-
-  const getFriends = async (id) => {
-    
+  const getFriends = async () => {
       try {
         let friends = await profileService.getFriends(id);
         setFriends(friends);
@@ -242,6 +240,41 @@ const FriendsTable = (props) => {
       }
   }
 
+  const getPossibleFriends = async () => {
+    try {
+      let possibleFriends = await profileService.possibleFriends(id);
+      setPossibleFriends(possibleFriends);
+    } catch (err) {
+      let errorMsg = err.toString();
+      setSnackbar({
+        open: true,
+        message: errorMsg,
+        severity: 'error'
+      });
+    }
+  }
+
+  const addFriend = async (idFriendToAdd, setToAddFriend) => {
+    try {
+      await profileService.addFriend(id, idFriendToAdd.id);
+      setSnackbar({
+        open: true,
+        message: `Has agregado a ${idFriendToAdd.name} ${idFriendToAdd.lastName} a tu lista de amigos.`,
+        severity: 'success'
+      });
+      getPossibleFriends();
+      getFriends();
+      setToAddFriend({ id: null, name: '', lastName: '' });
+    } catch (err) {
+      let errorMsg = err.toString();
+      setSnackbar({
+        open: true,
+        message: errorMsg,
+        severity: 'error'
+      });
+    }
+  }
+
   return (
     <div>
       {
@@ -249,7 +282,7 @@ const FriendsTable = (props) => {
           <div>
             <GenericFriendsTable friends={friends} actionOnClick={setToDeleteFriend} noDataMsg={"No tiene amigos..."}/>
             <Button color="primary" variant="contained" onClick={handleClickOpen} >Agregar Amigo</Button>
-            <AddFriendDialog open={open} onClose={handleClose} id={id} addFriendsToOriginal={addFriend} setSnackbar={setSnackbar}/>
+            <AddFriendDialog open={open} onClose={handleClose} possibleFriends={possibleFriends} addFriend={addFriend} setSnackbar={setSnackbar}/>
             {toDeleteFriend.id === null ? <Typography className={classes.margin5}>Seleccione un amigo para eliminar...</Typography> : <Button color="secondary" variant="contained" onClick={deleteFriend} className={classes.margin5}>{`Quitar a ${toDeleteFriend.name} ${toDeleteFriend.lastName}`}</Button>}
           </div>
           :

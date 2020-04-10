@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import SnackbarOpen from '../snackbar/Snackbar'
+import SnackbarOpen from '../snackbar/snackbar'
 import { useSelector } from 'react-redux';
 import FlightsService from '../../services/flightsService';
 
@@ -80,7 +80,7 @@ export default Flights => {
       getAllFlight()
       setSnackbar({
         open: true,
-        message: "se agregado con exito al carrito",
+        message: "Se ha agregado con exito al carrito.",
         severity: "success"
       })
     } catch (error) {
