@@ -31,12 +31,10 @@ export default class FlightsService {
     async getSearchFlight(filterFlights) {
         const { dateFrom, dateTo, departure, arrival } = filterFlights
         if (dateTo !== null) {
-            debugger
             const result = await axios.get(REST_SERVER_URL + `flights?dateFrom=${this.formatDate(dateFrom)}&dateTo=${this.formatDate(dateTo)}`)
             return result.data
         }
         else {
-            debugger
             const result = await axios.get(REST_SERVER_URL + `flights?departure=${departure}&arrival=${arrival}`)
             return result.data
         }

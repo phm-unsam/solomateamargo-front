@@ -6,7 +6,7 @@ import { Provider } from 'react-redux'
 import flights from './components/flights/flights';
 import PropTypes from 'prop-types';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import Profile from './components/profile/profile';
+import Profile from './components/profile/Profile';
 import PrivateRoute from './privateRoute'
 import Appbar from './components/appbar/appbar'
 

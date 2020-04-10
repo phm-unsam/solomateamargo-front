@@ -18,6 +18,7 @@ export default Flights => {
     open: false,
     message: '',
   });
+  
   const login = useSelector(store => store.login);
 
   useEffect(() => {
