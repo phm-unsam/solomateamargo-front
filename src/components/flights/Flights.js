@@ -45,7 +45,7 @@ export default Flights => {
 
   const searchSeat = async (flightSearch) => {
     try {
-      const searchSeat = await flightsService.getSearchSeats(flightID, flightSearch);
+      const searchSeat = await flightsService.getSearchSeats(flightID, flightSearch)
       convertBooleanToString(searchSeat)
     } catch (error) {
       setSnackbar({

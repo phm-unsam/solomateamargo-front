@@ -20,7 +20,12 @@ const Appbar = (props) => {
     history.push("/login")
   }
 
-
+  const redirectHome = () =>{
+    history.push("/")
+  }
+  const redirectprofile= () =>{
+    history.push("/perfil")
+  }
   if (!props.isLogged)
     return (<div></div>)
   else
@@ -28,13 +33,13 @@ const Appbar = (props) => {
       <div className={classes.root}>
         <AppBar position="static">
           <Toolbar>
-            <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" >
+            <IconButton onClick={redirectHome} edge="start" className={classes.menuButton} color="inherit" aria-label="menu" >
               <img src="../../plane.png" alt="logo" height="50rem"></img>
             </IconButton>
             <Typography variant="h6" className={classes.title}>
               Aterrizapp
           </Typography>
-            <Button color="inherit">{props.name} {props.lastName}</Button>
+            <Button color="inherit" onClick={redirectprofile}>{props.name} {props.lastName}</Button>
             <Button color="inherit" onClick={handleLogout}>Log Out</Button>
           </Toolbar>
         </AppBar>

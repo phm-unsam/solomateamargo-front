@@ -19,7 +19,7 @@ export default function Cart() {
   }, [])
   const [flightSelect, setFlightSelect] = useState({
     id: ''
-  })
+  }) 
   const onFlightsClick = e => {
     history.push("/");
   }

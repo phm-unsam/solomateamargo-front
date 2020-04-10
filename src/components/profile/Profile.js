@@ -9,13 +9,12 @@ import ProfileService from '../../services/profileService'
 import Loader from '../loader';
 import { useHistory } from "react-router-dom";
 import Icon from '@material-ui/core/Icon'
-
+ 
 //Components
 import { GenericFriendsTable } from './genericFriendTable';
 import { AddFriendDialog } from './addFriendDialog';
 import SnackbarOpen from '../snackbar/snackbar'
 import TableCreator from '../tableCreator/tableCreator';
-
 
 export default function Profile() {
   const [user, setUser] = useState({});

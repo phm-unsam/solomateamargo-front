@@ -3,7 +3,7 @@ import './App.css';
 import Login from './components/login/login';
 import Cart from './components/cart/cart'
 import { Provider } from 'react-redux'
-import Flights from './components/flights/flights';
+import flights from './components/flights/flights';
 import PropTypes from 'prop-types';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Profile from './components/profile/profile';
@@ -18,7 +18,7 @@ const App = ({ store }) => (
 				<PrivateRoute exact path="/perfil" component={Profile} />
 				<Route exact path="/login" component={Login} />
 				<PrivateRoute exact path="/cart" component={Cart} />
-				<PrivateRoute exact path="/" component={Flights} />
+				<PrivateRoute exact path="/" component={flights} />
 
 			</div>
 		</Router>
