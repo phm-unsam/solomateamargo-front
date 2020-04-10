@@ -12,9 +12,9 @@ import Appbar from './components/appbar/appbar'
 
 const App = ({ store }) => (
 	<Provider store={store}>
-	<Appbar/>
 		<Router>
 			<div className="App">
+				<Appbar />
 				<PrivateRoute exact path="/perfil" component={Profile} />
 				<Route exact path="/login" component={Login} />
 				<PrivateRoute exact path="/cart" component={Cart} />
