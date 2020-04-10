@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
@@ -8,12 +8,15 @@ import { useHistory } from "react-router-dom";
 import { useSelector } from 'react-redux';
 
 //css
-import { useStyles } from './style'
+import { useStyles } from './style';
 
 import { useDispatch } from 'react-redux';
 import { cartLoad } from '../../redux/actions/cartAction';
-import TableCreator from '../tableCreator/tableCreator'
+import TableCreator from '../tableCreator/tableCreator';
+
 export const GridSeats = (props) => {
+  const seat = props.seat;
+  const setSeat = props.setSeat;
   const login = useSelector(store => store.login);
   const classes = useStyles();
   let history = useHistory();
@@ -54,16 +57,18 @@ export const GridSeats = (props) => {
   }
 
   const columnName = [
-    { name: 'Clase' }, { name: 'Numero' }, { name: 'Ventanilla' }, { name: 'Precio' }
+    {name: 'Ventanilla' }, {name: 'Precio' }, {name: 'Numero' }, {name: 'Clase' }
   ]
 
   const saveSeatId = (seat) => {
+    setSeat(seat);
     seatId = (seat.number)
   }
 
   return (
 
     <Fragment>
+      <Typography variant="body1">{seat.number === null ? "Seleccione un asiento" : `Asiento seleccionado: ${seat.number} ${seat.type} $${seat.cost} `}</Typography>
       <TableCreator data={props.seats} columnName={columnName} bodyAction={saveSeatId} noDataMsg={"Seleccione un vuelo para mostrar asientos."}/> 
       <Button
       type="submit"

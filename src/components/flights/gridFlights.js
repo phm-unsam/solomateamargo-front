@@ -6,7 +6,7 @@ export const GridFlights = (props) => {
     const { flights } = props;
   
     const columnName = [
-      { name: 'Origen'}, {  name: 'Destino'} , {  name: 'Aerolinea'}  , {  name: 'Salida'}  , {  name: 'Escalas'}  , {  name: 'Duración'} , {  name:'Desde'}
+      { name: 'Origen'}, {name: 'Destino'}, {name: 'Aerolinea'}, {name: 'Duración'},{name: 'Salida'}, {name:'Desde'}, {name: 'Escalas'}
     ] 
 
     const selectSeat = (flight) =>{

@@ -205,7 +205,7 @@ export const SearchComponent = (props) => {
             onChange={(e, value) => updateInput(e, value)}
             style={{ width: 220 }}
             className={classes.margin5}
-            renderInput={params => <TextField {...params} label="window" variant="outlined" />}
+            renderInput={params => <TextField {...params} label="Ventanilla?" variant="outlined" />}
           />
         </Grid>
 
@@ -218,7 +218,7 @@ export const SearchComponent = (props) => {
             onClick={clear}
           >
             Limpiar Campos
-              </ColorButton>
+          </ColorButton>
         </Grid>
       </Grid>
     </Fragment >

@@ -10,41 +10,42 @@ import { GridSeats } from './gridSeats';
 
 export default Flights => {
   const flightsService = new FlightsService();
-  const [flightID, setFlightID] = useState(null)
-  const [seats, setSeats] = useState([])
-  const [flights, setflights] = useState([])
+  const [flightID, setFlightID] = useState(null);
+  const [seat, setSeat] = useState({nexttoWindow: false, cost: 0, number: null, type: null});
+  const [seats, setSeats] = useState([]);
+  const [flights, setflights] = useState([]);
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: '',
-  })
+  });
   const login = useSelector(store => store.login);
 
   useEffect(() => {
-    getAllFlight()
+    getAllFlight();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getAllFlight = async () => {
-    setflights(await flightsService.getAllFlight())
+    setflights(await flightsService.getAllFlight());
   }
 
   const getSearchFlight = async (searchFlights) => {
-    setflights(await flightsService.getSearchFlight(searchFlights))
+    setflights(await flightsService.getSearchFlight(searchFlights));
     //corregir nose si esta bien
-    setSeats([])
+    setSeats([]);
   }
 
   const getAllSeats = async (flightId) => {
-    setFlightID(flightId)
-    const seats = await flightsService.getAllSeats(flightId)
-    convertBooleanToString(seats)
+    setSeat({nexttoWindow: false, cost: 0, number: null, type: null})
+    setFlightID(flightId);
+    const seats = await flightsService.getAllSeats(flightId);
+    convertBooleanToString(seats);
 
   }
 
   const searchSeat = async (flightSearch) => {
     try {
-      const searchSeat = await flightsService.getSearchSeats(flightID, flightSearch)
-      debugger
+      const searchSeat = await flightsService.getSearchSeats(flightID, flightSearch);
       convertBooleanToString(searchSeat)
     } catch (error) {
       setSnackbar({
@@ -90,6 +91,7 @@ export default Flights => {
     getAllFlight(searchFlights)
     getAllSeats(flightID)
   }
+
   const closeSnackbar = (event, reason) => {
     if (reason === 'clickaway') {
       return;
@@ -104,7 +106,7 @@ export default Flights => {
     <div>
       <SearchComponent searchSeat={searchSeat} getSearchFlight={getSearchFlight} clear={clear}></SearchComponent>
       <GridFlights getAllSeats={getAllSeats} flights={flights}></GridFlights>
-      <GridSeats seats={seats} addCart={addCart}></GridSeats>
+      <GridSeats seats={seats} addCart={addCart} seat={seat} setSeat={setSeat}></GridSeats>
 
       <SnackbarOpen open={snackbar.open} message={snackbar.message} severity={snackbar.severity} closeSnac={closeSnackbar}/>
 
