@@ -25,18 +25,31 @@ export default Flights => {
   }, []);
 
   const getAllFlight = async () => {
-    setflights(await flightsService.getAllFlight())
+    try {
+      setflights(await flightsService.getAllFlight())
+      
+    } catch (error) {
+      setSnackbar({
+        open: true,
+        message: error.response.data.error,
+        severity: "error"
+      })
+    }
   }
 
   const getSearchFlight = async (searchFlights) => {
     try{
-
       setflights(await flightsService.getSearchFlight(searchFlights))
       //corregir nose si esta bien
       setSeats([])
     }
     catch(error){
       console.log(error)
+      setSnackbar({
+        open: true,
+        message: error.response.data.error,
+        severity: "error"
+      })
     }
   }
 
