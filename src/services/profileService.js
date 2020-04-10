@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { URL } from './url';
-import { apiCall } from '../redux/api'
 
 export default class ProfileService {
 
@@ -25,7 +24,7 @@ export default class ProfileService {
     }
 
     async addFriend(id, friendId){
-        const response = await axios.put(`${URL}user/${id}/friend/${friendId}`);
+        const response = await axios.post(`${URL}user/${id}/friend/${friendId}`);
         return response
     }
 
@@ -35,7 +34,7 @@ export default class ProfileService {
     }
 
     async updateProfile(user){
-        const response = await axios.post(`${URL}user/profile`, user);
+        const response = await axios.put(`${URL}user/profile`, user);
         return response.data
     }   
 

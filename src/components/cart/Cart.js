@@ -40,13 +40,13 @@ export default function Cart() {
 
     const { value: deleteAlert } = await Swal.fire({
       title: 'Estas Seguro?',
-      text: "un pasaje que se elimina no se puede recuperar",
+      text: "Desea eliminar ese pasaje",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'si, eliminar!',
-      cancelButtonText: 'Cancelar'
+      confirmButtonText: 'Si',
+      cancelButtonText: 'No'
     })
     if (deleteAlert) {
         dispatch(deleteFlightReservation(flightSelect, login.id))
@@ -66,14 +66,14 @@ export default function Cart() {
 
     const alert = await Swal.fire({
       title: 'Estas Seguro?',
-      text: "no se puede cancelar la compra",
+      text: "Desea comprar todos los items",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
 
-      confirmButtonText: 'Yes, comprar!',
-      cancelButtonText: 'Cancelar'
+      confirmButtonText: 'Si',
+      cancelButtonText: 'No'
     })
     if (alert.value) {
       dispatch(buyTicket(login.id))
