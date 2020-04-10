@@ -13,7 +13,7 @@ import Icon from '@material-ui/core/Icon'
 //Components
 import { GenericFriendsTable } from './genericFriendTable';
 import { AddFriendDialog } from './addFriendDialog';
-import SnackbarOpen from '../snackbar/snackbar'
+import snackbarOpen from '../snackbar/snackbar'
 import TableCreator from '../tableCreator/tableCreator';
 
 export default function Profile() {
@@ -68,7 +68,7 @@ export default function Profile() {
             <UserDataComponent user={user} setUser={setUser} setSnackbar={setSnackbar} ></UserDataComponent>
             <TicketsPurchasedTable id={user.id} setSnackbar={setSnackbar} ></TicketsPurchasedTable>
             
-            <SnackbarOpen open={snackbar.open} message={snackbar.message} severity={snackbar.severity} closeSnac={closeSnackbar}/>
+            <snackbarOpen open={snackbar.open} message={snackbar.message} severity={snackbar.severity} closeSnac={closeSnackbar}/>
           </div>
           :
           <Loader />

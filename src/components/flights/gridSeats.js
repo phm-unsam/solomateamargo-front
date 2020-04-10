@@ -65,6 +65,11 @@ export const GridSeats = (props) => {
     seatId = (seat.number)
   }
 
+  
+  const desabledCart = () =>{
+    return cartFlights.length === 0
+  }
+
   return (
 
     <Fragment>
@@ -105,6 +110,7 @@ export const GridSeats = (props) => {
             color="primary"
             className={classes.margin}
             onClick={onCartClick}
+            disabled={desabledCart()}
           >
             Finalizar Compra
             </Button>

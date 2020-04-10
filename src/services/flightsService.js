@@ -12,9 +12,10 @@ export default class FlightsService {
             return result.data
         }
         else {
-            const result = await axios.get(url + `?seatType=${seatClass}&nextoWindow=${seatNextoWindow}`)
+            const result = await axios.get(url + `?seatType=${seatClass}&nextoWindow='${seatNextoWindow}'`)
             return result.data
         }
+        
     }
 
     async getAllSeats(userId) {
