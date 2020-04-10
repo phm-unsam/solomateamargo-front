@@ -5,7 +5,8 @@ import Button from '@material-ui/core/Button';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import MomentUtils from '@date-io/moment';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
-
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 //css
 import { useStyles, ColorButton } from './style'
 
@@ -13,7 +14,6 @@ export const SearchComponent = (props) => {
   const classes = useStyles();
   const [dateFrom, setDateFrom] = useState(new Date())
   const [dateTo, setDateTo] = useState(new Date())
-  const [seatClass, setSeatClass] = useState("")
   const [flightSearch, setFlightSearch] = useState({
     departure: '',
     arrival: '',
@@ -21,7 +21,7 @@ export const SearchComponent = (props) => {
     dateTo: null,
     seatNextoWindow: null,
     loading: false,
-    seatClass: ''
+    seatClass: ""
   });
 
   const seatClasses = [
@@ -45,16 +45,8 @@ export const SearchComponent = (props) => {
       setFlightSearch({
         ...flightSearch,
         seatNextoWindow: value.booleanSeat,
-        loading: true
       })
 
-      if (flightSearch.loading) {
-        props.searchSeat(flightSearch);
-        setFlightSearch({
-          ...flightSearch,
-          loading: false
-        })
-      }
     }
     else {
       clear()
@@ -78,29 +70,24 @@ export const SearchComponent = (props) => {
     });
   }
 
-  const seatsClass = (e, value) => {
+  const changeSeat = (event, value) => {
     if (value) {
       setFlightSearch({
         ...flightSearch,
-        seatClass: value.seatClass ,
-        loading: true
+        seatClass: value.seatClass,
       })
-      debugger
-      if (flightSearch.loading) {
-        props.searchSeat(flightSearch);
-        setFlightSearch({
-          ...flightSearch,
-          loading: false
-        })
-      }
     }
     else {
       clear()
     }
   }
 
+  const searchSeat = () => {
+    props.searchSeat(flightSearch);
+  }
+
   const disabledButton = () => {
-    return isEmpty(flightSearch.departure) && (flightSearch.dateTo === null) && isEmpty(flightSearch.arrival) && isEmpty(flightSearch.departure);
+    return isEmpty(flightSearch.departure) && (flightSearch.dateTo === null) && (flightSearch.dateFrom === null) && isEmpty(flightSearch.arrival) && isEmpty(flightSearch.departure);
   }
 
   const isEmpty = (aField) => {
@@ -129,6 +116,9 @@ export const SearchComponent = (props) => {
     props.clear(flightSearch);
   }
 
+  const disabledButtonSeat = () => {
+   return isEmpty(flightSearch.seatClass) && (flightSearch.seatNextoWindow === null)
+  }
   return (
     <Fragment>
       <Grid container spacing={3} className={classes.margin5}>
@@ -164,13 +154,26 @@ export const SearchComponent = (props) => {
             name="seatClass"
             options={seatClasses}
             getOptionLabel={option => option.seatClass}
-            value={flightSearch.seatClass}
-            onChange={seatsClass}
+            onChange={(e, v) => changeSeat(e, v)}
             style={{ width: 220 }}
             className={classes.margin5}
             renderInput={params => <TextField {...params} label="Clase" variant="outlined" />}
           />
+
         </Grid>
+        <Grid item xs={3}>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            className={classes.margin}
+            onClick={searchSeat}
+            disabled={disabledButtonSeat()}
+          >
+            Buscar Asiento
+            </Button>
+        </Grid>
+
         <Grid item xs={3}>
           <Button
             type="submit"
@@ -218,6 +221,6 @@ export const SearchComponent = (props) => {
               </ColorButton>
         </Grid>
       </Grid>
-    </Fragment>
+    </Fragment >
   )
 }

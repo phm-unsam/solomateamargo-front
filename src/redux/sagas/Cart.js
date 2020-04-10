@@ -11,9 +11,10 @@ import {
     DELETE_FLIGHT_RESERVATION_ERROR,
     DELETE_ALL_CART,
     DELETE_ALL_CART_FINISHED,
+    DELETE_ALL_CART_ERROR,
     BUY_CART,
     BUY_CART_FINISHED,
-    BUY_CART_ERROR
+    BUY_CART_ERROR,
 } from '../../consts'
 export const REST_SERVER_URL = 'http://localhost:16000/'
 const cartService = new CartService()
@@ -71,7 +72,7 @@ export function* deleteAll({ payload }) {
         })
         yield put({ type: DELETE_ALL_CART_FINISHED, results })
     } catch (error) {
-        console.log(error.response.data.results)
+       yield put({type: DELETE_ALL_CART_ERROR, error})
     }
 }
 
