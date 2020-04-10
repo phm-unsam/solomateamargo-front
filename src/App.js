@@ -19,7 +19,6 @@ const App = ({ store }) => (
 				<Route exact path="/login" component={Login} />
 				<PrivateRoute exact path="/cart" component={Cart} />
 				<PrivateRoute exact path="/" component={flights} />
-
 			</div>
 		</Router>
 	</Provider>
