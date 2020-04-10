@@ -11,7 +11,7 @@ import style from './style'
 import { loginUser } from '../../redux/actions/LoginActions'
 import planeIcon from '../../plane.png'
 import { useHistory } from "react-router-dom";
-import SnackbarOpen from '../snackbar/Snackbar'
+import SnackbarOpen from '../snackbar/snackbar'
 import {isLoginLoading,loginHasError,loginErrorMsg} from '../../redux/selectors/loginSelectors'
 
 const Login = ({ loginUser }) => {
