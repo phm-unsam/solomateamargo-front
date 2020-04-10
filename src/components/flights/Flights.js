@@ -29,12 +29,19 @@ export default Flights => {
   }
 
   const getSearchFlight = async (searchFlights) => {
-    setflights(await flightsService.getSearchFlight(searchFlights))
-    //corregir nose si esta bien
-    setSeats([])
+    try{
+
+      setflights(await flightsService.getSearchFlight(searchFlights))
+      //corregir nose si esta bien
+      setSeats([])
+    }
+    catch(error){
+      console.log(error)
+    }
   }
 
   const getAllSeats = async (flightId) => {
+
     setFlightID(flightId)
     const seats = await flightsService.getAllSeats(flightId)
     convertBooleanToString(seats)
@@ -44,7 +51,6 @@ export default Flights => {
   const searchSeat = async (flightSearch) => {
     try {
       const searchSeat = await flightsService.getSearchSeats(flightID, flightSearch)
-      debugger
       convertBooleanToString(searchSeat)
     } catch (error) {
       setSnackbar({
