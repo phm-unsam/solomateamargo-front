@@ -41,20 +41,22 @@ export default Flights => {
 
   }
 
-  const searchSeat = async (flightSearch, seatClass) => {
+  const searchSeat = async (flightSearch) => {
     try {
-      const searchSeat = await flightsService.getSearchSeats(flightID, flightSearch, seatClass)
+      const searchSeat = await flightsService.getSearchSeats(flightID, flightSearch)
+      debugger
       convertBooleanToString(searchSeat)
     } catch (error) {
       setSnackbar({
         open: true,
         message: error.response.data.error,
+        severity: "error"
       })
     }
   }
 
   const convertBooleanToString = (seats) => {
-    seats.forEach(seat => seat.isNextToWindow = seat.isNextToWindow ? "Si" : "No")
+    seats.forEach(seat => seat.nextoWindow = seat.nextoWindow ? "Si" : "No")
     setSeats(seats)
   }
 

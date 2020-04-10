@@ -8,7 +8,8 @@ import {
     DELETE_ALL_CART,
     DELETE_ALL_CART_FINISHED,
     BUY_CART_FINISHED,
-    BUY_CART_ERROR
+    BUY_CART_ERROR,
+    DELETE_ALL_CART_ERROR
 } from '../../consts'
 
 const initialState = {
@@ -26,13 +27,14 @@ export default function (state = initialState, action) {
                 ...state,
                 loading: action.payload
             }
-            case CART_LOAD_FINISHED:
+        case CART_LOAD_FINISHED:
             return {
                 ...state,
                 error: false,
                 loading: null,
                 flights: action.results.data,
             }
+        case DELETE_ALL_CART_ERROR:
         case DELETE_FLIGHT_RESERVATION_ERROR:
         case CART_LOAD_ERROR:
             return {
@@ -46,8 +48,8 @@ export default function (state = initialState, action) {
                 ...state,
                 selectedFlight: action.payload
             }
-            case DELETE_FLIGHT_RESERVATION_FINISHED:
-                console.log(action.results)
+        case DELETE_FLIGHT_RESERVATION_FINISHED:
+            console.log(action.results)
             return {
                 ...state,
                 loading: action.results
