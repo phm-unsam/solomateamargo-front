@@ -23,13 +23,14 @@ export default class FlightsService {
     }
     async postaddCart(payload) {
         const { flightId, seatNumber, id } = payload
-        const result = await axios.post(REST_SERVER_URL + `user/${id}/cart/item`, {flightId, seatNumber})
+        const result = await axios.post(REST_SERVER_URL + `user/${id}/cart/item`, { flightId, seatNumber })
         return result
 
     }
 
     async getSearchFlight(filterFlights) {
         const { dateFrom, dateTo, departure, arrival } = filterFlights
+        
         if (dateTo !== null) {
             const result = await axios.get(REST_SERVER_URL + `flights?dateFrom=${this.formatDate(dateFrom)}&dateTo=${this.formatDate(dateTo)}&departure=${departure}&arrival=${arrival}`)
             return result.data

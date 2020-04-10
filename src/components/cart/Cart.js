@@ -11,7 +11,6 @@ import TableCreator from '../tableCreator/TableCreator'
 export default function Cart() {
   const dispatch = useDispatch();
   const flights = useSelector(state => state.cartReducer.flights);
-  const error = useSelector(state => state.cartReducer.error)
   const login = useSelector(store => store.login);
   let history = useHistory();
 
@@ -57,8 +56,6 @@ export default function Cart() {
     }
   }
 
-
-  
   const deleteAllflights = () => {
     dispatch(deleteAll(login.id))
     getAllCart()
@@ -98,7 +95,6 @@ export default function Cart() {
   }
   return (
     <Fragment>
-      {error ? <p>hubo un error</p> : null}
       <TableCreator data={flights} columnName={columnName} bodyAction={selectApurchase} />
       <Button className="buton"
         variant="contained"
