@@ -8,12 +8,8 @@ export default class FlightsService {
     }
 
     async deleteFlight(flight, userId){
-        const { id, seatNumber } = flight
-      
-        return await axios.post(REST_SERVER_URL + `user/${userId}/cart/items`, {
-            seatNumber,
-           "flightId": id
-        }) 
+        
+        return await axios.delete(REST_SERVER_URL + `user/${userId}/cart/item/${flight.id}`,) 
     }
 
     async deleteAll(userId){
