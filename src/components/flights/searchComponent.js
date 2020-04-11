@@ -8,19 +8,20 @@ import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/picker
 //css
 import { useStyles, ColorButton } from './style'
 
+const initialState = {
+  departure: '',
+  arrival: '',
+  dateFrom: null,
+  dateTo: null,
+  seatNextoWindow: null,
+  seatClass: ""
+}
+
 export const SearchComponent = (props) => {
   const classes = useStyles();
   const [dateFrom, setDateFrom] = useState(new Date())
   const [dateTo, setDateTo] = useState(new Date())
-  const [flightSearch, setFlightSearch] = useState({
-    departure: '',
-    arrival: '',
-    dateFrom: null,
-    dateTo: null,
-    seatNextoWindow: null,
-    loading: false,
-    seatClass: ""
-  });
+  const [flightSearch, setFlightSearch] = useState({initialState});
 
   const seatClasses = [
     { seatClass: 'Economy' }, { seatClass: 'Business' }, { seatClass: 'First' }
@@ -102,15 +103,7 @@ export const SearchComponent = (props) => {
   }
 
   const clear = () => {
-    setFlightSearch({
-      departure: '',
-      arrival: '',
-      dateFrom: null,
-      dateTo: null,
-      seatNextoWindow: null,
-      loading: false,
-      seatClass: ''
-    })
+    setFlightSearch(initialState)
     props.clear(flightSearch);
   }
 

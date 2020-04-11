@@ -77,8 +77,11 @@ export function* deleteAll({ payload }) {
 }
 
 export function* buyTicket({ payload }) {
+    let results
     try {
-        const results = yield axios.post(REST_SERVER_URL + `user/${payload}/cart/purchase`)
+        yield cartService.buyTicket(payload).then((response) => {
+            results = response
+        })
         callbackSwal('Comprado!', 'su vuelo a sido comprado')
         yield put({ type: BUY_CART_FINISHED, results })
 
