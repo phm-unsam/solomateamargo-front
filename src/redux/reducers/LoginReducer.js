@@ -14,8 +14,8 @@ export default function (state = initialState, action) {
         case LOGIN_FAILED:
             return { ...state, isLoading: false, msg: response, error: true }
         case LOGIN_SUCCESS:
-            localStorage.setItem('login', JSON.stringify({ ...response.data, isLogged: true }))
-            return { isLoading: false, isLogged: true, ...response.data }
+            localStorage.setItem('login', JSON.stringify({ ...response, isLogged: true }))
+            return { isLoading: false, isLogged: true, ...response }
         case LOGOUT:
             localStorage.clear()
             return { isLogged:false}

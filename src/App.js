@@ -1,14 +1,17 @@
 import React from 'react';
 import './App.css';
+
 import Login from './components/login/login';
 import Cart from './components/cart/cart'
+import Profile from './components/profile/profile';
+import Appbar from './components/appbar/appbar'
+import Flights from './components/flights/flights';
+
 import { Provider } from 'react-redux'
-import flights from './components/flights/flights';
 import PropTypes from 'prop-types';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import Profile from './components/profile/Profile';
+
 import PrivateRoute from './privateRoute'
-import Appbar from './components/appbar/appbar'
 
 const App = ({ store }) => (
 	<Provider store={store}>
@@ -18,7 +21,7 @@ const App = ({ store }) => (
 				<PrivateRoute exact path="/perfil" component={Profile} />
 				<Route exact path="/login" component={Login} />
 				<PrivateRoute exact path="/cart" component={Cart} />
-				<PrivateRoute exact path="/" component={flights} />
+				<PrivateRoute exact path="/" component={Flights} />
 			</div>
 		</Router>
 	</Provider>

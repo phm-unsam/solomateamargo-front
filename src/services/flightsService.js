@@ -22,6 +22,7 @@ export default class FlightsService {
         const result = await axios.get(REST_SERVER_URL + `flight/${userId}/seats`)
         return result.data
     }
+    
     async postaddCart(payload) {
         const { flightId, seatNumber, id } = payload
         const result = await axios.post(REST_SERVER_URL + `user/${id}/cart/item`, { flightId, seatNumber })

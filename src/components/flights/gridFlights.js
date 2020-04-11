@@ -10,11 +10,11 @@ export const GridFlights = (props) => {
     ] 
 
     const availableSeats = (flight) => {
-      props.getAllSeats(flight.id)
+      props.getAllSeats(flight)
     }
     return (
       <Fragment>
-        <TableCreator data={flights} columnName={columnName} noDataMsg={"No hay vuelos disponibles"} buttonAction={availableSeats} titleButton="Asientos Disponibles"/>
+        <TableCreator data={flights} columnName={columnName} noDataMsg={"No hay vuelos disponibles"} buttonAction={availableSeats} titleButton="Seleccionar"/>
       </Fragment>
     )
   }

@@ -36,10 +36,15 @@ export default Flights => {
     setSeats([]);
   }
 
-  const getAllSeats = async (flightId) => {
+  const getAllSeats = async (flight) => {
     setSeat({ nexttoWindow: false, cost: 0, number: null, type: null })
-    setFlightID(flightId);
-    const seats = await flightsService.getAllSeats(flightId);
+    setFlightID(flight.id);
+    const seats = await flightsService.getAllSeats(flight.id);
+    
+    seats.forEach((seat) => {
+      seat.cost += flight.baseCost;    
+    });
+
     convertBooleanToString(seats);
 
   }

@@ -49,7 +49,6 @@ export default function TableCreator(props) {
                                             <Button
                                                 className="buton"
                                                 variant="contained"
-                                                color="secondary"
                                                 onClick={() => props.buttonAction(els)}>
                                                 {props.titleButton}
                                             </Button>

@@ -9,11 +9,12 @@ import ProfileService from '../../services/profileService'
 import Loader from '../loader';
 import { useHistory } from "react-router-dom";
 import Icon from '@material-ui/core/Icon'
- 
+import Swal from 'sweetalert2'
+
 //Components
 import { GenericFriendsTable } from './genericFriendTable';
 import { AddFriendDialog } from './addFriendDialog';
-import snackbarOpen from '../snackbar/snackbar'
+import SnackbarOpen from '../snackbar/snackbar'
 import TableCreator from '../tableCreator/tableCreator';
 
 export default function Profile() {
@@ -68,7 +69,7 @@ export default function Profile() {
             <UserDataComponent user={user} setUser={setUser} setSnackbar={setSnackbar} ></UserDataComponent>
             <TicketsPurchasedTable id={user.id} setSnackbar={setSnackbar} ></TicketsPurchasedTable>
             
-            <snackbarOpen open={snackbar.open} message={snackbar.message} severity={snackbar.severity} closeSnac={closeSnackbar}/>
+            <SnackbarOpen open={snackbar.open} message={snackbar.message} severity={snackbar.severity} closeSnac={closeSnackbar}/>
           </div>
           :
           <Loader />
@@ -201,14 +202,14 @@ const FriendsTable = (props) => {
     }
   });
 
-  const deleteFriend = async () => {
+  const deleteFriend = async (toDeleteFriend) => {
     let idFriendToDelete = toDeleteFriend.id;
     if (idFriendToDelete !== null) {
       try {
         await profileService.deleteFriend(id, idFriendToDelete);
         setSnackbar({
           open: true,
-          message: 'Usuario eliminado correctamente.',
+          message: `Has eliminado a ${toDeleteFriend.name} ${toDeleteFriend.lastName} de tu lista de amigos.`,
           severity: 'success'
         });
         setFriends(friends.filter(friend => friend !== toDeleteFriend));
@@ -253,17 +254,16 @@ const FriendsTable = (props) => {
     }
   }
 
-  const addFriend = async (idFriendToAdd, setToAddFriend) => {
+  const addFriend = async (friendToAdd) => {
     try {
-      await profileService.addFriend(id, idFriendToAdd.id);
+      await profileService.addFriend(id, friendToAdd.id);
       setSnackbar({
         open: true,
-        message: `Has agregado a ${idFriendToAdd.name} ${idFriendToAdd.lastName} a tu lista de amigos.`,
+        message: `Has agregado a ${friendToAdd.name} ${friendToAdd.lastName} a tu lista de amigos.`,
         severity: 'success'
       });
       getPossibleFriends();
       getFriends();
-      setToAddFriend({ id: null, name: '', lastName: '' });
     } catch (err) {
       let errorMsg = err.toString();
       setSnackbar({
@@ -279,10 +279,9 @@ const FriendsTable = (props) => {
       {
         isLoaded ?
           <div>
-            <GenericFriendsTable friends={friends} actionOnClick={setToDeleteFriend} noDataMsg={"No tiene amigos..."}/>
+            <GenericFriendsTable friends={friends} actionOnClick={deleteFriend} noDataMsg={"No tiene amigos..."} titleButton={"Eliminar"}/>
             <Button color="primary" variant="contained" onClick={handleClickOpen} >Agregar Amigo</Button>
             <AddFriendDialog open={open} onClose={handleClose} possibleFriends={possibleFriends} addFriend={addFriend} setSnackbar={setSnackbar}/>
-            {toDeleteFriend.id === null ? <Typography className={classes.margin5}>Seleccione un amigo para eliminar...</Typography> : <Button color="secondary" variant="contained" onClick={deleteFriend} className={classes.margin5}>{`Quitar a ${toDeleteFriend.name} ${toDeleteFriend.lastName}`}</Button>}
           </div>
           :
           <Loader />
