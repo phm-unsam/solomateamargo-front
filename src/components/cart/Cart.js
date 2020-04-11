@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { cartLoad } from '../../redux/actions/cartAction';
 import './cart.css'
@@ -17,9 +17,7 @@ export default function Cart() {
   useEffect(() => {
     getAllCart()
   }, [])
-  const [flightSelect, setFlightSelect] = useState({
-    id: ''
-  }) 
+  
   const onFlightsClick = e => {
     history.push("/");
   }
@@ -36,7 +34,7 @@ export default function Cart() {
     return total
   }
 
-  const deleteFlight = async () => {
+  const deleteFlight = async (flightSelect) => {
 
     const { value: deleteAlert } = await Swal.fire({
       title: 'Estas seguro?',
@@ -50,7 +48,6 @@ export default function Cart() {
     })
     if (deleteAlert) {
         dispatch(deleteFlightReservation(flightSelect, login.id))
-        setFlightSelect({ id: '' })
         getAllCart()
         
     }
@@ -86,26 +83,10 @@ export default function Cart() {
     { name: 'Origen' }, { name: 'Destino' }, { name: 'Salida' }, { name: 'Aerolinea' }, { name: 'Asiento' }, { name: 'Clase' }, { name: 'Desde' }
   ]
 
-  const selectApurchase = (flight) => {
-    setFlightSelect(flight)
-  }
-
-  const disabledFligh = () => {
-    return flightSelect.id === ""
-  }
   return (
     <Fragment>
-      <TableCreator data={flights} columnName={columnName} bodyAction={selectApurchase} />
-      <Button 
-        className="buton"
-        variant="contained"
-        color="secondary"
-        onClick={() => deleteFlight()}
-        disabled={disabledFligh()}
-      >
-      Eliminar
-      </Button>
-
+      <TableCreator data={flights} columnName={columnName}titleButton="Asientos Disponibles" buttonAction={deleteFlight}/>
+    
       <form onSubmit={buyTicketsFlights}>
         <div className="botones">
           <Button variant="contained" color="primary" onClick={() => deleteAllflights()}>Limpar carro</Button>

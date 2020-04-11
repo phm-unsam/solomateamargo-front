@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
@@ -15,15 +15,11 @@ import { cartLoad } from '../../redux/actions/cartAction';
 import TableCreator from '../tableCreator/tableCreator';
 
 export const GridSeats = (props) => {
-  const seat = props.seat;
-  const setSeat = props.setSeat;
   const login = useSelector(store => store.login);
   const classes = useStyles();
   let history = useHistory();
-  let seatId = null;
   const cartFlights = useSelector(state => state.cartReducer.flights);
   const dispatch = useDispatch();
-
   useEffect(() => {
     updateFlights()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -41,8 +37,8 @@ export const GridSeats = (props) => {
     history.push("/cart");
   }
 
-  const addCart = () => {
-    props.addCart(seatId);
+  const addCart = (seat) => {
+    props.addCart(seat.number);
     updateFlights();
   }
 
@@ -52,18 +48,11 @@ export const GridSeats = (props) => {
     return sum;
   }
 
-  const disabledAddCart = () => {
-    return seatId !== null
-  }
+ 
 
   const columnName = [
     {name: 'Ventanilla' }, {name: 'Precio' }, {name: 'Numero' }, {name: 'Clase' }
   ]
-
-  const saveSeatId = (seat) => {
-    setSeat(seat);
-    seatId = (seat.number)
-  }
 
   
   const desabledCart = () =>{
@@ -73,19 +62,8 @@ export const GridSeats = (props) => {
   return (
 
     <Fragment>
-      <Typography variant="body1">{seat.number === null ? "Seleccione un asiento" : `Asiento seleccionado: ${seat.number} ${seat.type} $${seat.cost} `}</Typography>
-      <TableCreator data={props.seats} columnName={columnName} bodyAction={saveSeatId} noDataMsg={"Seleccione un vuelo para mostrar asientos."}/> 
-      <Button
-      type="submit"
-      variant="contained"
-      color="primary"
-      className={classes.buttonAgregarCarrito}
-      onClick={() => addCart()}
-      disabled={disabledAddCart()}
-      >
-        Agregar al carrito
-          </Button>
-
+      <TableCreator data={props.seats} columnName={columnName} buttonAction={addCart} titleButton="agregar Al carrito"/> 
+    
       <Grid container spacing={3} className={classes.margin5}>
         <Grid item xs={6}>
           <Typography variant="body1" gutterBottom>Cantidad de items: {cartFlights.length}</Typography>

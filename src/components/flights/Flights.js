@@ -11,14 +11,14 @@ import { GridSeats } from './gridSeats';
 export default Flights => {
   const flightsService = new FlightsService();
   const [flightID, setFlightID] = useState(null);
-  const [seat, setSeat] = useState({nexttoWindow: false, cost: 0, number: null, type: null});
+  const [seat, setSeat] = useState({ nexttoWindow: false, cost: 0, number: null, type: null });
   const [seats, setSeats] = useState([]);
   const [flights, setflights] = useState([]);
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: '',
   });
-  
+
   const login = useSelector(store => store.login);
 
   useEffect(() => {
@@ -37,7 +37,7 @@ export default Flights => {
   }
 
   const getAllSeats = async (flightId) => {
-    setSeat({nexttoWindow: false, cost: 0, number: null, type: null})
+    setSeat({ nexttoWindow: false, cost: 0, number: null, type: null })
     setFlightID(flightId);
     const seats = await flightsService.getAllSeats(flightId);
     convertBooleanToString(seats);
@@ -69,9 +69,8 @@ export default Flights => {
       flightId: flightID,
       seatNumber: seatId
     }
-    
     try {
-       await flightsService.postaddCart(flight)
+      await flightsService.postaddCart(flight)
       getAllSeats(flightID)
       getAllFlight()
       setSnackbar({
@@ -99,8 +98,9 @@ export default Flights => {
     }
     setSnackbar({
       ...snackbar,
-      open: false});
-      
+      open: false
+    });
+
   }
 
   return (
@@ -109,7 +109,7 @@ export default Flights => {
       <GridFlights getAllSeats={getAllSeats} flights={flights}></GridFlights>
       <GridSeats seats={seats} addCart={addCart} seat={seat} setSeat={setSeat}></GridSeats>
 
-      <SnackbarOpen open={snackbar.open} message={snackbar.message} severity={snackbar.severity} closeSnac={closeSnackbar}/>
+      <SnackbarOpen open={snackbar.open} message={snackbar.message} severity={snackbar.severity} closeSnac={closeSnackbar} />
 
     </div>
   )
