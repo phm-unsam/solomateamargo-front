@@ -6,7 +6,7 @@ import Table from '@material-ui/core/Table';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import { withStyles } from '@material-ui/core/styles';
-import { NoDataCard } from './noDataCard';
+import { NoDataCard } from '../noDataCard';
 import Button from '@material-ui/core/Button';
 const StyledTableCell = withStyles(theme => ({
     head: {
@@ -27,7 +27,6 @@ const StyledTableRow = withStyles(theme => ({
 }))(TableRow);
 
 export default function TableCreator(props) {
-    console.log(props)
     const styles = props.styles;
     return (
         <Fragment>

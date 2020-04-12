@@ -6,9 +6,9 @@ import {
     BUY_CART,
 } from '../../consts'
 
-export const cartLoad = userId => ({
+export const cartLoad = (payload) => ({
     type: CART_LOAD,
-    payload: userId
+    payload: payload
 });
 
 export const cartLoadFinished = flights => ({
@@ -18,18 +18,17 @@ export const cartLoadFinished = flights => ({
 
 export const deleteFlightReservation = (flight, loginUser) => ({
     type: DELETE_FLIGHT_RESERVATION,
-    payload: flight,
-    loginUser: loginUser
+    payload: {ticket : flight, loggedId:loginUser}
 })
 
 export const deleteAll = userId => ({
     type: DELETE_ALL_CART,
-    payload: userId
+    payload: {loggedId:userId}
 });
 
 
 export const buyTicket = userId => ({
     type: BUY_CART,
-    payload: userId
+    payload: {loggedId:userId}
 })
 

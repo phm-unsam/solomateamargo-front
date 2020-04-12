@@ -1,9 +1,10 @@
 import React, { Fragment, useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import MaterialTable from 'material-table'
 
 import Typography from '@material-ui/core/Typography';
-
+import { NoDataCard } from '../noDataCard';
 import { useHistory } from "react-router-dom";
 import { useSelector } from 'react-redux';
 
@@ -12,7 +13,6 @@ import { useStyles } from './style';
 
 import { useDispatch } from 'react-redux';
 import { cartLoad } from '../../redux/actions/cartAction';
-import TableCreator from '../tableCreator/tableCreator';
 
 export const GridSeats = (props) => {
   const login = useSelector(store => store.login);
@@ -26,7 +26,7 @@ export const GridSeats = (props) => {
   }, [])
 
   const updateFlights = () => {
-    dispatch(cartLoad(login.id));
+    dispatch(cartLoad({loggedId:login.id}));
   }
 
   const onPerfilClick = e => {
@@ -37,44 +37,50 @@ export const GridSeats = (props) => {
     history.push("/cart");
   }
 
-  const addCart = (seat) => {
+  const addCart = (e, seat) => {
     props.addCart(seat.number);
     updateFlights();
   }
 
- 
-
-  const columnName = [
-    {name: 'Ventanilla' }, {name: 'Precio' }, {name: 'Numero' }, {name: 'Clase' }
-  ]
-
-  
-  const desabledCart = () =>{
+  const desabledCart = () => {
     return cartFlights.length === 0
   }
+  const table = (
+    <MaterialTable
+      title="Asientos"
+      columns={[
+        { title: "Clase", field: "type" },
+        { title: "Numero", field: "number" },
+        { title: "Ventanilla", field: "nextoWindow" },
+        { title: "Precio", field: "cost" },
+      ]}
+      data={props.seats}
+      options={
+        {
+          search: false,
+          paging: false,
+          actionsColumnIndex: -1,
+        }
+      }
+      actions={[
+        {
+          icon: "add",
+          tooltip: 'seleccionar vuelo',
+          onClick: addCart
+        }
+      ]}
+    />
+  )
 
   return (
-
     <Fragment>
-      <TableCreator data={props.seats} columnName={columnName} buttonAction={addCart} titleButton="agregar Al carrito"/> 
-    
+      {props.seats.length === 0 ? <NoDataCard msg="Seleccione un vuelo"/> : table}
       <Grid container spacing={3} className={classes.margin5}>
         <Grid item xs={6}>
           <Typography variant="body1" gutterBottom>Cantidad de items: {cartFlights.numberOfTickets}</Typography>
           <Typography variant="body1" gutterBottom>Total ${cartFlights.totalCost}</Typography>
         </Grid>
-        <Grid item xs={3}>
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            className={classes.margin}
-
-            onClick={onPerfilClick}
-          >
-            Perfil
-            </Button>
-        </Grid>
+         
         <Grid item xs={3}>
           <Button
             type="submit"
@@ -84,7 +90,7 @@ export const GridSeats = (props) => {
             onClick={onCartClick}
             disabled={desabledCart()}
           >
-            Finalizar Compra
+            Ver carrito
             </Button>
         </Grid>
       </Grid>

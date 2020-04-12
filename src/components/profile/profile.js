@@ -9,7 +9,6 @@ import ProfileService from '../../services/profileService'
 import Loader from '../loader';
 import { useHistory } from "react-router-dom";
 import Icon from '@material-ui/core/Icon'
-import Swal from 'sweetalert2'
 
 //Components
 import { GenericFriendsTable } from './genericFriendTable';
@@ -171,7 +170,6 @@ const UserDataComponent = (props) => {
 }
 
 const FriendsTable = (props) => {
-  const classes = style();
 
   const id = props.id
   const setSnackbar = props.setSnackbar;

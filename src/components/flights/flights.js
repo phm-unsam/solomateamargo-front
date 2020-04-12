@@ -23,6 +23,7 @@ export default Flights => {
 
   useEffect(() => {
     getAllFlight();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -74,9 +75,9 @@ export default Flights => {
       flightId: flightID,
       seatNumber: seatId
     }
+    setSeats([])
     try {
       await flightsService.postaddCart(flight)
-      getAllSeats(flightID)
       getAllFlight()
       setSnackbar({
         open: true,

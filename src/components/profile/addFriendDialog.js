@@ -1,6 +1,5 @@
-import React, { useState }  from 'react';
+import React  from 'react';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/Button';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
 import { GenericFriendsTable } from './genericFriendTable';
@@ -16,7 +15,6 @@ export const AddFriendDialog = (props) => {
 
   const { onClose, selectedValue, open } = props;
   
-  const [toAddFriend, setToAddFriend] = useState({ id: null, name: '', lastName: '' });
 
   const handleClose = () => {
     onClose(selectedValue);
