@@ -13,7 +13,7 @@ import {
     BUY_CART_FINISHED,
     BUY_CART_ERROR,
 } from '../../consts'
-
+ 
 export const REST_SERVER_URL = 'http://localhost:16000/'
 const cartService = new CartService()
 const callbackSwal = (title, descripcion) => {
@@ -80,4 +80,4 @@ export default function* Cart() {
     yield takeLatest(DELETE_FLIGHT_RESERVATION, deleteFlight);
     yield takeLatest(DELETE_ALL_CART, deleteAll);
     yield takeLatest(BUY_CART, buyTicket);
-}
+} 

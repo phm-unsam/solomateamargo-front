@@ -42,7 +42,11 @@ export default function Cart() {
     
     if (deleteAlert) {
       dispatch(deleteFlightReservation(flightSelect, login.id))
+<<<<<<< HEAD
 
+=======
+      getAllCart()
+>>>>>>> 83d4bb3f5917ba7573c9ddf72318d4c188207b95
     }
   }
 
@@ -70,19 +74,31 @@ export default function Cart() {
     }
   }
   const isCartEmpty = () => {
+<<<<<<< HEAD
     return tickets.numberOfTickets === 0
+=======
+    return flights.numberOfTickets === 0
+>>>>>>> 83d4bb3f5917ba7573c9ddf72318d4c188207b95
   }
   const columnName = [
-    { name: 'Origen' }, { name: 'Destino' }, { name: 'Salida' }, { name: 'Aerolinea' }, { name: 'Asiento' }, { name: 'Clase' }, { name: 'Desde' }
+    { name: 'Origen' }, { name: 'Destino' }, { name: 'Salida' }, { name: 'Aerolinea' }, { name: 'Asiento' }, { name: 'Clase' }, { name: 'Desde' }, { name: 'Accion' }
   ]
 
   return (
     <Fragment>
+<<<<<<< HEAD
       <TableCreator data={tickets.tickets} columnName={columnName} titleButton="Elimina" buttonAction={deleteFlight} />
 
       <form onSubmit={buyTicketsFlights}>
         <div className="botones">
           <Button variant="contained" color="primary" disabled={tickets} onClick={() => deleteAllflights()}>Limpiar carro</Button>
+=======
+      <TableCreator data={flights.tickets} columnName={columnName} titleButton="Eliminar" buttonAction={deleteFlight} />
+
+      <form onSubmit={buyTicketsFlights}>
+        <div className="botones">
+          <Button variant="contained" disabled={isCartEmpty()} color="primary" onClick={() => deleteAllflights()}>Limpiar carro</Button>
+>>>>>>> 83d4bb3f5917ba7573c9ddf72318d4c188207b95
         </div>
         <h3 align="left">Total en el carrito: ${tickets.totalCost}</h3>
         <div className="botonesInferior">

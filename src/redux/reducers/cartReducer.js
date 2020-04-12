@@ -14,7 +14,7 @@ const initialState = {
     error: null,
     loading: false,
 }
-
+ 
 export default function (state = initialState, action) {
     switch (action.type) {
         case CART_LOAD:
@@ -24,7 +24,7 @@ export default function (state = initialState, action) {
             }
 
         case CART_LOAD_FINISHED:
-            return {
+        return {
                 ...state,
                 error: false,
                 loading: null,

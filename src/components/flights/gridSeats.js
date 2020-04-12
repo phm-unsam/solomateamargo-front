@@ -42,8 +42,20 @@ export const GridSeats = (props) => {
     updateFlights();
   }
 
+<<<<<<< HEAD
   const desabledCart = () => {
     return cartFlights.length === 0
+=======
+ 
+
+  const columnName = [
+    {name: 'Ventanilla' }, {name: 'Precio' }, {name: 'Numero' }, {name: 'Clase' }, { name: 'Accion' }
+  ]
+
+  
+  const desabledCart = () =>{
+    return cartFlights.numberOfTickets === 0
+>>>>>>> 83d4bb3f5917ba7573c9ddf72318d4c188207b95
   }
   const table = (
     <MaterialTable
