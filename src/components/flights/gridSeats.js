@@ -45,7 +45,7 @@ export const GridSeats = (props) => {
  
 
   const columnName = [
-    {name: 'Ventanilla' }, {name: 'Precio' }, {name: 'Numero' }, {name: 'Clase' }
+    {name: 'Ventanilla' }, {name: 'Precio' }, {name: 'Numero' }, {name: 'Clase' }, { name: 'Accion' }
   ]
 
   

@@ -74,12 +74,12 @@ export default function Cart() {
    return  flights.numberOfTickets === 0
   }
   const columnName = [
-    { name: 'Origen' }, { name: 'Destino' }, { name: 'Salida' }, { name: 'Aerolinea' }, { name: 'Asiento' }, { name: 'Clase' }, { name: 'Desde' }
+    { name: 'Origen' }, { name: 'Destino' }, { name: 'Salida' }, { name: 'Aerolinea' }, { name: 'Asiento' }, { name: 'Clase' }, { name: 'Desde' }, { name: 'Accion' }
   ]
 
   return (
     <Fragment>
-      <TableCreator data={flights.tickets} columnName={columnName}titleButton="Elimina" buttonAction={deleteFlight}/>
+      <TableCreator data={flights} columnName={columnName}titleButton="Eliminar" buttonAction={deleteFlight}/>
     
       <form onSubmit={buyTicketsFlights}>
         <div className="botones">
