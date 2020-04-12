@@ -2,7 +2,7 @@ import React, { Fragment, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { cartLoad } from '../../redux/actions/cartAction';
 import './cart.css'
-import { deleteAll, deleteFlightReservation, buyTicket} from '../../redux/actions/cartAction'
+import { deleteAll, deleteFlightReservation, buyTicket } from '../../redux/actions/cartAction'
 import Button from '@material-ui/core/Button';
 import { useHistory } from "react-router-dom";
 import Swal from 'sweetalert2'
@@ -17,13 +17,13 @@ export default function Cart() {
   useEffect(() => {
     getAllCart()
   }, [])
-  
+
   const onFlightsClick = e => {
     history.push("/");
   }
 
   const getAllCart = () => {
-      dispatch(cartLoad(login.id))
+    dispatch(cartLoad(login.id))
   }
 
   const deleteFlight = async (flightSelect) => {
@@ -39,9 +39,8 @@ export default function Cart() {
       cancelButtonText: 'NO'
     })
     if (deleteAlert) {
-        dispatch(deleteFlightReservation(flightSelect, login.id))
-        getAllCart()
-        
+      dispatch(deleteFlightReservation(flightSelect, login.id))
+      getAllCart()
     }
   }
 
@@ -70,8 +69,8 @@ export default function Cart() {
       return alert
     }
   }
-  const isCartEmpty = () =>{
-   return  flights.numberOfTickets === 0
+  const isCartEmpty = () => {
+    return flights.numberOfTickets === 0
   }
   const columnName = [
     { name: 'Origen' }, { name: 'Destino' }, { name: 'Salida' }, { name: 'Aerolinea' }, { name: 'Asiento' }, { name: 'Clase' }, { name: 'Desde' }, { name: 'Accion' }
@@ -79,11 +78,11 @@ export default function Cart() {
 
   return (
     <Fragment>
-      <TableCreator data={flights} columnName={columnName}titleButton="Eliminar" buttonAction={deleteFlight}/>
-    
+      <TableCreator data={flights.tickets} columnName={columnName} titleButton="Eliminar" buttonAction={deleteFlight} />
+
       <form onSubmit={buyTicketsFlights}>
         <div className="botones">
-          <Button variant="contained" disabled={isCartEmpty} color="primary" onClick={() => deleteAllflights()}>Limpiar carro</Button>
+          <Button variant="contained" disabled={isCartEmpty()} color="primary" onClick={() => deleteAllflights()}>Limpiar carro</Button>
         </div>
         <h3 align="left">Total en el carrito: ${flights.totalCost}</h3>
         <div className="botonesInferior">

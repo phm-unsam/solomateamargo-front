@@ -1,4 +1,4 @@
-import { put, takeLatest, call } from 'redux-saga/effects';
+import { put, takeLatest, call, delay } from 'redux-saga/effects';
 import axios from 'axios'
 import Swal from 'sweetalert2'
 import CartService from '../../services/cartService'
@@ -37,8 +37,8 @@ const callbackSwalError = () => {
 }
 
 export function* cartLoad({ payload }) {
+    yield delay(1000)
     try {
-    
       const results = yield (cartService.cartLoad(payload))
       yield put({ type: CART_LOAD_FINISHED, results })
     } catch (error) {

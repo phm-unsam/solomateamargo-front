@@ -50,7 +50,7 @@ export const GridSeats = (props) => {
 
   
   const desabledCart = () =>{
-    return cartFlights.length === 0
+    return cartFlights.numberOfTickets === 0
   }
 
   return (

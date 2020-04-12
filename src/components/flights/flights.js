@@ -32,7 +32,6 @@ export default Flights => {
 
   const getSearchFlight = async (searchFlights) => {
     setflights(await flightsService.getSearchFlight(searchFlights));
-    //corregir nose si esta bien
     setSeats([]);
   }
 
