@@ -3,7 +3,6 @@ import {
     CART_LOAD_FINISHED,
     CART_LOAD_ERROR,
     DELETE_FLIGHT_RESERVATION,
-    DELETE_ALL_CART,
     BUY_CART_FINISHED,
     BUY_CART_ERROR,
 } from '../../consts'

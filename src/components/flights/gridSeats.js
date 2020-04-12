@@ -29,10 +29,6 @@ export const GridSeats = (props) => {
     dispatch(cartLoad({loggedId:login.id}));
   }
 
-  const onPerfilClick = e => {
-    history.push("/perfil");
-  }
-
   const onCartClick = e => {
     history.push("/cart");
   }

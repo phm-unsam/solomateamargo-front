@@ -15,6 +15,7 @@ export default function Cart() {
   let history = useHistory();
   useEffect(() => {
     getAllCart()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const onFlightsClick = e => {
