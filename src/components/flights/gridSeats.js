@@ -26,7 +26,7 @@ export const GridSeats = (props) => {
   }, [])
 
   const updateFlights = () => {
-    dispatch(cartLoad({loggedId:login.id}));
+    dispatch(cartLoad({ loggedId: login.id }));
   }
 
   const onCartClick = e => {
@@ -65,18 +65,24 @@ export const GridSeats = (props) => {
           onClick: addCart
         }
       ]}
+      localization={
+        {
+          body: { emptyDataSourceMessage: "No hay asientos para este vuelo" },
+          header: { actions: "Acciones" }
+        }
+      }
     />
   )
 
   return (
     <Fragment>
-      {props.seats.length === 0 ? <NoDataCard msg="Seleccione un vuelo"/> : table}
+      {props.seats.length === 0 ? <NoDataCard msg="Seleccione un vuelo" /> : table}
       <Grid container spacing={3} className={classes.margin5}>
         <Grid item xs={6}>
           <Typography variant="body1" gutterBottom>Cantidad de items: {cartFlights.numberOfTickets}</Typography>
           <Typography variant="body1" gutterBottom>Total ${cartFlights.totalCost}</Typography>
         </Grid>
-         
+
         <Grid item xs={3}>
           <Button
             type="submit"

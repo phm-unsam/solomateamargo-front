@@ -14,10 +14,10 @@ export const GridFlights = (props) => {
         { title: "Origen", field: "from" },
         { title: "Destino", field: "to" },
         { title: "Aerolineas", field: "airline" },
-        { title: "Salida", field: "departure" },
+        { title: "Fecha de salida", field: "departure" },
         { title: "Escalas", field: "stopoversAmount" },
-        { title: "Duracion", field: "flightDuration" },
-        { title: "Precio", field: "priceFrom" },
+        { title: "Duracion (hs)", field: "flightDuration" },
+        { title: "Desde", field: "priceFrom" },
       ]}
       data={flights}
       options={
@@ -26,6 +26,11 @@ export const GridFlights = (props) => {
           paging: false,
         }
       }
+      localization={
+          {
+            body: { emptyDataSourceMessage: "No hay vuelos disponibles" },
+          }
+        }
       onRowClick={getAvailableSeats}
     />
   )
