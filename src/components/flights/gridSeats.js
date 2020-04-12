@@ -42,12 +42,6 @@ export const GridSeats = (props) => {
     updateFlights();
   }
 
-  const total = () => {
-    let sum = 0;
-    cartFlights.forEach(cartFlight => sum += cartFlight.cost);
-    return sum;
-  }
-
  
 
   const columnName = [
@@ -66,8 +60,8 @@ export const GridSeats = (props) => {
     
       <Grid container spacing={3} className={classes.margin5}>
         <Grid item xs={6}>
-          <Typography variant="body1" gutterBottom>Cantidad de items: {cartFlights.length}</Typography>
-          <Typography variant="body1" gutterBottom>Total ${total()}</Typography>
+          <Typography variant="body1" gutterBottom>Cantidad de items: {cartFlights.numberOfTickets}</Typography>
+          <Typography variant="body1" gutterBottom>Total ${cartFlights.totalCost}</Typography>
         </Grid>
         <Grid item xs={3}>
           <Button

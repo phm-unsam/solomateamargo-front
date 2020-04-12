@@ -27,6 +27,7 @@ const StyledTableRow = withStyles(theme => ({
 }))(TableRow);
 
 export default function TableCreator(props) {
+    console.log(props)
     const styles = props.styles;
     return (
         <Fragment>

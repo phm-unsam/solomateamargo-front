@@ -25,14 +25,6 @@ export default function Cart() {
   const getAllCart = () => {
       dispatch(cartLoad(login.id))
   }
-  const sumaTotal = () => {
-    let total = 0
-
-    Array.from(flights).forEach(flight =>
-      total += flight.cost)
-
-    return total
-  }
 
   const deleteFlight = async (flightSelect) => {
 
@@ -78,20 +70,22 @@ export default function Cart() {
       return alert
     }
   }
-
+  const isCartEmpty = () =>{
+   return  flights.numberOfTickets === 0
+  }
   const columnName = [
     { name: 'Origen' }, { name: 'Destino' }, { name: 'Salida' }, { name: 'Aerolinea' }, { name: 'Asiento' }, { name: 'Clase' }, { name: 'Desde' }
   ]
 
   return (
     <Fragment>
-      <TableCreator data={flights} columnName={columnName}titleButton="Asientos Disponibles" buttonAction={deleteFlight}/>
+      <TableCreator data={flights.tickets} columnName={columnName}titleButton="Elimina" buttonAction={deleteFlight}/>
     
       <form onSubmit={buyTicketsFlights}>
         <div className="botones">
-          <Button variant="contained" color="primary" onClick={() => deleteAllflights()}>Limpar carro</Button>
+          <Button variant="contained" disabled={isCartEmpty} color="primary" onClick={() => deleteAllflights()}>Limpiar carro</Button>
         </div>
-        <h3 align="left">Total en el carrito: ${sumaTotal()}</h3>
+        <h3 align="left">Total en el carrito: ${flights.totalCost}</h3>
         <div className="botonesInferior">
           <div className="botonVolver">
             <Button variant="contained" color="secondary" className="buttonVolver" onClick={onFlightsClick}>Volver</Button>
