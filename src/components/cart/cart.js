@@ -83,7 +83,7 @@ useEffect(() => {
   return (
     <Fragment>
       <MaterialTable
-        title="Asientos"
+        title="Carrito de compra"
         columns={[
           { title: "Origen", field: "from" },
           { title: "Destino", field: "to" },
@@ -103,7 +103,7 @@ useEffect(() => {
         }
         actions={[
           {
-            icon: "delete",
+            icon: "remove_shopping_cart",
             tooltip: 'Eliminar ticket',
             onClick: deleteFlight
           }

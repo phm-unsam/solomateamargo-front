@@ -60,8 +60,8 @@ export const GridSeats = (props) => {
       }
       actions={[
         {
-          icon: "add",
-          tooltip: 'seleccionar vuelo',
+          icon: "add_shopping_cart",
+          tooltip: 'Agregar al carrito ',
           onClick: addCart
         }
       ]}
