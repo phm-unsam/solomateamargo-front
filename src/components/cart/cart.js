@@ -1,7 +1,7 @@
-import React, { Fragment } from 'react';
+import React, { Fragment,useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import './cart.css'
-import { deleteAll, deleteFlightReservation, buyTicket } from '../../redux/actions/cartAction'
+import { deleteAll, deleteFlightReservation, buyTicket, cartLoad } from '../../redux/actions/cartAction'
 import Button from '@material-ui/core/Button';
 import { useHistory } from "react-router-dom";
 import Swal from 'sweetalert2'
@@ -14,7 +14,12 @@ export default function Cart() {
   let history = useHistory();
 
 
-  const onFlightsClick = e => {
+useEffect(() => {
+  dispatch(cartLoad({ loggedId: login.id }))
+// eslint-disable-next-line react-hooks/exhaustive-deps
+}, [])
+
+  const redirectHome = e => {
     history.push("/");
   }
 
@@ -49,6 +54,7 @@ export default function Cart() {
 
     if (deleteAlert) {
       dispatch(deleteAll(login.id))
+      redirectHome()
     }
 
   }
@@ -69,6 +75,7 @@ export default function Cart() {
     })
     if (alert.value) {
       dispatch(buyTicket(login.id))
+      redirectHome()
       return alert
     }
   }
@@ -116,7 +123,7 @@ export default function Cart() {
         <h3 align="left">Total en el carrito: ${cart.totalCost}</h3>
         <div className="botonesInferior">
           <div className="botonVolver">
-            <Button variant="contained" color="secondary" className="buttonVolver" onClick={onFlightsClick}>Volver</Button>
+            <Button variant="contained" color="secondary" className="buttonVolver" onClick={redirectHome}>Volver</Button>
           </div>
           <Button type="submit" variant="contained" disabled={cart.numberOfTickets === 0} color="primary">Comprar</Button>
         </div>
