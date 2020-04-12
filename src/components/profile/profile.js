@@ -9,20 +9,19 @@ import ProfileService from '../../services/profileService'
 import Loader from '../loader';
 import { useHistory } from "react-router-dom";
 import Icon from '@material-ui/core/Icon'
+import MaterialTable from 'material-table';
 
 //Components
 import { GenericFriendsTable } from './genericFriendTable';
 import { AddFriendDialog } from './addFriendDialog';
 import SnackbarOpen from '../snackbar/snackbar'
-import TableCreator from '../tableCreator/tableCreator';
 
 export default function Profile() {
-  const [user, setUser] = useState({});
-
   let login = useSelector(store => store.login);
 
   const profileService = new ProfileService();
 
+  const [user, setUser] = useState({});
   const [isLoaded, setIsLoaded] = useState(false);
   const [snackbar, setSnackbar] = useState({
     open: false,
@@ -126,7 +125,7 @@ const UserDataComponent = (props) => {
 
   return (
     <Fragment>
-      <Grid container spacing={3} className={classes.margin5}>
+      <Grid container spacing={3}>
         <Grid item xs={3}>
           <img src={user.profilePhoto} alt="User" className={classes.img}></img>
         </Grid>
@@ -160,8 +159,9 @@ const UserDataComponent = (props) => {
           <Button color="secondary" variant="contained" onClick={redirect} className={classes.margin5}>Cancelar</Button>
           <Typography className={classes.margin5}>Saldo: ${user.cash.toFixed(2)}     <Button color="primary" variant="contained" onClick={showAddCash} className={classes.margin5}>Agregar Saldo</Button></Typography>
           {showCash ? <AddCash user={user} setUser={setUser} setShowCash={setShowCash} setSnackbar={setSnackbar} /> : <div></div>}
-          <Typography component="h5" variant="h6">Amigos</Typography>
-          <FriendsTable id={user.id} setSnackbar={setSnackbar}></FriendsTable>
+          <div className={classes.table}>
+            <FriendsTable id={user.id} setSnackbar={setSnackbar}></FriendsTable>
+          </div>
         </Grid>
         
       </Grid>
@@ -177,7 +177,6 @@ const FriendsTable = (props) => {
   const [friends, setFriends] = useState([]);
   const [possibleFriends, setPossibleFriends] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [toDeleteFriend, setToDeleteFriend] = useState({ id: null, name: '', lastName: '' });
   const [open, setOpen] = useState(false);
 
   const profileService = new ProfileService();
@@ -200,18 +199,16 @@ const FriendsTable = (props) => {
     }
   });
 
-  const deleteFriend = async (toDeleteFriend) => {
-    let idFriendToDelete = toDeleteFriend.id;
-    if (idFriendToDelete !== null) {
+  const deleteFriend = async (e, toDeleteFriend) => {
+    if (toDeleteFriend.id !== null) {
       try {
-        await profileService.deleteFriend(id, idFriendToDelete);
+        await profileService.deleteFriend(id, toDeleteFriend.id);
         setSnackbar({
           open: true,
           message: `Has eliminado a ${toDeleteFriend.name} ${toDeleteFriend.lastName} de tu lista de amigos.`,
           severity: 'success'
         });
         setFriends(friends.filter(friend => friend !== toDeleteFriend));
-        setToDeleteFriend({ id: null });
       } catch (err) {
         let errorMsg = err.toString();
         setSnackbar({
@@ -252,7 +249,7 @@ const FriendsTable = (props) => {
     }
   }
 
-  const addFriend = async (friendToAdd) => {
+  const addFriend = async (e, friendToAdd) => {
     try {
       await profileService.addFriend(id, friendToAdd.id);
       setSnackbar({
@@ -277,8 +274,8 @@ const FriendsTable = (props) => {
       {
         isLoaded ?
           <div>
-            <GenericFriendsTable friends={friends} actionOnClick={deleteFriend} noDataMsg={"No tiene amigos..."} titleButton={"Eliminar"}/>
-            <Button color="primary" variant="contained" onClick={handleClickOpen} >Agregar Amigo</Button>
+            <GenericFriendsTable friends={friends} actionOnClick={deleteFriend} noDataMsg={"No tiene amigos..."} titleButton={"Eliminar"} title={"Amigos"} icon={"delete"}/>
+            <Button color="primary" variant="contained" onClick={handleClickOpen} style={{margin: '5px'}}>Agregar Amigo</Button>
             <AddFriendDialog open={open} onClose={handleClose} possibleFriends={possibleFriends} addFriend={addFriend} setSnackbar={setSnackbar}/>
           </div>
           :
@@ -298,10 +295,6 @@ const TicketsPurchasedTable = (props) => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   const profileService = new ProfileService();
-
-  const columnNames = [
-    { name: 'Origen'}, {  name: 'Destino'}, {  name: 'Salida'}, {  name: 'Comprado'}, {  name: 'Aerolinea'}, {  name: 'Precio'}
-  ]
 
   useEffect(() => {
     getPurchases();
@@ -325,11 +318,32 @@ const TicketsPurchasedTable = (props) => {
   }
 
   return (
-    <Fragment>
-      <Typography component="h3" variant="h4">Pasajes comprados</Typography> <br/>
-      <TableCreator spacing={3} data={tickets} columnName={columnNames} bodyAction={null} styles={classes.table} noDataMsg={"No tiene pasajes comprados."}></TableCreator>
-    </Fragment>
-    
+    <div spacing={3}>
+      <MaterialTable
+            title={"Pasajes comprados"}
+            columns={[
+              { title: "Origen", field: "from" },
+              { title: "Destino", field: "to" },
+              { title: "Salida", field: "departure" },
+              { title: "Comprado", field: "purchaseDate" },
+              { title: "Aerolinea", field: "airline" },
+              { title: "Precio", field: "cost" },
+
+            ]}
+            data={tickets}
+            options={
+              {
+                search: false,
+                paging: false,
+              }
+            }
+            localization={
+              {
+                body: { emptyDataSourceMessage: "No tiene pasajes comprados." }
+              }
+            }
+          />
+    </div>
   )
 }
 

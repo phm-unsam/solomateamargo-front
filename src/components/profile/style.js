@@ -17,16 +17,16 @@ export default makeStyles(theme => ({
       margin: theme.spacing(3, 0, 2),
     },
     table: {
-        display: 'inline'
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     margin5: {
-        margin: 5,
+      margin: theme.spacing(1),
     },
     img: {
-      maxWidth: 350
-    },
-    clickedRow: {
-      backgroundColor: blue
+      maxWidth: 350,
+      margin: theme.spacing(1)
     },
     dialog: {
       display: 'flex',

@@ -38,7 +38,7 @@ export const GridSeats = (props) => {
     updateFlights();
   }
 
-  const desabledCart = () => {
+  const disabledCart = () => {
     return cartFlights.length === 0
   }
   const table = (
@@ -90,7 +90,7 @@ export const GridSeats = (props) => {
             color="primary"
             className={classes.margin}
             onClick={onCartClick}
-            disabled={desabledCart()}
+            disabled={disabledCart()}
           >
             Ver carrito
             </Button>
