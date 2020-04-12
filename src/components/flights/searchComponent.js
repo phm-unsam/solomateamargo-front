@@ -8,28 +8,32 @@ import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/picker
 import { useStyles, ColorButton } from './style'
 import { Card, Typography, CardContent, CardActions } from '@material-ui/core';
 
+const seatClasses = [
+  { seatClass: 'Economy' }, { seatClass: 'Business' }, { seatClass: 'First' }
+]
+
+const seatWindow = [
+  { typeSeat: 'Ventanilla', booleanSeat: true }, { typeSeat: 'Sin ventanilla', booleanSeat: false }
+]
+
 const initialState = {
   departure: '',
   arrival: '',
   dateFrom: null,
   dateTo: null,
-  seatNextoWindow: null,
-  seatClass: ""
+  seatNextoWindow: seatWindow[0],
+  seatClass: seatClasses[0].booleanSeat
 }
 
 export const SearchComponent = (props) => {
   const classes = useStyles();
   const [dateFrom, setDateFrom] = useState(new Date())
   const [dateTo, setDateTo] = useState(new Date())
-  const [flightSearch, setFlightSearch] = useState({ initialState });
+  const [flightSearch, setFlightSearch] = useState(initialState);
 
-  const seatClasses = [
-    { seatClass: 'Economy' }, { seatClass: 'Business' }, { seatClass: 'First' }
-  ]
+  const disabledSearchSeat = props.disableSearchSeat;
 
-  const seatWindow = [
-    { typeSeat: 'ventanilla', booleanSeat: true }, { typeSeat: 'no ventanilla', booleanSeat: false }
-  ]
+  
 
   const update = e => {
     setFlightSearch({
@@ -45,7 +49,6 @@ export const SearchComponent = (props) => {
         ...flightSearch,
         seatNextoWindow: value.booleanSeat,
       })
-
     }
     else {
       clear()
@@ -87,6 +90,10 @@ export const SearchComponent = (props) => {
 
   const disabledButton = () => {
     return isEmpty(flightSearch.departure) && (flightSearch.dateTo === null) && (flightSearch.dateFrom === null) && isEmpty(flightSearch.arrival) && isEmpty(flightSearch.departure);
+  }
+
+  const disableSearchSeatButton = () => {
+    return disabledSearchSeat;
   }
 
   const isEmpty = (aField) => {
@@ -172,24 +179,26 @@ export const SearchComponent = (props) => {
         <Card className={classes.root}>
           <CardContent><div className={classes.cardContent}>
             <Typography variant="h5" component="h2">
-              Filtrar Vuelos
+              Filtrar Asientos
             </Typography><br />
             <Autocomplete
               id="comboClass"
               name="seatClass"
+              value={flightSearch.seatClass}
               options={seatClasses}
-              getOptionLabel={option => option.seatClass}
-              onChange={(e, v) => changeSeat(e, v)}
+              getOptionLabel={option => option.seatClass ? option.seatClass : option}
+              onChange={changeSeat}
               style={{ width: 220 }}
               className={classes.margin5}
               renderInput={params => <TextField {...params} label="Clase" variant="outlined" />}
             /><br />
             <Autocomplete
-              id="comboClass"
+              id="comboSeat"
               name="seatNextoWindow"
+              value={flightSearch.seatNextoWindow}
               options={seatWindow}
-              getOptionLabel={option => option.typeSeat}
-              onChange={(e, value) => updateInput(e, value)}
+              getOptionLabel={option => option.typeSeat ? option.typeSeat : option}
+              onChange={updateInput}
               style={{ width: 220 }}
               className={classes.margin5}
               renderInput={params => <TextField {...params} label="Ventanilla?" variant="outlined" />}
@@ -201,7 +210,7 @@ export const SearchComponent = (props) => {
               color="primary"
               size="small"
               onClick={searchSeat}
-              disabled={disabledButtonSeat()}
+              disabled={disableSearchSeatButton()}
             >
               Buscar Asiento
             </Button>

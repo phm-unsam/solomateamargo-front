@@ -11,11 +11,10 @@ import { GridFlights } from './gridFlights';
 import { GridSeats } from './gridSeats';
 
 export default Flights => {
-  const classes = useStyles();
 
   const flightsService = new FlightsService();
   const [flightID, setFlightID] = useState(null);
-  const [seat, setSeat] = useState({ nexttoWindow: false, cost: 0, number: null, type: null });
+  const [disableSearchSeat, setdisableSearchSeat] = useState(true);
   const [seats, setSeats] = useState([]);
   const [flights, setflights] = useState([]);
   const [snackbar, setSnackbar] = useState({
@@ -40,7 +39,7 @@ export default Flights => {
   }
 
   const getAllSeats = async (flight) => {
-    setSeat({ nexttoWindow: false, cost: 0, number: null, type: null })
+    setdisableSearchSeat(false);
     setFlightID(flight.id);
     const seats = await flightsService.getAllSeats(flight.id);
     
@@ -97,7 +96,7 @@ export default Flights => {
 
   const clear = (searchFlights) => {
     getAllFlight(searchFlights)
-    getAllSeats(flightID)
+    setSeats([]);
   }
 
   const closeSnackbar = (event, reason) => {
@@ -113,9 +112,9 @@ export default Flights => {
 
   return (
     <div>
-      <SearchComponent searchSeat={searchSeat} getSearchFlight={getSearchFlight} clear={clear}></SearchComponent>
+      <SearchComponent searchSeat={searchSeat} getSearchFlight={getSearchFlight} clear={clear} disableSearchSeat={disableSearchSeat}></SearchComponent>
       <GridFlights getAllSeats={getAllSeats} flights={flights}></GridFlights>
-      <GridSeats seats={seats} addCart={addCart} seat={seat} setSeat={setSeat}></GridSeats>
+      <GridSeats seats={seats} addCart={addCart}></GridSeats>
 
       <SnackbarOpen open={snackbar.open} message={snackbar.message} severity={snackbar.severity} closeSnac={closeSnackbar} />
 
