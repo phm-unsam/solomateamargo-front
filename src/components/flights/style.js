@@ -1,25 +1,30 @@
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import { yellow } from '@material-ui/core/colors';
+import { grey } from '@material-ui/core/colors';
 
 export const useStyles = makeStyles(theme => ({
-
-
-  buttonAgregarCarrito: {
-    margin: 5,
-
+  root: {
+    minWidth: "50%",
+    margin: 5
   },
-  margin5: {
-    margin: 5,
+  cardContent: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems:"center"
+  },
+  cardWrapper: {
+    margin: 25,
+    display: "flex",
+    flexDirection: "row"
   }
 }));
 
 export const ColorButton = withStyles(theme => ({
   root: {
-    color: yellow[50],
-    backgroundColor: yellow[700],
+    color: grey[50],
+    backgroundColor: grey[700],
     '&:hover': {
-      backgroundColor: yellow[800],
+      backgroundColor: grey[800],
     },
   },
 }))(Button);

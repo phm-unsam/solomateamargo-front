@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import SnackbarOpen from '../snackbar/snackbar'
 import { useSelector } from 'react-redux';
 import FlightsService from '../../services/flightsService';
+import { useStyles } from './style'
+
 
 //Components
 import { SearchComponent } from './searchComponent';
@@ -9,6 +11,8 @@ import { GridFlights } from './gridFlights';
 import { GridSeats } from './gridSeats';
 
 export default Flights => {
+  const classes = useStyles();
+
   const flightsService = new FlightsService();
   const [flightID, setFlightID] = useState(null);
   const [seat, setSeat] = useState({ nexttoWindow: false, cost: 0, number: null, type: null });
@@ -23,7 +27,6 @@ export default Flights => {
 
   useEffect(() => {
     getAllFlight();
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
