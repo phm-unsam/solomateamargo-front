@@ -22,7 +22,6 @@ const Login = ({ loginUser }) => {
   const errorMsg = useSelector(state => loginErrorMsg(state))
 
   const callbackLogin = () => {
-
     history.push("/");
   }
 

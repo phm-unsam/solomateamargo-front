@@ -1,116 +1,101 @@
-import React, { Fragment, useEffect, useState } from 'react';
-import Grid from '@material-ui/core/Grid';
+import React, { Fragment, useEffect } from 'react';
 import Button from '@material-ui/core/Button';
+import MaterialTable from 'material-table'
 
 import Typography from '@material-ui/core/Typography';
-
+import { NoDataCard } from '../noDataCard';
 import { useHistory } from "react-router-dom";
 import { useSelector } from 'react-redux';
-
+import Icon from '@material-ui/core/Icon'
 //css
 import { useStyles } from './style';
 
 import { useDispatch } from 'react-redux';
 import { cartLoad } from '../../redux/actions/cartAction';
-import TableCreator from '../tableCreator/tableCreator';
+import { Card } from '@material-ui/core';
 
 export const GridSeats = (props) => {
-  const seat = props.seat;
-  const setSeat = props.setSeat;
   const login = useSelector(store => store.login);
   const classes = useStyles();
   let history = useHistory();
-  let seatId = null;
   const cartFlights = useSelector(state => state.cartReducer.flights);
   const dispatch = useDispatch();
-
   useEffect(() => {
     updateFlights()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const updateFlights = () => {
-    dispatch(cartLoad(login.id));
-  }
-
-  const onPerfilClick = e => {
-    history.push("/perfil");
+    dispatch(cartLoad({ loggedId: login.id }));
   }
 
   const onCartClick = e => {
     history.push("/cart");
   }
 
-  const addCart = () => {
-    props.addCart(seatId);
+  const addCart = (e, seat) => {
+    props.addCart(seat.number);
     updateFlights();
   }
 
-  const total = () => {
-    let sum = 0;
-    cartFlights.forEach(cartFlight => sum += cartFlight.cost);
-    return sum;
+  const disabledCart = () => {
+    return cartFlights.length === 0
   }
-
-  const disabledAddCart = () => {
-    return seatId !== null
-  }
-
-  const columnName = [
-    {name: 'Ventanilla' }, {name: 'Precio' }, {name: 'Numero' }, {name: 'Clase' }
-  ]
-
-  const saveSeatId = (seat) => {
-    setSeat(seat);
-    seatId = (seat.number)
-  }
+  const table = (
+    <MaterialTable
+      title="Asientos"
+      columns={[
+        { title: "Clase", field: "type" },
+        { title: "Numero", field: "number" },
+        { title: "Ventanilla", field: "nextoWindow" },
+        { title: "Precio", field: "cost" },
+      ]}
+      data={props.seats}
+      options={
+        {
+          search: false,
+          paging: false,
+          actionsColumnIndex: -1,
+        }
+      }
+      actions={[
+        {
+          icon: "add_shopping_cart",
+          tooltip: 'Agregar al carrito ',
+          onClick: addCart
+        }
+      ]}
+      localization={
+        {
+          body: { emptyDataSourceMessage: "No hay asientos para este vuelo" },
+          header: { actions: "Acciones" }
+        }
+      }
+    />
+  )
 
   return (
-
     <Fragment>
-      <Typography variant="body1">{seat.number === null ? "Seleccione un asiento" : `Asiento seleccionado: ${seat.number} ${seat.type} $${seat.cost} `}</Typography>
-      <TableCreator data={props.seats} columnName={columnName} bodyAction={saveSeatId} noDataMsg={"Seleccione un vuelo para mostrar asientos."}/> 
-      <Button
-      type="submit"
-      variant="contained"
-      color="primary"
-      className={classes.buttonAgregarCarrito}
-      onClick={() => addCart()}
-      disabled={disabledAddCart()}
-      >
-        Agregar al carrito
-          </Button>
-
-      <Grid container spacing={3} className={classes.margin5}>
-        <Grid item xs={6}>
-          <Typography variant="body1" gutterBottom>Cantidad de items: {cartFlights.length}</Typography>
-          <Typography variant="body1" gutterBottom>Total ${total()}</Typography>
-        </Grid>
-        <Grid item xs={3}>
+      {props.seats.length === 0 ? <NoDataCard msg="Seleccione un vuelo" /> : table}
+      <div className={classes.margin}>
+        <Card>
+        <Typography variant="h5" component="h2">
+              Carrito de compras
+            </Typography><br/>
+          <Typography variant="body1" gutterBottom>Cantidad de items: {cartFlights.numberOfTickets}</Typography>
+          <Typography variant="body1" gutterBottom>Total ${cartFlights.totalCost}</Typography>
           <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            className={classes.margin}
-
-            onClick={onPerfilClick}
-          >
-            Perfil
-            </Button>
-        </Grid>
-        <Grid item xs={3}>
-          <Button
-            type="submit"
             variant="contained"
             color="primary"
             className={classes.margin}
             onClick={onCartClick}
+            disabled={disabledCart()}
           >
-            Finalizar Compra
+            
+            Ver carrito <Icon>shopping_cart</Icon>
             </Button>
-        </Grid>
-      </Grid>
-
+        </Card>
+      </div>
     </Fragment>
   )
 }

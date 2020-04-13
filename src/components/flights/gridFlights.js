@@ -1,20 +1,37 @@
-import React, { Fragment } from 'react';
-
-import TableCreator from '../tableCreator/tableCreator'
+import React from 'react';
+import MaterialTable from 'material-table'
 
 export const GridFlights = (props) => {
-    const { flights } = props;
-  
-    const columnName = [
-      { name: 'Origen'}, {name: 'Destino'}, {name: 'Aerolinea'}, {name: 'Duración'},{name: 'Salida'}, {name:'Desde'}, {name: 'Escalas'}
-    ] 
+  const { flights } = props;
 
-    const selectSeat = (flight) =>{
-      props.getAllSeats(flight.id)
-    }
-    return (
-      <Fragment>
-        <TableCreator data={flights} columnName={columnName} bodyAction={selectSeat} noDataMsg={"No hay vuelos disponibles"}/>
-      </Fragment>
-    )
+  const getAvailableSeats = (e,flight) => {
+    props.getAllSeats(flight)
   }
+  return (
+    <MaterialTable
+      title="Vuelos"
+      columns={[
+        { title: "Origen", field: "from" },
+        { title: "Destino", field: "to" },
+        { title: "Aerolineas", field: "airline" },
+        { title: "Fecha de salida", field: "departure" },
+        { title: "Escalas", field: "stopoversAmount" },
+        { title: "Duracion (hs)", field: "flightDuration" },
+        { title: "Desde", field: "priceFrom" },
+      ]}
+      data={flights}
+      options={
+        {
+          search: false,
+          paging: false,
+        }
+      }
+      localization={
+          {
+            body: { emptyDataSourceMessage: "No hay vuelos disponibles" },
+          }
+        }
+      onRowClick={getAvailableSeats}
+    />
+  )
+}

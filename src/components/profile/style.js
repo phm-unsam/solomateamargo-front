@@ -1,5 +1,4 @@
 import { makeStyles } from '@material-ui/core/styles';
-import { blue } from '@material-ui/core/colors';
 
 
 export default makeStyles(theme => ({
@@ -11,22 +10,22 @@ export default makeStyles(theme => ({
     },
     form: {
       width: '100%',
-      marginTop: theme.spacing(1),
+  
     },
     submit: {
       margin: theme.spacing(3, 0, 2),
     },
     table: {
-        display: 'inline'
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     margin5: {
-        margin: 5,
+      margin: theme.spacing(1),
     },
     img: {
-      maxWidth: 350
-    },
-    clickedRow: {
-      backgroundColor: blue
+      maxWidth: 350,
+      margin: theme.spacing(1)
     },
     dialog: {
       display: 'flex',
