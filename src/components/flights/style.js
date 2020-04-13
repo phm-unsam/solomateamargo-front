@@ -4,8 +4,11 @@ import { grey } from '@material-ui/core/colors';
 
 export const useStyles = makeStyles(theme => ({
   root: {
-    minWidth: "50%",
+    width: "50%",
     margin: 5
+  },
+  margin:{
+    margin:25
   },
   cardContent: {
     display: "flex",
@@ -16,6 +19,9 @@ export const useStyles = makeStyles(theme => ({
     margin: 25,
     display: "flex",
     flexDirection: "row"
+  },
+  contentWrapper:{
+    display: "block",
   }
 }));
 

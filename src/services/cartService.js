@@ -1,5 +1,5 @@
 import axios from 'axios'
-export const REST_SERVER_URL = 'http://localhost:16000/'
+import {REST_SERVER_URL} from './server'
 
 export default class FlightsService {
 

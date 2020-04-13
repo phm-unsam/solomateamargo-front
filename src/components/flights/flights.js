@@ -11,11 +11,12 @@ import { GridFlights } from './gridFlights';
 import { GridSeats } from './gridSeats';
 
 export default Flights => {
-
+  const classes = useStyles()
   const flightsService = new FlightsService();
   const [flightID, setFlightID] = useState(null);
   const [disableSearchSeat, setdisableSearchSeat] = useState(true);
   const [seats, setSeats] = useState([]);
+  const [seat,setSeat] = useState()
   const [flights, setflights] = useState([]);
   const [snackbar, setSnackbar] = useState({
     open: false,
@@ -42,9 +43,9 @@ export default Flights => {
     setdisableSearchSeat(false);
     setFlightID(flight.id);
     const seats = await flightsService.getAllSeats(flight.id);
-    
+
     seats.forEach((seat) => {
-      seat.cost += flight.baseCost;    
+      seat.cost += flight.baseCost;
     });
 
     convertBooleanToString(seats);
@@ -111,11 +112,14 @@ export default Flights => {
   }
 
   return (
-    <div>
-      <SearchComponent searchSeat={searchSeat} getSearchFlight={getSearchFlight} clear={clear} disableSearchSeat={disableSearchSeat}></SearchComponent>
-      <GridFlights getAllSeats={getAllSeats} flights={flights}></GridFlights>
-      <GridSeats seats={seats} addCart={addCart}></GridSeats>
-
+    <div className={classes.contentWrapper}>
+      <SearchComponent searchSeat={searchSeat} getSearchFlight={getSearchFlight} clear={clear}></SearchComponent>
+      <div className={classes.margin}>
+        <GridFlights getAllSeats={getAllSeats} flights={flights}></GridFlights>
+      </div>
+      <div className={classes.margin}>
+        <GridSeats seats={seats} addCart={addCart} seat={seat} setSeat={setSeat}></GridSeats>
+      </div>
       <SnackbarOpen open={snackbar.open} message={snackbar.message} severity={snackbar.severity} closeSnac={closeSnackbar} />
 
     </div>

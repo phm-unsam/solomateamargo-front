@@ -23,28 +23,10 @@ export const useStyles = makeStyles(theme => ({
       margin: 5,
       minWidth: 500
     },
-    margin5: {
-      margin: 5,
+    marginCard: {
+      margin: 30,
     }
   }));
-  
-  export const StyledTableCell = withStyles(theme => ({
-    head: {
-      backgroundColor: theme.palette.action.hover,
-      color: theme.palette.common.black,
-    },
-    body: {
-      fontSize: 14,
-    },
-  }))(TableCell);
-  
- export const StyledTableRow = withStyles(theme => ({
-    root: {
-        '&:nth-of-type(odd)': {
-            backgroundColor: theme.palette.background.default,
-        },
-    },
-}))(TableRow);
 
 
 

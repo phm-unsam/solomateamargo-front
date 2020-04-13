@@ -1,9 +1,7 @@
 import React, { Fragment }  from 'react';
-import style from './style'
 import MaterialTable from 'material-table';
 
 export const GenericFriendsTable = (props) => {
-    const classes = style();
 
     let friends = props.friends;
     let actionOnClick = props.actionOnClick;
