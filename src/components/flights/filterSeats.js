@@ -6,7 +6,7 @@ import { useStyles, ColorButton } from './style';
 const seatClasses = [
     { seatClass: 'Economy' }, { seatClass: 'Business' }, { seatClass: 'First' }
 ]
-  
+
 const seatWindow = [
     { typeSeat: 'Ventanilla', booleanSeat: true }, { typeSeat: 'Sin ventanilla', booleanSeat: false }
 ]
@@ -36,8 +36,7 @@ export default function FilterSeats(props) {
     }
 
     return (
-        <div>
-            <Card className={classes.root}>
+        <Card className={classes.root}>
             <CardContent>
                 <div className={classes.cardContent}>
                     <Typography variant="h5" component="h2">
@@ -76,32 +75,31 @@ export default function FilterSeats(props) {
                         }}
                         style={{ width: 220 }}
                         className={classes.margin5}
-                        renderInput={params => <TextField {...params} label="Ventanilla?" variant="outlined" autoComplete="false"/>}
+                        renderInput={params => <TextField {...params} label="Ventanilla?" variant="outlined" autoComplete="false" />}
                     />
                 </div>
             </CardContent>
-                <div className={classes.cardContent}>
-                    <CardActions>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            size="small"
-                            onClick={searchSeat}
-                            disabled={disable()}
-                        >
-                            Buscar Asiento
+            <div className={classes.cardContent}>
+                <CardActions>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        size="small"
+                        onClick={searchSeat}
+                        disabled={disable}
+                    >
+                        Buscar Asiento
                         </Button>
-                        <ColorButton
-                            variant="contained"
-                            size="small"
-                            className={classes.margin}
-                            onClick={clear}
-                        >
-                            Limpiar Campos
+                    <ColorButton
+                        variant="contained"
+                        size="small"
+                        className={classes.margin}
+                        onClick={clear}
+                    >
+                        Limpiar Campos
                         </ColorButton>
-                    </CardActions>
-                </div>
-            </Card>
-        </div>    
+                </CardActions>
+            </div>
+        </Card>
     )
 }

@@ -1,6 +1,4 @@
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
+import { makeStyles, } from '@material-ui/core/styles';
 export const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',

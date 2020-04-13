@@ -10,10 +10,17 @@ export const useStyles = makeStyles(theme => ({
   margin:{
     margin:25
   },
+  marginShort:{
+    margin:10
+  },
   cardContent: {
     display: "flex",
     flexDirection: "column",
     alignItems:"center"
+  },
+  column : {
+    display: "flex",
+    flexDirection: "row",
   },
   cardWrapper: {
     margin: 25,
