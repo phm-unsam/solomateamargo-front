@@ -1,5 +1,4 @@
 import React, { Fragment, useEffect } from 'react';
-import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import MaterialTable from 'material-table'
 
@@ -7,12 +6,13 @@ import Typography from '@material-ui/core/Typography';
 import { NoDataCard } from '../noDataCard';
 import { useHistory } from "react-router-dom";
 import { useSelector } from 'react-redux';
-
+import Icon from '@material-ui/core/Icon'
 //css
 import { useStyles } from './style';
 
 import { useDispatch } from 'react-redux';
 import { cartLoad } from '../../redux/actions/cartAction';
+import { Card } from '@material-ui/core';
 
 export const GridSeats = (props) => {
   const login = useSelector(store => store.login);
@@ -77,26 +77,25 @@ export const GridSeats = (props) => {
   return (
     <Fragment>
       {props.seats.length === 0 ? <NoDataCard msg="Seleccione un vuelo" /> : table}
-      <Grid container spacing={3} className={classes.margin5}>
-        <Grid item xs={6}>
+      <div className={classes.margin}>
+        <Card>
+        <Typography variant="h5" component="h2">
+              Carrito de compras
+            </Typography><br/>
           <Typography variant="body1" gutterBottom>Cantidad de items: {cartFlights.numberOfTickets}</Typography>
           <Typography variant="body1" gutterBottom>Total ${cartFlights.totalCost}</Typography>
-        </Grid>
-
-        <Grid item xs={3}>
           <Button
-            type="submit"
             variant="contained"
             color="primary"
             className={classes.margin}
             onClick={onCartClick}
             disabled={disabledCart()}
           >
-            Ver carrito
+            
+            Ver carrito <Icon>shopping_cart</Icon>
             </Button>
-        </Grid>
-      </Grid>
-
+        </Card>
+      </div>
     </Fragment>
   )
 }

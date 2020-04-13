@@ -1,23 +1,25 @@
-import React, { Fragment,useEffect } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import './cart.css'
 import { deleteAll, deleteFlightReservation, buyTicket, cartLoad } from '../../redux/actions/cartAction'
 import Button from '@material-ui/core/Button';
 import { useHistory } from "react-router-dom";
 import Swal from 'sweetalert2'
 import MaterialTable from 'material-table'
+import { Card, CardActions, CardContent, Typography } from '@material-ui/core';
 
+import { useStyles } from './style'
 export default function Cart() {
+  const classes = useStyles()
   const dispatch = useDispatch();
   const cart = useSelector(state => state.cartReducer.flights);
   const login = useSelector(store => store.login);
   let history = useHistory();
 
 
-useEffect(() => {
-  dispatch(cartLoad({ loggedId: login.id }))
-// eslint-disable-next-line react-hooks/exhaustive-deps
-}, [])
+  useEffect(() => {
+    dispatch(cartLoad({ loggedId: login.id }))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const redirectHome = e => {
     history.push("/");
@@ -54,7 +56,6 @@ useEffect(() => {
 
     if (deleteAlert) {
       dispatch(deleteAll(login.id))
-      redirectHome()
     }
 
   }
@@ -75,7 +76,6 @@ useEffect(() => {
     })
     if (alert.value) {
       dispatch(buyTicket(login.id))
-      redirectHome()
       return alert
     }
   }
@@ -103,9 +103,16 @@ useEffect(() => {
         }
         actions={[
           {
-            icon: "remove_shopping_cart",
+            icon: "delete",
             tooltip: 'Eliminar ticket',
             onClick: deleteFlight
+          },
+          {
+            icon: "remove_shopping_cart",
+            tooltip: 'Eliminar Carrito',
+            onClick: deleteAllflights,
+            isFreeAction: true,
+            hidden: cart.numberOfTickets === 0
           }
         ]}
         localization={
@@ -117,18 +124,21 @@ useEffect(() => {
       />
 
       <form onSubmit={buyTicketsFlights}>
-        <div className="botones">
-          <Button variant="contained" color="primary" disabled={cart.numberOfTickets === 0} onClick={() => deleteAllflights()}>Limpiar carro</Button>
-        </div>
-        <h3 align="left">Total en el carrito: ${cart.totalCost}</h3>
-        <div className="botonesInferior">
-          <div className="botonVolver">
-            <Button variant="contained" color="secondary" className="buttonVolver" onClick={redirectHome}>Volver</Button>
-          </div>
-          <Button type="submit" variant="contained" disabled={cart.numberOfTickets === 0} color="primary">Comprar</Button>
-        </div>
+        <Card className={classes.marginCard}>
+          <CardContent>
+            <Typography variant="h5" component="h1">
+              Carrito de compras
+            </Typography><br/>
+            <Typography variant="h6" component="h3">
+            Total en el carrito: ${cart.totalCost}
+            </Typography>
+          </CardContent>
+          <CardActions>
+            <Button type="submit" variant="contained" disabled={cart.numberOfTickets === 0} color="primary">Comprar</Button>
+            <Button variant="contained" onClick={redirectHome}>Volver</Button>
+          </CardActions>
+        </Card>
       </form>
-
     </Fragment>
   )
 }

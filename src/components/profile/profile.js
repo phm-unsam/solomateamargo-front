@@ -286,7 +286,6 @@ const FriendsTable = (props) => {
 }
 
 const TicketsPurchasedTable = (props) => {
-  const classes = style();
 
   const id = props.id;
   const setSnackbar = props.setSnackbar;
