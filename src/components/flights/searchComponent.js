@@ -29,7 +29,7 @@ export const SearchComponent = (props) => {
   const classes = useStyles();
   const [dateFrom, setDateFrom] = useState(new Date())
   const [dateTo, setDateTo] = useState(new Date())
-  const [flightSearch, setFlightSearch] = useState(initialState);
+  const [flightSearch, setFlightSearch] = useState({initialState});
 
   const disabledSearchSeat = props.disableSearchSeat;
 
@@ -114,9 +114,6 @@ export const SearchComponent = (props) => {
     props.clear(flightSearch);
   }
 
-  const disabledButtonSeat = () => {
-    return isEmpty(flightSearch.seatClass) && (flightSearch.seatNextoWindow === null)
-  }
   return (
     <div>
       <div className={classes.cardWrapper}>
