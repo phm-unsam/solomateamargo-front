@@ -14,7 +14,7 @@ import {
     BUY_CART_ERROR,
 } from '../../consts'
  
-export const REST_SERVER_URL = 'http://localhost:16000/'
+export const ROOT_SERVER_URL = 'http://localhost:16000/'
 const cartService = new CartService()
 const callbackSwal = (title, descripcion) => {
     Swal.fire(
