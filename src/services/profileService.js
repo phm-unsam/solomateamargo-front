@@ -25,12 +25,12 @@ export default class ProfileService {
     }
 
     async addFriend(id, friendId){
-        const response = await axios.post(`${getUrlWithUser()}/friend/${friendId}`);
+        const response = await axios.post(`${getUrlWithUser()}/friends/${friendId}`);
         return response
     }
 
     async deleteFriend(id, friendId){
-        const response = await axios.delete(`${getUrlWithUser()}/friend/${friendId}`);
+        const response = await axios.delete(`${getUrlWithUser()}/friends/${friendId}`);
         return response
     }
 

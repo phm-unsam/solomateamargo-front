@@ -13,7 +13,7 @@ export default function (state = initialState, action) {
         case LOGIN_START:
             return { ...state, isLoading: true }
         case LOGIN_FAILED:
-            return { ...state, isLoading: false, msg: response, error: true }
+            return { ...state, isLoading: false, msg: response.error, error: true }
         case LOGIN_SUCCESS:
             return { isLoading: false, isLogged: true, ...response }
         case LOGOUT:
