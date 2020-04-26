@@ -10,7 +10,7 @@ export default class FlightsService {
         const result = await axios.get(`${ROOT_SERVER_URL}flight/${userId}/seats`, {
             params: {
                 seatType: seatClass,
-                nextToWindow: nextToWindow
+                nextoWindow: nextToWindow
             }
         });
 

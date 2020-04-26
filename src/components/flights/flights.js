@@ -75,7 +75,7 @@ export default Flights => {
     const flight = {
       id: login.id,
       flightId: flightID,
-      seatNumber: seatId
+      seatId: seatId
     }
     setSeats([])
     try {

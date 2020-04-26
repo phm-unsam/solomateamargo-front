@@ -53,9 +53,9 @@ const FilterFlights = (props) => {
     }
 
     const isSearchDisabled = () => {
-        return isDateToDisabled &&  flightFilters.departure === "" && flightFilters.arrival === ""
+        return isDateToDisabled() &&  flightFilters.departure === "" && flightFilters.arrival === ""
     }
-
+    
     return (
         <Card className={classes.root}>
             <CardContent>

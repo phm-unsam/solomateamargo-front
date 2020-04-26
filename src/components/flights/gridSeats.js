@@ -34,7 +34,7 @@ export const GridSeats = (props) => {
   }
 
   const addCart = (e, seat) => {
-    props.addCart(seat.number);
+    props.addCart(seat.id);
     updateFlights();
   }
 

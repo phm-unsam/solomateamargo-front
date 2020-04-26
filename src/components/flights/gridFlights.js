@@ -11,8 +11,8 @@ export const GridFlights = (props) => {
     <MaterialTable
       title="Vuelos"
       columns={[
-        { title: "Origen", field: "from" },
-        { title: "Destino", field: "to" },
+        { title: "Origen", field: "destinationFrom" },
+        { title: "Destino", field: "destinationTo" },
         { title: "Aerolineas", field: "airline" },
         { title: "Fecha de salida", field: "departure" },
         { title: "Escalas", field: "stopoversAmount" },
