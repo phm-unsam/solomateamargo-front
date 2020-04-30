@@ -35,8 +35,8 @@ export default class FlightsService {
 
         const result = await axios.get(`${ROOT_SERVER_URL}flights`, {
             params: {
-                dateFrom: dateFrom,
-                dateTo: dateTo,
+                dateFrom: dateFrom.format("DD/MM/YYYY"),
+                dateTo: dateTo.format("DD/MM/YYYY"),
                 departure: departure,
                 arrival: arrival
             }

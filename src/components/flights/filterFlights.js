@@ -10,8 +10,8 @@ import { useStyles, ColorButton } from './style'
 const initialState = {
     departure: "",
     arrival: "",
-    dateFrom: "",
-    dateTo: "",
+    dateFrom: moment(),
+    dateTo: moment(),
 }
 const FilterFlights = (props) => {
     const classes = useStyles();
@@ -28,14 +28,14 @@ const FilterFlights = (props) => {
     const updateDateFrom = (date) => {
         setFlightFilters({
             ...flightFilters,
-            dateFrom: moment(date).format("DD/MM/YYYY")
+            dateFrom: moment(date)
         })
     }
 
     const updateDateTo = (date) => {
         setFlightFilters({
             ...flightFilters,
-            dateTo: moment(date).format("DD/MM/YYYY")
+            dateTo: moment(date)
         })
     }
 
@@ -92,13 +92,16 @@ const FilterFlights = (props) => {
                         name="dateFrom"
                         onChange={updateDateFrom}
                         className={classes.marginShort}
-                        label="Desde"></KeyboardDatePicker>
+                        value={flightFilters.dateFrom}
+                        label="Desde">
+                    </KeyboardDatePicker>
                     <KeyboardDatePicker
                         format="DD/MM/YYYY"
                         name="dateTo"
                         onChange={updateDateTo}
                         disabled={isDateToDisabled()}
                         className={classes.marginShort}
+                        value={flightFilters.dateTo}
                         label="Hasta" >
                     </KeyboardDatePicker>
                 </MuiPickersUtilsProvider><br />
