@@ -3,22 +3,13 @@ import { ROOT_SERVER_URL } from './server'
 
 export default class FlightsService {
 
-    async getSearchSeats(userId, seatSearch) {
-        const { nextToWindow, seatClass } = seatSearch
-
-
-        const result = await axios.get(`${ROOT_SERVER_URL}flight/${userId}/seats`, {
-            params: {
-                seatType: seatClass,
-                nextoWindow: nextToWindow
-            }
-        });
-
-        return result.data;
+    async getAllFlights() {
+        const result = await axios.get(ROOT_SERVER_URL + `flights`)
+        return result.data
 
     }
 
-    async getAllSeats(userId) {
+    async getSeats(userId) {
         const result = await axios.get(ROOT_SERVER_URL + `flight/${userId}/seats`)
         return result.data
     }
@@ -30,25 +21,23 @@ export default class FlightsService {
 
     }
 
-    async getSearchFlight(flightFilters) {
-        const { dateFrom, dateTo, departure, arrival } = flightFilters;
+    async searchFlights(flightFilters) {
+        const { dateFrom, dateTo, departure, arrival, nextToWindow, seatClass } = flightFilters;
 
         const result = await axios.get(`${ROOT_SERVER_URL}flights`, {
             params: {
                 dateFrom: dateFrom.format("DD/MM/YYYY"),
                 dateTo: dateTo.format("DD/MM/YYYY"),
                 departure: departure,
-                arrival: arrival
+                arrival: arrival,
+                seatType: seatClass,
+                nextoWindow: nextToWindow
             }
         });
 
         return result.data;
 
     }
-    async getAllFlight() {
-        const result = await axios.get(ROOT_SERVER_URL + `flights`)
-        return result.data
-
-    }
+    
 
 }

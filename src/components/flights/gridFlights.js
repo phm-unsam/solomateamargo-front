@@ -5,7 +5,7 @@ export const GridFlights = (props) => {
   const { flights } = props;
 
   const getAvailableSeats = (e,flight) => {
-    props.getAllSeats(flight)
+    props.getSeats(flight)
   }
   return (
     <MaterialTable

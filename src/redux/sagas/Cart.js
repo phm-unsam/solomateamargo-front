@@ -28,7 +28,7 @@ const callbackSwalError = () => {
     Swal.fire({
         icon: 'error',
         title: 'Oops...',
-        text: 'no posee sufuciente dinero, estas pobre!',
+        text: 'No posee dinero suficiente.',
     })
 }
 
