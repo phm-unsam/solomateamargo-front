@@ -20,7 +20,8 @@ export const useStyles = makeStyles(theme => ({
   },
   column : {
     display: "flex",
-    flexDirection: "row",
+    justifyContent: "center",
+    flexDirection: "row"
   },
   cardWrapper: {
     margin: 25,

@@ -126,7 +126,7 @@ const UserDataComponent = (props) => {
   return (
     <Fragment>
       <Grid container spacing={3}>
-        <Grid item xs={3}>
+        <Grid item xs={'auto'}>
           <img src={user.profilePhoto} alt="User" className={classes.img}></img>
         </Grid>
         <Grid item xs={9}>

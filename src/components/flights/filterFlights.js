@@ -14,7 +14,7 @@ const initialState = {
     departure: "",
     arrival: "",
     dateFrom: moment(),
-    dateTo: moment(),
+    dateTo: moment().add(10, 'days'),
     seatClass: null,
     nextToWindow: null
 }
@@ -108,6 +108,7 @@ const FilterFlights = (props) => {
                     onChange={updateDateFrom}
                     className={classes.marginShort}
                     value={flightFilters.dateFrom}
+                    minDate={moment()}
                     label="Desde">
                 </KeyboardDatePicker>
                 <KeyboardDatePicker
@@ -117,12 +118,13 @@ const FilterFlights = (props) => {
                     disabled={isDateToDisabled()}
                     className={classes.marginShort}
                     value={flightFilters.dateTo}
+                    minDate={flightFilters.dateFrom}
                     label="Hasta" >
                 </KeyboardDatePicker>
             </MuiPickersUtilsProvider>
             {isDateToDisabled() ? "Seleccione un rango para activar el filtrado por fechas" : ""}
             <Grid container spacing={3}>
-                <Grid item xs={6}>
+                <Grid item xs={'auto'}>
                     <Autocomplete
                         name="seatClass"
                         value={flightFilters.seatClass}
@@ -139,7 +141,7 @@ const FilterFlights = (props) => {
                         renderInput={params => <TextField {...params} label="Clase" variant="outlined" />}
                     />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={'auto'}>
                     <Autocomplete
                         name="seatNextoWindow"
                         value={window ? window : null}
