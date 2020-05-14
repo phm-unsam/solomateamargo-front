@@ -8,7 +8,7 @@ const seatClasses = [
 ]
 
 const seatWindow = [
-    { typeSeat: 'Ventanilla', booleanSeat: true }, { typeSeat: 'Sin ventanilla', booleanSeat: false }
+    { typeSeat: 'Ventanilla', booleanSeat: true }, { typeSeat: 'Pasillo', booleanSeat: false }
 ]
 
 const initialState = {

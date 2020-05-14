@@ -1,9 +1,10 @@
 import { LOGIN_START, LOGIN_FAILED, LOGIN_SUCCESS, LOGOUT } from '../../consts/'
+import sessionService from '../../services/sessionService'
 const initialState = {
     isLoading: false,
     isLogged: false,
     error: false,
-    ...JSON.parse(localStorage.getItem('login'))
+    ...sessionService.getSession()
 }
 
 export default function (state = initialState, action) {
@@ -12,13 +13,11 @@ export default function (state = initialState, action) {
         case LOGIN_START:
             return { ...state, isLoading: true }
         case LOGIN_FAILED:
-            return { ...state, isLoading: false, msg: response, error: true }
+            return { ...state, isLoading: false, msg: response.error, error: true }
         case LOGIN_SUCCESS:
-            localStorage.setItem('login', JSON.stringify({ ...response, isLogged: true }))
             return { isLoading: false, isLogged: true, ...response }
         case LOGOUT:
-            localStorage.clear()
-            return { isLogged:false}
+            return { isLogged: false }
         default: return { ...state }
     }
 }

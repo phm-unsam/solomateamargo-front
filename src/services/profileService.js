@@ -1,45 +1,46 @@
 import axios from 'axios';
-import {REST_SERVER_URL} from './server'
+import {getUrlWithUser} from './server'
+
 
 export default class ProfileService {
 
     async getProfile(id){
-        const result = await axios.get(`${REST_SERVER_URL}user/${id}/profile`);
+        const result = await axios.get(`${getUrlWithUser()}/profile`);
         return result.data
     }
 
     async getFriends(id){
-        const result = await axios.get(`${REST_SERVER_URL}user/${id}/friends`);
+        const result = await axios.get(`${getUrlWithUser()}/friends`);
         return result.data
     }
 
     async getPurchases(id){
-        const result = await axios.get(`${REST_SERVER_URL}user/${id}/purchases`);
+        const result = await axios.get(`${getUrlWithUser()}/purchases`);
         return result.data
     }
 
     async addCash(id, amount){
-        const response = await axios.put(`${REST_SERVER_URL}user/${id}/addcash`, amount);
+        const response = await axios.put(`${getUrlWithUser()}/addcash`, amount);
         return response
     }
 
     async addFriend(id, friendId){
-        const response = await axios.post(`${REST_SERVER_URL}user/${id}/friend/${friendId}`);
+        const response = await axios.post(`${getUrlWithUser()}/friends/${friendId}`);
         return response
     }
 
     async deleteFriend(id, friendId){
-        const response = await axios.delete(`${REST_SERVER_URL}user/${id}/friend/${friendId}`);
+        const response = await axios.delete(`${getUrlWithUser()}/friends/${friendId}`);
         return response
     }
 
     async updateProfile(user){
-        const response = await axios.put(`${REST_SERVER_URL}user/profile`, user);
+        const response = await axios.put(`${getUrlWithUser()}/profile`, user);
         return response.data
     }   
 
     async possibleFriends(id){
-        const result = await axios.get(`${REST_SERVER_URL}user/${id}/possiblefriends`);
+        const result = await axios.get(`${getUrlWithUser()}/possiblefriends`);
         return result.data
     }
 }
