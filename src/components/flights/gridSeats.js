@@ -34,7 +34,7 @@ export const GridSeats = (props) => {
   };
 
   const addCart = (e, seat) => {
-    props.addCart(seat.id);
+    props.addCart(seat.number);
 
     setTimeout(function () {
       updateFlights();
